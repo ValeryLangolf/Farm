@@ -482,7 +482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2838997505103655600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -558,8 +558,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1488a3bacc9e5664999bd0c2723866da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openButtons: []
-  _closeButtons: []
+  _openButtons:
+  - {fileID: 0}
+  _closeButtons:
+  - {fileID: 9125135050917369740}
+  - {fileID: 0}
+  _toggleButtons: []
   _parentObject: {fileID: 6220960703713679129}
   _upgradeShopItem: {fileID: 835560322643761774, guid: 1e7586d78f5746b4497006f1ad6e6f25, type: 3}
   _nextPageButton: {fileID: 3360845927234726687}
