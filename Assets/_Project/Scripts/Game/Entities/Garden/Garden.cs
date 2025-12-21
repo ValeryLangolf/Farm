@@ -10,6 +10,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     [SerializeField] private float _storageCapacity = 1;
     [SerializeField] private float _coinRevenue = 1;
     [SerializeField] private bool _isPurchased;
+    [SerializeField] private int _id;
 
     private Storage _storage;
     private Grover _grover;
@@ -23,6 +24,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     public float StorageProgress => _storage != null ? _storage.Progress : 0;
 
     public bool IsPurchased => _isPurchased;
+
+    public float Price => _purchasePrice;
 
     private void Awake()
     {
@@ -57,6 +60,9 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     private void Purchase()
     {
+        if (_wallet.TrySpend(_purchasePrice) == false)
+            return;
+
         _isPurchased = true;
         _grover.StartRun();
         PurchaseStatusChanged?.Invoke(_isPurchased);

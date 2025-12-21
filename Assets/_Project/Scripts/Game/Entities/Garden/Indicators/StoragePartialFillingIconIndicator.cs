@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StorageFillingIndicator : MonoBehaviour 
+public class StoragePartialFillingIconIndicator : MonoBehaviour 
 {
     [SerializeField] private Garden _garden;
     [SerializeField] private GameObject _indicator;
