@@ -25,6 +25,7 @@ public class Bootstrap : MonoBehaviour
 
         _services.Add(interactionDetector);
         _services.Add(new CoinCollector(interactionDetector));
+        _services.Add(new InteractionHandler(interactionDetector));
         _services.Add(new InputTrailParticle(_trailParticle, interactionDetector));
     }
 

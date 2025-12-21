@@ -13,11 +13,15 @@ public abstract class InputFollowerBase : IService, IDisposable
         _mainCamera = Camera.main;
         _distanceFromCamera = Mathf.Abs(_transform.position.z - _mainCamera.transform.position.z);
 
-        UpdateService.Instance.Updated += OnUpdate;
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated += OnUpdate;
     }
 
-    public void Dispose() =>
-        UpdateService.Instance.Updated -= OnUpdate;
+    public void Dispose()
+    {
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated -= OnUpdate;
+    }
 
     protected abstract bool TryGetInputPosition(out Vector3 position);
 

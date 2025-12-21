@@ -3,34 +3,48 @@ using UnityEngine;
 
 public class Storage
 {
-    private float _coinCapacity;
-    private float _currentCoins;
+    private readonly Action<float> _changed;
 
-    public bool IsFilled => _currentCoins >= _coinCapacity - Mathf.Epsilon;
+    private long _capacity;
+    private long _currentValue;
 
-    public void SetCapacity(float value)
+    public Storage(long capacity, long currentValue, Action<float> changed)
     {
-        if(value <= 0)
-            throw new ArgumentOutOfRangeException($"{value}, значение должно быть больше нул€");
+        _capacity = capacity > 0? capacity : throw new ArgumentOutOfRangeException(nameof(capacity), capacity, "«начение должно быть больше нул€");
+        
+        if(currentValue < 0) 
+            throw new ArgumentOutOfRangeException(nameof(currentValue), currentValue, "«начение должно быть больше или равно нулю");
 
-        _coinCapacity = value;
-        _currentCoins = Mathf.Min(_currentCoins, _coinCapacity);
+        _changed = changed;
+        Increase(currentValue);
     }
 
-    public float GiveCoins()
+    public bool IsFilled => _currentValue >= _capacity;
+
+    public float Progress => Mathf.Min(_currentValue / _capacity, _capacity);
+
+    public void SetCapacity(long value)
     {
-        float tempCapacity = _currentCoins;
-        _currentCoins = 0;
+        if(value <= 0)
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"значение должно быть больше нул€");
+
+        _capacity = value;
+    }
+
+    public long GiveCoins()
+    {
+        long tempCapacity = _currentValue;
+        _currentValue = 0;
 
         return tempCapacity;
     }
 
-    public void Increase(GameObject sender, float value)
+    public void Increase(long value)
     {
         if (value < 0)
-            throw new ArgumentOutOfRangeException($"ќтправитель: {sender.name}, {nameof(Storage)}: значение должно быть положительным");
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"«начение должно быть положительным");
 
-        _currentCoins += value;
-        _currentCoins = Mathf.Min(_currentCoins, _coinCapacity);
+        _currentValue += value;
+        _changed?.Invoke(value);
     }
 }

@@ -1,42 +1,88 @@
 using System;
-using UnityEngine;
 
 public class Grover : IDisposable
 {
     private readonly float _cultivationDurationInSeconds;
     private readonly Action _completed;
+    private readonly Action<float> _progressChanged;
 
-    private float _remainingTime;
-    private float _progress = 0;
+    private float _elapsedTime;
+    private bool _isCompleted;
+    private bool _isRunning;
 
-    public Grover(float cultivationDurationInSeconds, Action completed)
+    public Grover(float cultivationDurationInSeconds, float elapsedTime, Action completed, Action<float> progressChanged)
     {
-        _cultivationDurationInSeconds = cultivationDurationInSeconds;
-        _completed = completed;
+        if (cultivationDurationInSeconds <= 0)
+            throw new ArgumentOutOfRangeException(nameof(cultivationDurationInSeconds), cultivationDurationInSeconds, "Длительность должна быть положительным числом");
 
-        UpdateService.Instance.Updated += OnUpdated;
+        if (elapsedTime < 0)
+            throw new ArgumentOutOfRangeException(nameof(elapsedTime), elapsedTime, "Затраченное время должно быть положительным числом");
+
+        _cultivationDurationInSeconds = cultivationDurationInSeconds;
+        _elapsedTime = elapsedTime;
+        _completed = completed;
+        _progressChanged = progressChanged;
+
+        Grow(_elapsedTime);
     }
 
-    public float Progress => _progress;
+    public float Progress => _cultivationDurationInSeconds > 0
+        ? _elapsedTime / _cultivationDurationInSeconds
+        : throw new Exception($"{nameof(_cultivationDurationInSeconds)} должна быть больше нуля");
 
-    public void Dispose() =>
-        UpdateService.Instance.Updated -= OnUpdated;
-
-    private void OnUpdated(float _) =>
-        Grow();
-
-    public void Grow()
+    public void Dispose()
     {
-        if (_remainingTime <= 0)
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated -= OnUpdated;
+    }
+
+    public void StartRun()
+    {
+        if(_isRunning)
             return;
 
-        _remainingTime = Mathf.Max(0, _remainingTime - Time.deltaTime);
-        _progress = 1 - (_remainingTime / _cultivationDurationInSeconds);
+        _isRunning = true;
 
-        if (Mathf.Approximately(_progress, 1f))
-        {
-            _progress = 1f;
-            _completed?.Invoke();
-        }
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated += OnUpdated;
     }
+
+    public void StopRun()
+    {
+        if (_isRunning == false)
+            return;
+
+        _isRunning = false;
+
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated += OnUpdated;
+    }
+
+    public void Restart()
+    {
+        _elapsedTime = 0;
+        _isCompleted = false;
+    }
+
+    private void Grow(float deltaTime)
+    {
+        if (_isCompleted)
+            return;
+
+        _elapsedTime += deltaTime;
+        _progressChanged?.Invoke(_elapsedTime / _cultivationDurationInSeconds);
+
+        while (_elapsedTime >= _cultivationDurationInSeconds)
+            CompleteGrowing();
+    }
+
+    private void CompleteGrowing()
+    {
+        _elapsedTime -= _cultivationDurationInSeconds;
+        _isCompleted = true;
+        _completed?.Invoke();
+    }
+
+    private void OnUpdated(float deltaTime) =>
+        Grow(deltaTime);
 }

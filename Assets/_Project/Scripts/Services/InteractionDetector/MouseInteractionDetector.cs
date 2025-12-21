@@ -7,14 +7,15 @@ public class MouseInteractionDetector : InteractionDetectorBase
     protected override void HandleUpdate()
     {
         bool isMousePressed = Input.GetMouseButton(0);
+        Vector2 mousePosition = Input.mousePosition;
 
         if (isMousePressed && _wasMousePressed == false)
-            InvokeInputStarted();
+            InvokeInputStarted(mousePosition);
         else if (isMousePressed == false && _wasMousePressed)
-            InvokeInputEnded();
+            InvokeInputEnded(mousePosition);
 
         if (isMousePressed)
-            ProcessRaycast(Input.mousePosition);
+            ProcessRaycast(mousePosition);
 
         _wasMousePressed = isMousePressed;
     }

@@ -5,6 +5,10 @@ public class UpdateService : MonoBehaviour
 {
     private static UpdateService s_instance;
 
+    private static bool s_destroyed;
+
+    public static bool IsDestroyed => s_destroyed;
+
     public static UpdateService Instance
     {
         get
@@ -37,7 +41,10 @@ public class UpdateService : MonoBehaviour
     private void OnDestroy()
     {
         if (s_instance == this)
+        {
             s_instance = null;
+            s_destroyed = true;
+        }
     }
 
     private static void CreateInstance()

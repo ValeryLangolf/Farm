@@ -7,4 +7,7 @@ public static class MonoExtansion
 
     public static void Hide(this MonoBehaviour monoBehaviour) =>
         monoBehaviour.gameObject.SetActive(false);
+
+    public static void SetActive(this MonoBehaviour monoBehaviour, bool isActive) =>
+        monoBehaviour.gameObject.SetActive(isActive);
 }
