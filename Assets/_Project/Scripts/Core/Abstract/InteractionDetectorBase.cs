@@ -17,7 +17,7 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IDisposabl
             UpdateService.Instance.Updated += OnUpdate;
     }
 
-    public event Action<RaycastHit2D[], int> HitsDetected;
+    public event Action<RaycastHit2D[], int> Swiped;
     public event Action<RaycastHit2D[], int> Clicked;
     public event Action InputStarted;
     public event Action InputEnded;
@@ -57,7 +57,7 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IDisposabl
         int hitCount = Physics2D.RaycastNonAlloc(ray.origin, ray.direction, _hits);
 
         if (hitCount > 0)
-            HitsDetected?.Invoke(_hits, hitCount);
+            Swiped?.Invoke(_hits, hitCount);
     }
 
     private void ProcessRaycastForClick(Vector2 screenPosition)

@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class Garden : MonoBehaviour, ICollectable, IClickable
 {
+    [SerializeField] private Wallet _wallet;
     [SerializeField] private float _purchasePrice = 10;
     [SerializeField] private float _cultivationDurationInSeconds;
     [SerializeField] private float _plantCount;
-    [SerializeField] private long _storageCapacity = 1;
-    [SerializeField] private long _coinRevenue = 1;
+    [SerializeField] private float _storageCapacity = 1;
+    [SerializeField] private float _coinRevenue = 1;
     [SerializeField] private bool _isPurchased;
 
     private Storage _storage;
     private Grover _grover;
 
-    public event Action StorageFilled;
     public event Action<float> GroverProgressChanged;
     public event Action<float> StorageProgressChanged;
     public event Action<bool> PurchaseStatusChanged;
@@ -42,9 +42,15 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
             Purchase();
     }
 
-    public bool TryCollect(out long value)
+    public bool TryCollect(out float value)
     {
-        value = _isPurchased ? _storage.GiveCoins() : 0;
+        value = 0;
+
+        if (_isPurchased)
+        {
+            value = _storage.GiveCoins();
+            _grover.StartRun();
+        }        
 
         return _isPurchased;
     }
@@ -61,9 +67,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _storage.Increase(_coinRevenue);
 
         if (_storage.IsFilled)
-            StorageFilled?.Invoke();
-        else
-            _grover.Restart();
+            _grover.StopRun();
     }
 
     private void OnGroverProgressChanged(float progress) =>

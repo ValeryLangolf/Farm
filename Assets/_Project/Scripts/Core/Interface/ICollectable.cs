@@ -1,4 +1,4 @@
 public interface ICollectable
 {
-    bool TryCollect(out long value);
+    bool TryCollect(out float value);
 }

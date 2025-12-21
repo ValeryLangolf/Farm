@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _trailParticle;
+    [SerializeField] private Wallet _wallet;
 
     private readonly List<IService> _services = new();
 
@@ -24,7 +25,7 @@ public class Bootstrap : MonoBehaviour
         }
 
         _services.Add(interactionDetector);
-        _services.Add(new CoinCollector(interactionDetector));
+        _services.Add(new CoinCollector(interactionDetector, _wallet));
         _services.Add(new InteractionHandler(interactionDetector));
         _services.Add(new InputTrailParticle(_trailParticle, interactionDetector));
     }

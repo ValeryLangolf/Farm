@@ -7,7 +7,6 @@ public class Grover : IDisposable
     private readonly Action<float> _progressChanged;
 
     private float _elapsedTime;
-    private bool _isCompleted;
     private bool _isRunning;
 
     public Grover(float cultivationDurationInSeconds, float elapsedTime, Action completed, Action<float> progressChanged)
@@ -26,9 +25,7 @@ public class Grover : IDisposable
         Grow(_elapsedTime);
     }
 
-    public float Progress => _cultivationDurationInSeconds > 0
-        ? _elapsedTime / _cultivationDurationInSeconds
-        : throw new Exception($"{nameof(_cultivationDurationInSeconds)} должна быть больше нуля");
+    public float Progress => _elapsedTime / _cultivationDurationInSeconds;
 
     public void Dispose()
     {
@@ -53,24 +50,16 @@ public class Grover : IDisposable
             return;
 
         _isRunning = false;
+        _elapsedTime = 0;
 
         if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated += OnUpdated;
-    }
-
-    public void Restart()
-    {
-        _elapsedTime = 0;
-        _isCompleted = false;
+            UpdateService.Instance.Updated -= OnUpdated;
     }
 
     private void Grow(float deltaTime)
     {
-        if (_isCompleted)
-            return;
-
         _elapsedTime += deltaTime;
-        _progressChanged?.Invoke(_elapsedTime / _cultivationDurationInSeconds);
+        _progressChanged?.Invoke(Progress);
 
         while (_elapsedTime >= _cultivationDurationInSeconds)
             CompleteGrowing();
@@ -79,7 +68,6 @@ public class Grover : IDisposable
     private void CompleteGrowing()
     {
         _elapsedTime -= _cultivationDurationInSeconds;
-        _isCompleted = true;
         _completed?.Invoke();
     }
 

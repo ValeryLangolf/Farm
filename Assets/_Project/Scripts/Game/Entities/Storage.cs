@@ -1,14 +1,13 @@
 using System;
-using UnityEngine;
 
 public class Storage
 {
     private readonly Action<float> _changed;
 
-    private long _capacity;
-    private long _currentValue;
+    private float _capacity;
+    private float _currentValue;
 
-    public Storage(long capacity, long currentValue, Action<float> changed)
+    public Storage(float capacity, float currentValue, Action<float> changed)
     {
         _capacity = capacity > 0? capacity : throw new ArgumentOutOfRangeException(nameof(capacity), capacity, "«начение должно быть больше нул€");
         
@@ -21,9 +20,9 @@ public class Storage
 
     public bool IsFilled => _currentValue >= _capacity;
 
-    public float Progress => Mathf.Min(_currentValue / _capacity, _capacity);
+    public float Progress => _currentValue / _capacity;
 
-    public void SetCapacity(long value)
+    public void SetCapacity(float value)
     {
         if(value <= 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"значение должно быть больше нул€");
@@ -31,20 +30,22 @@ public class Storage
         _capacity = value;
     }
 
-    public long GiveCoins()
+    public float GiveCoins()
     {
-        long tempCapacity = _currentValue;
+        float tempCapacity = _currentValue;
         _currentValue = 0;
+        _changed?.Invoke(Progress);
 
         return tempCapacity;
     }
 
-    public void Increase(long value)
+    public void Increase(float value)
     {
         if (value < 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"«начение должно быть положительным");
 
         _currentValue += value;
-        _changed?.Invoke(value);
+
+        _changed?.Invoke(Progress);
     }
 }
