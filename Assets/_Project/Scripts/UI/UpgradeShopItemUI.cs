@@ -48,7 +48,6 @@ public class UpgradeShopItemUI : MonoBehaviour
 
     private void ApplyUpgrade()
     {
-        Debug.Log("Apply");
         Upgraded?.Invoke(_upgradeInfo);
     }
 }

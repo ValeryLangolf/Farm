@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeShopUI : MonoBehaviour
+public class UpgradeShopUI : UIPanel
 {
     [SerializeField] private Transform _parentObject;
     [SerializeField] private UpgradeShopItemUI _upgradeShopItem;
@@ -30,8 +30,10 @@ public class UpgradeShopUI : MonoBehaviour
         _prevPageButton.onClick.RemoveAllListeners();
     }
 
-    public void Init()
+    public override void Init()
     {
+        base.Init();
+
         _shopItems = new();
         _nextPageButton.onClick.AddListener(IncreasePage);
         _prevPageButton.onClick.AddListener(DecreasePage);
@@ -52,8 +54,6 @@ public class UpgradeShopUI : MonoBehaviour
         ChangeButtonsVisibiity();
         SetPageText();
     }
-
-    //ондслюрэ мюд рел йюй пюяявхршбюрэ йнк_бн ярпюмхж б гюбхяхлнярх нр йнк_бю назейрнб б яохяйе
 
     public void IncreasePage()
     {
