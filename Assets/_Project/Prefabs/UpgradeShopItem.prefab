@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 6965877959534678459}
   - component: {fileID: 835560322643761774}
   m_Layer: 5
-  m_Name: UpgradeShopItom
+  m_Name: UpgradeShopItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,8 +517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 462786210069410679}
-  _upgradeDescription: TestDescription
-  _gardenName: Potatos
+  _upgradeDescriptionText: {fileID: 3577729999448052521}
+  _gardenNameText: {fileID: 960519894704743092}
   _buyButton: {fileID: 2021607419263225136}
 --- !u!1001 &5673316183986596680
 PrefabInstance:
