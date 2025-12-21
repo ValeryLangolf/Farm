@@ -1,36 +1,51 @@
 using System;
-using UnityEngine;
 
 public class Storage
 {
-    private float _coinCapacity;
-    private float _currentCoins;
+    private readonly Action<float> _changed;
 
-    public bool IsFilled => _currentCoins >= _coinCapacity - Mathf.Epsilon;
+    private float _capacity;
+    private float _currentValue;
+
+    public Storage(float capacity, float currentValue, Action<float> changed)
+    {
+        _capacity = capacity > 0? capacity : throw new ArgumentOutOfRangeException(nameof(capacity), capacity, "«начение должно быть больше нул€");
+        
+        if(currentValue < 0) 
+            throw new ArgumentOutOfRangeException(nameof(currentValue), currentValue, "«начение должно быть больше или равно нулю");
+
+        _changed = changed;
+        Increase(currentValue);
+    }
+
+    public bool IsFilled => _currentValue >= _capacity;
+
+    public float Progress => _currentValue / _capacity;
 
     public void SetCapacity(float value)
     {
         if(value <= 0)
-            throw new ArgumentOutOfRangeException($"{value}, значение должно быть больше нул€");
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"значение должно быть больше нул€");
 
-        _coinCapacity = value;
-        _currentCoins = Mathf.Min(_currentCoins, _coinCapacity);
+        _capacity = value;
     }
 
     public float GiveCoins()
     {
-        float tempCapacity = _currentCoins;
-        _currentCoins = 0;
+        float tempCapacity = _currentValue;
+        _currentValue = 0;
+        _changed?.Invoke(Progress);
 
         return tempCapacity;
     }
 
-    public void Increase(GameObject sender, float value)
+    public void Increase(float value)
     {
         if (value < 0)
-            throw new ArgumentOutOfRangeException($"ќтправитель: {sender.name}, {nameof(Storage)}: значение должно быть положительным");
+            throw new ArgumentOutOfRangeException(nameof(value), value, $"«начение должно быть положительным");
 
-        _currentCoins += value;
-        _currentCoins = Mathf.Min(_currentCoins, _coinCapacity);
+        _currentValue += value;
+
+        _changed?.Invoke(Progress);
     }
 }

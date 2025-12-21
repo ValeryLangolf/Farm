@@ -3,21 +3,24 @@ using UnityEngine;
 
 public class CoinCollector : IService, IDisposable
 {
-    private readonly IInteractionDetector _swipeHandler;
+    private readonly IInteractionDetector _interactionDetector;
+    private readonly Wallet _wallet;
 
-    public CoinCollector(IInteractionDetector swipeHandler)
+    public CoinCollector(IInteractionDetector interactionDetector, Wallet wallet)
     {
-        _swipeHandler = swipeHandler;
-        _swipeHandler.HitsDetected += OnHitsDetected;
+        _interactionDetector = interactionDetector ?? throw new ArgumentNullException(nameof(interactionDetector));
+        _interactionDetector.Swiped += OnSwiped;
+        _wallet = wallet;
     }
 
     public void Dispose() =>
-        _swipeHandler.HitsDetected -= OnHitsDetected;        
+        _interactionDetector.Swiped -= OnSwiped;
 
-    private void OnHitsDetected(RaycastHit2D[] hits, int hitCount)
+    private void OnSwiped(RaycastHit2D[] hits, int hitCount)
     {
         for (int i = 0; i < hitCount; i++)
             if (hits[i].collider.TryGetComponent(out ICollectable collectable))
-                collectable.Collect();
+                if (collectable.TryCollect(out float value))
+                    _wallet.Increase(value);
     }
 }

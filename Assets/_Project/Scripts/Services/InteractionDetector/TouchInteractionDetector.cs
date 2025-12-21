@@ -4,6 +4,7 @@ public class TouchInteractionDetector : InteractionDetectorBase
 {
     private bool _wasTouching = false;
     private bool _hasActiveTouch = false;
+    private Vector2 _lastTouchPosition;
 
     protected override void HandleUpdate()
     {
@@ -11,17 +12,17 @@ public class TouchInteractionDetector : InteractionDetectorBase
 
         if (hasTouch && _wasTouching == false)
         {
-            TouchPhase touchPhase = Input.GetTouch(0).phase;
+            Touch touch = Input.GetTouch(0);
 
-            if (touchPhase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
                 _hasActiveTouch = true;
-                InvokeInputStarted();
+                InvokeInputStarted(_lastTouchPosition);
             }
         }
         else if (hasTouch == false && _wasTouching && _hasActiveTouch)
         {
-            InvokeInputEnded();
+            InvokeInputEnded(_lastTouchPosition);
             _hasActiveTouch = false;
         }
 
@@ -34,7 +35,7 @@ public class TouchInteractionDetector : InteractionDetectorBase
 
             if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
             {
-                InvokeInputEnded();
+                InvokeInputEnded(touch.position);
                 _hasActiveTouch = false;
             }
         }
