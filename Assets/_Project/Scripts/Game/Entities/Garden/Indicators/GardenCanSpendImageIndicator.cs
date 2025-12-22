@@ -7,7 +7,7 @@ public class GardenCanSpendImageIndicator : SwitchableImage
 
     private void OnEnable()
     {
-        OnWalletChanged(_wallet.Value);
+        OnWalletChanged(_wallet.Amount);
         _wallet.Changed += OnWalletChanged;
 
         OnPurchaseStatusChanged(_garden.IsPurchased);

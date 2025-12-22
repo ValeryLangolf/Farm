@@ -8,7 +8,7 @@ public class WalletVisual : MonoBehaviour
 
     private void OnEnable()
     {
-        OnChanged(_wallet.Value);
+        OnChanged(_wallet.Amount);
         _wallet.Changed += OnChanged;
     }
 

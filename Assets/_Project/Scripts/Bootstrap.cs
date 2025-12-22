@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
+    [SerializeField] private List<Garden> _gardens;
     [SerializeField] private ParticleSystem _trailParticle;
     [SerializeField] private Wallet _wallet;
+    [SerializeField] private ProgressResetterButton _progressResetterButton;
 
     private readonly List<IService> _services = new();
+    private SavingMediator _savingMediator;
 
     private void Awake()
     {
+        _savingMediator = new(
+            _gardens,
+            _wallet,
+            _progressResetterButton);
+
         IInteractionDetector interactionDetector;
 
         if (Application.isMobilePlatform)
@@ -28,6 +36,11 @@ public class Bootstrap : MonoBehaviour
         _services.Add(new CoinCollector(interactionDetector, _wallet));
         _services.Add(new InteractionHandler(interactionDetector));
         _services.Add(new InputTrailParticle(_trailParticle, interactionDetector));
+    }
+
+    private void OnDisable()
+    {
+        _savingMediator.Dispose();
     }
 
     private void OnDestroy()

@@ -1,39 +1,31 @@
 using System;
-
 public class Storage
 {
+    private readonly StorageData _data;
     private readonly Action<float> _changed;
 
-    private float _capacity;
-    private float _currentValue;
-
-    public Storage(float capacity, float currentValue, Action<float> changed)
+    public Storage(StorageData data, Action<float> changed)
     {
-        _capacity = capacity > 0? capacity : throw new ArgumentOutOfRangeException(nameof(capacity), capacity, "«начение должно быть больше нул€");
-        
-        if(currentValue < 0) 
-            throw new ArgumentOutOfRangeException(nameof(currentValue), currentValue, "«начение должно быть больше или равно нулю");
-
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _changed = changed;
-        Increase(currentValue);
     }
 
-    public bool IsFilled => _currentValue >= _capacity;
+    public bool IsFilled => _data.CurrentFullness >= _data.Capacity;
 
-    public float Progress => _currentValue / _capacity;
+    public float Progress => _data.CurrentFullness / _data.Capacity;
 
     public void SetCapacity(float value)
     {
         if(value <= 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"значение должно быть больше нул€");
 
-        _capacity = value;
+        _data.Capacity = value;
     }
 
     public float GiveCoins()
     {
-        float tempCapacity = _currentValue;
-        _currentValue = 0;
+        float tempCapacity = _data.CurrentFullness;
+        _data.CurrentFullness = 0;
         _changed?.Invoke(Progress);
 
         return tempCapacity;
@@ -44,7 +36,7 @@ public class Storage
         if (value < 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"«начение должно быть положительным");
 
-        _currentValue += value;
+        _data.CurrentFullness += value;
 
         _changed?.Invoke(Progress);
     }

@@ -2,36 +2,23 @@ using System;
 
 public class Grover : IDisposable
 {
-    private readonly float _cultivationDurationInSeconds;
+    private readonly GroverData _data;
     private readonly Action _completed;
     private readonly Action<float> _progressChanged;
 
-    private float _elapsedTime;
     private bool _isRunning;
 
-    public Grover(float cultivationDurationInSeconds, float elapsedTime, Action completed, Action<float> progressChanged)
+    public Grover(GroverData data, Action completed, Action<float> progressChanged)
     {
-        if (cultivationDurationInSeconds <= 0)
-            throw new ArgumentOutOfRangeException(nameof(cultivationDurationInSeconds), cultivationDurationInSeconds, "ƒлительность должна быть положительным числом");
-
-        if (elapsedTime < 0)
-            throw new ArgumentOutOfRangeException(nameof(elapsedTime), elapsedTime, "«атраченное врем€ должно быть положительным числом");
-
-        _cultivationDurationInSeconds = cultivationDurationInSeconds;
-        _elapsedTime = elapsedTime;
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _completed = completed;
         _progressChanged = progressChanged;
-
-        Grow(_elapsedTime);
     }
 
-    public float Progress => _elapsedTime / _cultivationDurationInSeconds;
+    public float Progress => _data.ElapsedTime / _data.CultivationDurationInSeconds;
 
-    public void Dispose()
-    {
-        if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated -= OnUpdated;
-    }
+    public void Dispose() =>
+        StopRun();
 
     public void StartRun()
     {
@@ -50,24 +37,33 @@ public class Grover : IDisposable
             return;
 
         _isRunning = false;
-        _elapsedTime = 0;
 
         if (UpdateService.IsDestroyed == false)
             UpdateService.Instance.Updated -= OnUpdated;
     }
 
-    private void Grow(float deltaTime)
+    public void Grow(float deltaTime)
     {
-        _elapsedTime += deltaTime;
-        _progressChanged?.Invoke(Progress);
+        if (deltaTime < 0)
+            throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "«начение должно быть положительным");
 
-        while (_elapsedTime >= _cultivationDurationInSeconds)
+        _data.ElapsedTime += deltaTime;        
+
+        while (_data.ElapsedTime >= _data.CultivationDurationInSeconds)
             CompleteGrowing();
+
+        _progressChanged?.Invoke(Progress);
+    }
+
+    public void ResetElapsedTime()
+    {
+        _data.ElapsedTime = 0;
+        _progressChanged?.Invoke(Progress);
     }
 
     private void CompleteGrowing()
     {
-        _elapsedTime -= _cultivationDurationInSeconds;
+        _data.ElapsedTime -= _data.CultivationDurationInSeconds;
         _completed?.Invoke();
     }
 

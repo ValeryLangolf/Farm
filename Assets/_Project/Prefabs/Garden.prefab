@@ -99,8 +99,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8599072673725329893}
   - component: {fileID: 1015772316308137540}
-  - component: {fileID: 8210534678087765899}
   - component: {fileID: 2510004977521719280}
+  - component: {fileID: 8210534678087765899}
   - component: {fileID: 7181079726453659373}
   m_Layer: 0
   m_Name: Garden
@@ -177,26 +177,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8210534678087765899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8282656024236538077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33a8a279631045d4589c76823c92926c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallet: {fileID: 0}
-  _purchasePrice: 10
-  _cultivationDurationInSeconds: 5
-  _plantCount: 1
-  _storageCapacity: 5000
-  _coinRevenue: 1200
-  _isPurchased: 1
-  _id: 0
 --- !u!61 &2510004977521719280
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -242,6 +222,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8210534678087765899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282656024236538077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a8a279631045d4589c76823c92926c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallet: {fileID: 0}
+  _purchasePrice: 10
+  _cultivationDurationInSeconds: 5
+  _plantCount: 1
+  _storageCapacity: 5000
+  _growingCycleRevenue: 1
+  _data:
+    IsPurchased: 0
+    PurchasePrice: 1
+    PlantCount: 1
+    GrowingCycleRevenuePerSinglePlant: 1
+    StorageData:
+      Capacity: 1
+      CurrentFullness: 0
+    GroverData:
+      CultivationDurationInSeconds: 0.005
+      ElapsedTime: 0
 --- !u!114 &7181079726453659373
 MonoBehaviour:
   m_ObjectHideFlags: 0
