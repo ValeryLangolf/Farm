@@ -6,6 +6,7 @@ public class TestUpgrdeShopStarter : MonoBehaviour
     public List<UpgradeInfo> UpgradeInfos;
 
     public UpgradeShopUI _shop;
+    public UpgradeModeUI _mode;
 
     private void Awake()
     {
@@ -24,9 +25,9 @@ public class TestUpgrdeShopStarter : MonoBehaviour
 
         foreach(UpgradeInfo upgradeInfo in UpgradeInfos)
         {
-            Debug.Log(upgradeInfo.Price);
-
            _shop.AddShopItem(upgradeInfo);
         }
+
+        _mode.Init();
     }
 }
