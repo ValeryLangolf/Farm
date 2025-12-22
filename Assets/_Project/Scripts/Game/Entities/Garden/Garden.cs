@@ -21,13 +21,17 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public float Price => _data.PurchasePrice;
 
+    public float Fullness => _data.StorageData.CurrentFullness;
+
     public GardenData Data => _data;
 
     private void OnDestroy() =>
         _grover.Dispose();
 
-    public void Initialize()
+    public void SetData(GardenData data)
     {
+        _data = data;
+
         _grover?.Dispose();
 
         _storage = new(_data.StorageData, OnStorageProgressChanged);
@@ -40,13 +44,6 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         StorageProgressChanged?.Invoke(_storage.Progress);
         GroverProgressChanged?.Invoke(_grover.Progress);
         PurchaseStatusChanged?.Invoke(_data.IsPurchased);
-    }
-
-    public void SetData(GardenData data)
-    {
-        _data = data;
-
-        Initialize();
     }
 
     public void HandleClick()

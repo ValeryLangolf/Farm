@@ -21,6 +21,6 @@ public class CoinCollector : IService, IDisposable
         for (int i = 0; i < hitCount; i++)
             if (hits[i].collider.TryGetComponent(out ICollectable collectable))
                 if (collectable.TryCollect(out float value))
-                    _wallet.Increase(value);
+                    _wallet.Increase(value);        
     }
 }

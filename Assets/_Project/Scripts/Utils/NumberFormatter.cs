@@ -4,7 +4,7 @@ using UnityEngine;
 public static class NumberFormatter
 {
     private static readonly CultureInfo s_culture;
-    private static readonly string[] s_suffixes = { "", "k", "m", "b", "t" };
+    private static readonly string[] s_suffixes = { "", "K", "M", "B", "T" };
 
     public static string FormatNumber(float value)
     {
