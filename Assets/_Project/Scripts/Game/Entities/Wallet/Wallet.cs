@@ -1,7 +1,6 @@
 using System;
-using UnityEngine;
 
-public class Wallet : MonoBehaviour
+public class Wallet : IWallet
 {
     private SavesData _data = new();
 

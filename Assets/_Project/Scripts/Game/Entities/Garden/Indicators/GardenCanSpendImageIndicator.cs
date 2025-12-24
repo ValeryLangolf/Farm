@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class GardenCanSpendImageIndicator : SwitchableImage
 {
-    [SerializeField] private Wallet _wallet;
+    private IWallet _wallet;
     [SerializeField] private Garden _garden;
 
     private void OnEnable()
     {
+        _wallet ??= ServiceLocator.Get<IWallet>();
+
         OnWalletChanged(_wallet.Amount);
         _wallet.Changed += OnWalletChanged;
 
