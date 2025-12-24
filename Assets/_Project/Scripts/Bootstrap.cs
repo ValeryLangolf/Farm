@@ -6,54 +6,80 @@ public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private List<Garden> _gardens;
     [SerializeField] private ParticleSystem _trailParticle;
-    [SerializeField] private Wallet _wallet;
     [SerializeField] private ProgressResetterButton _progressResetterButton;
-    [SerializeField] private List<UIPanel> _panelsBlockedTrail;
-
-    private readonly List<IService> _services = new();
-    private SavingMediator _savingMediator;
 
     private void Awake()
     {
-        _savingMediator = new(
-            _gardens,
-            _wallet,
-            _progressResetterButton);
-
-        IInteractionDetector interactionDetector;
-
-        if (Application.isMobilePlatform)
-        {
-            interactionDetector = new TouchInteractionDetector();
-            _services.Add(new TouchInputFollower(_trailParticle.transform));
-        }
-        else
-        {
-            interactionDetector = new MouseInteractionDetector();
-            _services.Add(new MouseInputFollower(_trailParticle.transform));
-        }
-
-        _services.Add(interactionDetector);
-        _services.Add(new CoinCollector(interactionDetector, _wallet));
-        _services.Add(new InteractionHandler(interactionDetector));
-        InputTrailParticle inputTrailParticle = new InputTrailParticle(_trailParticle, interactionDetector);
-        _services.Add(inputTrailParticle);
-
-        foreach (UIPanel panel in _panelsBlockedTrail)
-        {
-            panel.SetTrailParticle(inputTrailParticle);
-        }
+        RegisterServices();
+        StartRunServices();
     }
 
     private void OnDisable()
     {
-        _savingMediator.Dispose();
+        if (ServiceLocator.TryGet(out SavingMediator savingMediator))
+            savingMediator.Save();
     }
 
     private void OnDestroy()
     {
-        foreach (IService service in _services)
-            if(service is IDisposable disposable)
-                disposable.Dispose();
+        StopRunServices();
+        DisposeServices();
+    }
+
+    private void RegisterServices()
+    {
+        ServiceLocator.Register(UpdateService.Instance);
+
+        IWallet wallet = new Wallet();
+        ServiceLocator.Register(wallet);
+
+        ServiceLocator.Register(new SavingMediator(
+             _gardens,
+             wallet,
+             _progressResetterButton));
+
+        IInteractionDetector interactionDetector;
+        IInputFollower inputFollower;
+
+        if (Application.isMobilePlatform)
+        {
+            interactionDetector = new TouchInteractionDetector();
+            inputFollower = new TouchInputFollower(_trailParticle.transform);
+        }
+        else
+        {
+            interactionDetector = new MouseInteractionDetector();
+            inputFollower = new MouseInputFollower(_trailParticle.transform);
+        }
+
+        ServiceLocator.Register(inputFollower);
+        ServiceLocator.Register(interactionDetector);
+        ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
+        ServiceLocator.Register(new InteractionHandler(interactionDetector));
+        ServiceLocator.Register(new InputTrailParticle(_trailParticle, interactionDetector));
+    }
+
+    private void StartRunServices()
+    {
+        IReadOnlyList<IRunnable> runnables = ServiceLocator.GetServices<IRunnable>();
+
+        foreach (IRunnable runnable in runnables)
+            runnable?.StartRun();
+    }
+
+    private void StopRunServices()
+    {
+        IReadOnlyList<IRunnable> runnables = ServiceLocator.GetServices<IRunnable>();
+
+        foreach (IRunnable runnable in runnables)
+            runnable?.StopRun();
+    }
+
+    private void DisposeServices()
+    {
+        IReadOnlyList<IDisposable> disposables = ServiceLocator.GetServices<IDisposable>();
+
+        foreach (IDisposable disposable in disposables)
+            disposable?.Dispose();
     }
 }

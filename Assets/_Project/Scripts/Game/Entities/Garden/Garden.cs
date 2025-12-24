@@ -104,3 +104,13 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _grover.StartRun();
     }
 }
+
+public class Upgrader
+{
+    private GardenData _data;
+
+    public void UpgradeCount()
+    {
+
+    }
+}
