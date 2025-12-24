@@ -18,6 +18,16 @@ public class ButtonClickHandler : MonoBehaviour
     private void OnDisable() =>
         _button.onClick.AddListener(OnClick);
 
+    public virtual void SetInteractable(bool isInteractable)
+    {
+        _button.interactable = isInteractable;
+    }
+
+    protected virtual void SetColor(Color color)
+    {
+        _button.image.color = color;
+    }
+
     protected virtual void OnClick() =>
         Clicked?.Invoke();
 }

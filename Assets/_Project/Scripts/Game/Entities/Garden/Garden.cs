@@ -5,6 +5,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 {
     [SerializeField] private Wallet _wallet;
     [SerializeField] private GardenData _data;
+    [SerializeField] private Sprite _icon;
 
     private Grover _grover;
     private Storage _storage;
@@ -24,6 +25,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     public float Fullness => _data.StorageData.CurrentFullness;
 
     public GardenData Data => _data;
+
+    public Sprite Icon => _icon;
 
     private void OnDestroy() =>
         _grover.Dispose();

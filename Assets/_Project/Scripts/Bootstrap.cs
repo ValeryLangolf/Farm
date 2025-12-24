@@ -8,6 +8,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private ParticleSystem _trailParticle;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ProgressResetterButton _progressResetterButton;
+    [SerializeField] private List<UIPanel> _panelsBlockedTrail;
 
     private readonly List<IService> _services = new();
     private SavingMediator _savingMediator;
@@ -35,7 +36,13 @@ public class Bootstrap : MonoBehaviour
         _services.Add(interactionDetector);
         _services.Add(new CoinCollector(interactionDetector, _wallet));
         _services.Add(new InteractionHandler(interactionDetector));
-        _services.Add(new InputTrailParticle(_trailParticle, interactionDetector));
+        InputTrailParticle inputTrailParticle = new InputTrailParticle(_trailParticle, interactionDetector);
+        _services.Add(inputTrailParticle);
+
+        foreach (UIPanel panel in _panelsBlockedTrail)
+        {
+            panel.SetTrailParticle(inputTrailParticle);
+        }
     }
 
     private void OnDisable()
