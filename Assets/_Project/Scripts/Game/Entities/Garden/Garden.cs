@@ -109,8 +109,13 @@ public class Upgrader
 {
     private GardenData _data;
 
-    public void UpgradeCount()
+    public Upgrader(GardenData data)
     {
-
+        _data = data;
     }
+
+    //public float CalculateCountPrice()
+    //{
+
+    //}
 }
