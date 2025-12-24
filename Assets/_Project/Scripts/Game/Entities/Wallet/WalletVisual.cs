@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class WalletVisual : MonoBehaviour
 {
-    [SerializeField] private Wallet _wallet;
     [SerializeField] private TextMeshProUGUI _text;
+
+    private IWallet _wallet;
 
     private void OnEnable()
     {
+        _wallet ??= ServiceLocator.Get<IWallet>();
+
         OnChanged(_wallet.Amount);
         _wallet.Changed += OnChanged;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() =>
         _wallet.Changed -= OnChanged;
-    }
 
     private void OnChanged(float value)
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class InteractionDetectorBase : IInteractionDetector, IDisposable
+public abstract class InteractionDetectorBase : IInteractionDetector, IRunnable, IDisposable
 {
     private const int MaxHits = 10;
     private const float ClickMaxDuration = 0.3f;
@@ -10,23 +10,27 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IDisposabl
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[MaxHits];
     private Vector2 _inputStartPosition;
     private float _inputStartTime;
-
-    protected InteractionDetectorBase()
-    {
-        if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated += OnUpdate;
-    }
+    private bool _isSubscribed;
 
     public event Action<RaycastHit2D[], int> Swiped;
     public event Action<RaycastHit2D[], int> Clicked;
     public event Action InputStarted;
     public event Action InputEnded;
 
-    public void Dispose()
-    {
-        if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated -= OnUpdate;
-    }
+    public void Dispose() =>
+        StopRun();
+
+    public void PauseRun() =>
+        StopRun();
+
+    public void ResumeRun() =>
+        StartRun();
+
+    public void StartRun() =>
+        Subscribe();
+
+    public void StopRun() =>
+        Unsubscribe();
 
     protected abstract void HandleUpdate();
 
@@ -58,6 +62,28 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IDisposabl
 
         if (hitCount > 0)
             Swiped?.Invoke(_hits, hitCount);
+    }
+
+    private void Subscribe()
+    {
+        if (_isSubscribed)
+            return;
+
+        _isSubscribed = true;
+
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated += OnUpdate;
+    }
+
+    private void Unsubscribe()
+    {
+        if (_isSubscribed == false)
+            return;
+
+        _isSubscribed = false;
+
+        if (UpdateService.IsDestroyed == false)
+            UpdateService.Instance.Updated -= OnUpdate;
     }
 
     private void ProcessRaycastForClick(Vector2 screenPosition)

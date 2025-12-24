@@ -4,13 +4,14 @@ using UnityEngine;
 public class CoinCollector : IService, IDisposable
 {
     private readonly IInteractionDetector _interactionDetector;
-    private readonly Wallet _wallet;
+    private readonly IWallet _wallet;
 
-    public CoinCollector(IInteractionDetector interactionDetector, Wallet wallet)
+    public CoinCollector(IInteractionDetector interactionDetector, IWallet wallet)
     {
         _interactionDetector = interactionDetector ?? throw new ArgumentNullException(nameof(interactionDetector));
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+
         _interactionDetector.Swiped += OnSwiped;
-        _wallet = wallet;
     }
 
     public void Dispose() =>

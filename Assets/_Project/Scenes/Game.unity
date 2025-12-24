@@ -283,11 +283,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -295,7 +295,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -380,11 +380,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -392,7 +392,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -5621,7 +5621,6 @@ MonoBehaviour:
   - {fileID: 322031338}
   - {fileID: 2041398806}
   _trailParticle: {fileID: 1600766714}
-  _wallet: {fileID: 1321841378}
   _progressResetterButton: {fileID: 126462584}
 --- !u!4 &794615358
 Transform:
@@ -5664,11 +5663,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -5676,7 +5675,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -5773,7 +5772,6 @@ GameObject:
   - component: {fileID: 1321841376}
   - component: {fileID: 1321841380}
   - component: {fileID: 1321841379}
-  - component: {fileID: 1321841378}
   - component: {fileID: 1321841377}
   m_Layer: 5
   m_Name: Wallet
@@ -5813,20 +5811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0498d579103c4ba499d020e373e23d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallet: {fileID: 1321841378}
   _text: {fileID: 1321841379}
---- !u!114 &1321841378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321841375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65cd363648c1a4b41a9ddfeeb6bad124, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1321841379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5971,11 +5956,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -5983,7 +5968,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -6084,11 +6069,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -6096,7 +6081,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -6193,11 +6178,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -6205,7 +6190,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -11252,11 +11237,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -11264,7 +11249,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -11365,11 +11350,11 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _activeSprite
       value: 
@@ -11377,7 +11362,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
@@ -11546,7 +11531,7 @@ PrefabInstance:
     - target: {fileID: 1361786471247975075, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 2079992327583449369, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedVisual
       value: 
@@ -11622,11 +11607,11 @@ PrefabInstance:
     - target: {fileID: 7181079726453659373, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _wallet
       value: 
-      objectReference: {fileID: 1321841378}
+      objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PlantCount
       value: 1

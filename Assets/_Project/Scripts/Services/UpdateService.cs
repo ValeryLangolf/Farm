@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
 
-public class UpdateService : MonoBehaviour
+public class UpdateService : MonoBehaviour, IService, IRunnable, IDisposable
 {
     private static UpdateService s_instance;
 
     private static bool s_destroyed;
+    private bool _isRunning;
 
     public static bool IsDestroyed => s_destroyed;
 
@@ -35,8 +36,11 @@ public class UpdateService : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Update() =>
-        Updated?.Invoke(Time.deltaTime);
+    private void Update()
+    {
+        if (_isRunning)
+            Updated?.Invoke(Time.deltaTime);
+    }
 
     private void OnDestroy()
     {
@@ -47,9 +51,27 @@ public class UpdateService : MonoBehaviour
         }
     }
 
+    public void Dispose()
+    {
+        _isRunning = false;
+        Updated = null;
+    }
+
+    public void StartRun() =>
+        _isRunning = true;
+
+    public void PauseRun() =>
+        StopRun();
+
+    public void ResumeRun() =>
+        StartRun();
+
+    public void StopRun() =>
+        _isRunning = true;
+
     private static void CreateInstance()
     {
-        GameObject gameObject = new GameObject(nameof(UpdateService));
+        GameObject gameObject = new(nameof(UpdateService));
         s_instance = gameObject.AddComponent<UpdateService>();
     }
 }
