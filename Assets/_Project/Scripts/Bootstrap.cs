@@ -23,14 +23,14 @@ public class Bootstrap : MonoBehaviour
     private void OnDestroy()
     {
         StopRunServices();
-        DisposeServices();        
+        DisposeServices();
     }
 
     private void RegisterServices()
     {
         ServiceLocator.Register(UpdateService.Instance);
 
-        IWallet wallet = new Wallet ();
+        IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
 
         ServiceLocator.Register(new SavingMediator(
@@ -44,7 +44,7 @@ public class Bootstrap : MonoBehaviour
         if (Application.isMobilePlatform)
         {
             interactionDetector = new TouchInteractionDetector();
-            inputFollower = new TouchInputFollower(_trailParticle.transform);            
+            inputFollower = new TouchInputFollower(_trailParticle.transform);
         }
         else
         {

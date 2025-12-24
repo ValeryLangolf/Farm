@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2908184268910224086}
   - component: {fileID: 694622098816816437}
-  - component: {fileID: 3035881568740313843}
+  - component: {fileID: 5047799177027289709}
   m_Layer: 5
   m_Name: UpgradeModeItem
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3139705486019701995}
   m_CullTransparentMesh: 1
---- !u!114 &3035881568740313843
+--- !u!114 &5047799177027289709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,12 +133,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3139705486019701995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feeabf5e1f045c24b9b8c71f068c5bd3, type: 3}
+  m_Script: {fileID: 11500000, guid: adb60d66065e2de4dbd68364762bae1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 4639829795509935093}
-  _upgradeDescriptionText: {fileID: 5664681770522557409}
-  _gardenNameText: {fileID: 3631726846816211995}
+  _openButtons: []
+  _closeButtons: []
+  _toggleButtons: []
+  _icon: {fileID: 4639829795509935093}
+  _buyCountText: {fileID: 5664681770522557409}
+  _currentCountText: {fileID: 3631726846816211995}
   _buyButton: {fileID: 3008226854065379669}
 --- !u!1 &3677328781405869993
 GameObject:
@@ -274,7 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920bcda8fb61e4743873c8c6a18d2297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 3530599474179710318}
   _priceText: {fileID: 6360747142301512253}
   _blockedColor: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
 --- !u!1 &4691102662215850854

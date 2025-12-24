@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Garden : MonoBehaviour, ICollectable, IClickable
 {
+    [SerializeField] private Wallet _wallet;
     [SerializeField] private GardenData _data;
+    [SerializeField] private Sprite _icon;
 
     private Grover _grover;
     private Storage _storage;
-    private IWallet _wallet;
 
     public event Action<float> GroverProgressChanged;
     public event Action<float> StorageProgressChanged;
@@ -25,8 +26,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public GardenData Data => _data;
 
-    private void Awake() =>
-        _wallet = ServiceLocator.Get<IWallet>();
+    public Sprite Icon => _icon;
 
     private void OnDestroy() =>
         _grover.Dispose();
@@ -102,5 +102,15 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         }
 
         _grover.StartRun();
+    }
+}
+
+public class Upgrader
+{
+    private GardenData _data;
+
+    public void UpgradeCount()
+    {
+
     }
 }

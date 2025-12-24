@@ -8,6 +8,8 @@ public class UIPanel : MonoBehaviour
     [SerializeField] private List<Button> _closeButtons;
     [SerializeField] private List<Button> _toggleButtons;
 
+    private InputTrailParticle _inputTrailParticle;
+
     private void OnDestroy()
     {
         UnSubscribe();
@@ -18,14 +20,21 @@ public class UIPanel : MonoBehaviour
         Subscribe();
     }
 
-    public void Open()
+    public void SetTrailParticle(InputTrailParticle inputTrailParticle)
     {
-        gameObject.SetActive(true);
+        _inputTrailParticle = inputTrailParticle;
     }
 
-    public void Close()
+    public virtual void Open()
+    {
+        gameObject.SetActive(true);
+        _inputTrailParticle?.SetActive(false);
+    }
+
+    public virtual void Close()
     {
         gameObject.SetActive(false);
+        _inputTrailParticle?.SetActive(true);
     }
 
     public void ChangeVisibility()
