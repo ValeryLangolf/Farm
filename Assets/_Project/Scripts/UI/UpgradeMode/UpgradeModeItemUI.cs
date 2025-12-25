@@ -13,6 +13,8 @@ public class UpgradeModeItemUI : UIPanel
 
     public event Action Upgraded;
 
+    public Garden Garden => _garden;
+
     private void OnDestroy()
     {
         _buyButton.Clicked -= ApplyUpgrade;

@@ -117,8 +117,25 @@ public class Upgrader
 {
     private GardenData _data;
 
-    public void UpgradeCount()
+    public Upgrader(GardenData data)
     {
+        _data = data;
+    }
 
+    public void UpgradeCount(int count)
+    {
+        _data.PlantCount += count;
+    }
+
+    public void UpgradeStorage()
+    {
+        float multiplyer = 1.5f;
+        _data.StorageData.Capacity *= multiplyer;
+    }
+
+    private void UpgradeProductionTime()
+    {
+        float multiplyer = 0.5f;
+        //Время производства * 05f.
     }
 }
