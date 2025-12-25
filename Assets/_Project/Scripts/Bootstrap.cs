@@ -6,12 +6,14 @@ public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private List<Garden> _gardens;
     [SerializeField] private ParticleSystem _trailParticle;
-    [SerializeField] private ProgressResetterButton _progressResetterButton;
-
+    [SerializeField] private Audio _audio;
+    [SerializeField] private SettingsPanel _settingsPanel;
     private void Awake()
     {
         RegisterServices();
         StartRunServices();
+
+        ServiceLocator.Get<IAudioService>().Music.Play();
     }
 
     private void OnDisable()
@@ -30,13 +32,13 @@ public class Bootstrap : MonoBehaviour
     {
         ServiceLocator.Register(UpdateService.Instance);
 
+        _audio.Initialize();
+        ServiceLocator.Register(_audio as IAudioService);
+
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
 
-        ServiceLocator.Register(new SavingMediator(
-             _gardens,
-             wallet,
-             _progressResetterButton));
+        ServiceLocator.Register(new SavingMediator(_gardens, _settingsPanel));
 
         IInteractionDetector interactionDetector;
         IInputFollower inputFollower;

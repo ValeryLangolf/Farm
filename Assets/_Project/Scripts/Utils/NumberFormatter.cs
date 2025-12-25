@@ -6,6 +6,66 @@ public static class NumberFormatter
     private static CultureInfo s_culture = CultureInfo.InvariantCulture;
     private static readonly string[] s_suffixes = { "", "K", "M", "B", "T" };
 
+    public static bool NeedUpdateText(out string formattedText, float lastValue, float currentValue)
+    {
+        if (Mathf.Approximately(lastValue, currentValue))
+        {
+            formattedText = string.Empty;
+            return false;
+        }
+
+        int lastSuffixIndex = GetSuffixIndex(Mathf.Abs(lastValue));
+        int currentSuffixIndex = GetSuffixIndex(Mathf.Abs(currentValue));
+
+        if (lastSuffixIndex != currentSuffixIndex)
+        {
+            formattedText = FormatNumber(currentValue);
+            return true;
+        }
+
+        float lastRounded = GetRoundedValue(lastValue, lastSuffixIndex);
+        float currentRounded = GetRoundedValue(currentValue, currentSuffixIndex);
+
+        if (Mathf.Approximately(lastRounded, currentRounded) == false)
+        {
+            formattedText = FormatNumber(currentValue);
+            return true;
+        }
+
+        formattedText = string.Empty;
+
+        return false;
+    }
+
+    private static int GetSuffixIndex(float absoluteValue)
+    {
+        int suffixIndex = 0;
+
+        while (absoluteValue >= 1000f && suffixIndex < s_suffixes.Length - 1)
+        {
+            absoluteValue /= 1000f;
+            suffixIndex++;
+        }
+
+        return suffixIndex;
+    }
+
+    private static float GetRoundedValue(float value, int suffixIndex)
+    {
+        float absoluteValue = Mathf.Abs(value);
+
+        for (int i = 0; i < suffixIndex; i++)
+            absoluteValue /= 1000f;
+
+        if (absoluteValue < 10f)
+            return (float)System.Math.Round(absoluteValue, 2);
+
+        if (absoluteValue < 100f)
+            return (float)System.Math.Round(absoluteValue, 1);
+
+        return Mathf.Round(absoluteValue);
+    }
+
     public static string FormatNumber(float value)
     {
         if (Mathf.Approximately(value, 0f))
