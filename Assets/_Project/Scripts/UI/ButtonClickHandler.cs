@@ -5,9 +5,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ButtonClickHandler : MonoBehaviour
 {
-    private Button _button;
+    [SerializeField] private Button _button;
 
-    public event Action Clicked;
+    public event Action<ButtonClickHandler> Clicked;
 
     private void Awake() =>
         _button = GetComponent<Button>();
@@ -29,5 +29,5 @@ public class ButtonClickHandler : MonoBehaviour
     }
 
     protected virtual void OnClick() =>
-        Clicked?.Invoke();
+        Clicked?.Invoke(this);
 }

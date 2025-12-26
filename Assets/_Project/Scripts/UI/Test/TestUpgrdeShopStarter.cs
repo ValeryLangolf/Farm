@@ -28,6 +28,5 @@ public class TestUpgrdeShopStarter : MonoBehaviour
            _shop.AddShopItem(upgradeInfo);
         }
 
-        _mode.Init();
     }
 }

@@ -8,6 +8,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private ParticleSystem _trailParticle;
     [SerializeField] private Audio _audio;
     [SerializeField] private SettingsPanel _settingsPanel;
+    [SerializeField] private UIDirector _uiDirector;
     private void Awake()
     {
         RegisterServices();
@@ -38,6 +39,7 @@ public class Bootstrap : MonoBehaviour
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
 
+        ServiceLocator.Register(_uiDirector);
         ServiceLocator.Register(new SavingMediator(_gardens, _settingsPanel));
 
         IInteractionDetector interactionDetector;

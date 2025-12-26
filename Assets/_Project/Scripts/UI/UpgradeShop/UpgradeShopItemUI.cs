@@ -46,7 +46,7 @@ public class UpgradeShopItemUI : MonoBehaviour
         _buyButton.SetState(BuyButtonState.Blocked);
     }
 
-    private void ApplyUpgrade()
+    private void ApplyUpgrade(ButtonClickHandler _)
     {
         Upgraded?.Invoke(_upgradeInfo);
     }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Data.SqlTypes;
 using UnityEngine;
@@ -7,14 +8,18 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     [SerializeField] private GardenData _data;
     [SerializeField] private Sprite _icon;
 
-    private Grover _grover;
-    private Storage _storage;
     private IWallet _wallet;
     private Sfx _sfx;
+
+    private Grover _grover;
+    private Storage _storage;
+    private Upgrader _upgrader;
 
     public event Action<float> GroverProgressChanged;
     public event Action<float> StorageProgressChanged;
     public event Action<bool> PurchaseStatusChanged;
+    public event Action<int, float> UpgradeInfoChanged;
+    public event Action RecalculateUpgradeInfo;
 
     public float GroverProgress => _grover != null ? _grover.Progress : 0;
 
@@ -30,14 +35,22 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public Sprite Icon => _icon;
 
+    public int UpgradePlantsCount => _upgrader != null ? _upgrader.Count : 1;
+    public float UpgradesCountPrice => _upgrader != null ? _upgrader.Price : 0;
+
+    public int PlantsCount => _data.PlantCount;
+
     private void Awake()
     {
         _wallet = ServiceLocator.Get<IWallet>();
         _sfx = ServiceLocator.Get<IAudioService>().Sfx;
     }
 
-    private void OnDestroy() =>
+    private void OnDestroy() 
+    { 
         _grover.Dispose();
+        _upgrader.Dispose();
+    }
 
     public void SetData(GardenData data)
     {
@@ -48,6 +61,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _storage = new(_data.StorageData, OnStorageProgressChanged);
         _grover = new(_data.GroverData, OnGrowCompleted, OnGroverProgressChanged);
         _grover.Grow(_data.GroverData.ElapsedTime);
+        _upgrader = new(_data, OnUpgradedPlantsCount, OnRecalculatedUpgradeInfo);
 
         if (_data.IsPurchased && _storage.IsFilled == false)
             _grover.StartRun();
@@ -56,6 +70,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         GroverProgressChanged?.Invoke(_grover.Progress);
         PurchaseStatusChanged?.Invoke(_data.IsPurchased);
     }
+
 
     public void HandleClick()
     {
@@ -112,52 +127,15 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
         _grover.StartRun();
     }
-}
 
-public class Upgrader
-{
-    private const float MULTIPLYER = 1.2f;
-
-    private GardenData _data;
-    private float _currentUpgradePrice; //Добавить инфу в дату?
-    private int _count;
-    private float _price;
-
-    public Action<float> UpgradeApproved;
-
-    public float CurrentUpgradePrice => _currentUpgradePrice;
-    public int Count => _count; 
-
-    public Upgrader(GardenData data)
+    private void OnUpgradedPlantsCount(int plantCount, float plantsPrice)
     {
-        _data = data;
+        UpgradeInfoChanged?.Invoke(plantCount, plantsPrice);
     }
 
-    //public bool CanUpgrade()  //Если может, то кнопка активна
-    //{
-    //    return Money >= _price;
-    //}
 
-    private float CalculatePrice(int count)
+    private void OnRecalculatedUpgradeInfo()
     {
-        return _currentUpgradePrice * ((Mathf.Pow(MULTIPLYER, count) - 1f) / (MULTIPLYER - 1f));
+        RecalculateUpgradeInfo?.Invoke();
     }
-
-    //private float CalculateCount()
-    //{
-    //    return Mathf.FloorToInt(Mathf.Log(1f + money * (MULTIPLYER - 1f) / _currentUpgradePrice) / Mathf.Log(MULTIPLYER);
-    //}
-
-
-    /* 
-     Нажимаем на кнопку кол-ва
-    Апгрейдер где-то высчитывает (возможно енам)
-    Возвращает событие кол-ва и цены или, наверное разные события лучше
-
-    Наверное плашкам нужно напрямую обращаться к грядке к апгрейдеру.
-
-    Нужно ли событие на списывание денег с кошелька?
-
-
-     */
 }

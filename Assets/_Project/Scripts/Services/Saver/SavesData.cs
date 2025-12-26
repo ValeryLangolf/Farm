@@ -18,7 +18,7 @@ public class GardenData
 {
     public bool IsPurchased = false;
     [Min(1)] public float PurchasePrice = 1;
-    [Min(1)] public float PlantCount = 1;
+    [Min(1)] public int PlantCount = 1;
     [Min(1)] public float GrowingCycleRevenuePerSinglePlant = 1;
     public StorageData StorageData;
     public GroverData GroverData;
