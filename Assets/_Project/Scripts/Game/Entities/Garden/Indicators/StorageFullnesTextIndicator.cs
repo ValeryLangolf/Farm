@@ -1,11 +1,12 @@
-using System;
 using TMPro;
 using UnityEngine;
 
-public class PriceTextIndicator : MonoBehaviour
+public class StorageFullnesTextIndicator : MonoBehaviour
 {
     [SerializeField] private Garden _garden;
     [SerializeField] private TextMeshProUGUI _text;
+
+    private float _lastValue;
 
     private void OnEnable()
     {
@@ -24,23 +25,28 @@ public class PriceTextIndicator : MonoBehaviour
 
     private void OnPurchaseStatusChanged(bool isPurchased)
     {
-        _text.SetActive(_garden.Fullness != 0 || _garden.IsPurchased == false);
-
-        if (isPurchased)
+        if (isPurchased == false)
+        {
+            _text.SetActive(false);
             return;
+        }
 
-        _text.text = NumberFormatter.FormatNumber(_garden.Price) + Constants.DollarChar;
-        _text.color = Color.white;
+        OnStorageProgressChanged(_garden.StorageProgress);
     }
 
     private void OnStorageProgressChanged(float _)
     {
-        _text.SetActive(_garden.Fullness != 0 || _garden.IsPurchased == false);
+        float fullness = _garden.Fullness;
 
-        if(_garden.Fullness > 0 && _garden.IsPurchased)
+        _text.SetActive(fullness > 0);
+
+        if (fullness > 0)
         {
-            _text.text = NumberFormatter.FormatNumber(_garden.Fullness) + Constants.DollarChar;
-            _text.color = Color.yellow;
+            if (NumberFormatter.NeedUpdateText(out string formattedText, _lastValue, fullness) == false)
+                return;
+
+            _lastValue = fullness;
+            _text.text = formattedText + Constants.DollarChar;
         }
     }
 }

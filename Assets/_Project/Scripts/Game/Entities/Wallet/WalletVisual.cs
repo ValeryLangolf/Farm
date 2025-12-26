@@ -6,21 +6,26 @@ public class WalletVisual : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
 
     private IWallet _wallet;
+    private float _lastValue;
 
     private void OnEnable()
     {
         _wallet ??= ServiceLocator.Get<IWallet>();
 
         OnChanged(_wallet.Amount);
+        UpdateTextIfNeeded(_wallet.Amount);
         _wallet.Changed += OnChanged;
     }
 
-    private void OnDisable() =>
-        _wallet.Changed -= OnChanged;
+    private void OnChanged(float value) =>
+        UpdateTextIfNeeded(value);
 
-    private void OnChanged(float value)
+    private void UpdateTextIfNeeded(float value)
     {
-        string formattedText = NumberFormatter.FormatNumber(value) + Constants.DollarChar;
-        _text.text = formattedText;
+        if (NumberFormatter.NeedUpdateText(out string formattedText, _lastValue, value) == false)
+            return;
+
+        _lastValue = value;
+        _text.text = formattedText + Constants.DollarChar;
     }
 }
