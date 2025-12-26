@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class Garden : MonoBehaviour, ICollectable, IClickable
@@ -107,27 +108,48 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
 public class Upgrader
 {
+    private const float MULTIPLYER = 1.2f;
+
     private GardenData _data;
+    private float _currentUpgradePrice; //Добавить инфу в дату?
+    private int _count;
+    private float _price;
+
+    public Action<float> UpgradeApproved;
+
+    public float CurrentUpgradePrice => _currentUpgradePrice;
+    public int Count => _count; 
 
     public Upgrader(GardenData data)
     {
         _data = data;
     }
 
-    public void UpgradeCount(int count)
+    //public bool CanUpgrade()  //Если может, то кнопка активна
+    //{
+    //    return Money >= _price;
+    //}
+
+    private float CalculatePrice(int count)
     {
-        _data.PlantCount += count;
+        return _currentUpgradePrice * ((Mathf.Pow(MULTIPLYER, count) - 1f) / (MULTIPLYER - 1f));
     }
 
-    public void UpgradeStorage()
-    {
-        float multiplyer = 1.5f;
-        _data.StorageData.Capacity *= multiplyer;
-    }
+    //private float CalculateCount()
+    //{
+    //    return Mathf.FloorToInt(Mathf.Log(1f + money * (MULTIPLYER - 1f) / _currentUpgradePrice) / Mathf.Log(MULTIPLYER);
+    //}
 
-    private void UpgradeProductionTime()
-    {
-        float multiplyer = 0.5f;
-        //Время производства * 05f.
-    }
+
+    /* 
+     Нажимаем на кнопку кол-ва
+    Апгрейдер где-то высчитывает (возможно енам)
+    Возвращает событие кол-ва и цены или, наверное разные события лучше
+
+    Наверное плашкам нужно напрямую обращаться к грядке к апгрейдеру.
+
+    Нужно ли событие на списывание денег с кошелька?
+
+
+     */
 }
