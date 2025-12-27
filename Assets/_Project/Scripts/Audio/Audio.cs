@@ -24,6 +24,7 @@ public class Audio : MonoBehaviour, IAudioService
             return;
         }
 
+        transform.SetParent(null);
         s_instance = this;
         DontDestroyOnLoad(gameObject);
     }

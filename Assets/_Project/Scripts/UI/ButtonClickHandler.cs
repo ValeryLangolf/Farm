@@ -16,7 +16,7 @@ public class ButtonClickHandler : MonoBehaviour
         _button.onClick.AddListener(OnClick);
 
     private void OnDisable() =>
-        _button.onClick.AddListener(OnClick);
+        _button.onClick.RemoveListener(OnClick);
 
     public virtual void SetInteractable(bool isInteractable)
     {

@@ -17,10 +17,7 @@ public class SliderInformer : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public float MaxValue => _slider.maxValue;
 
-    private void OnEnable() =>
-        _slider.onValueChanged.AddListener(OnChanged);
-
-    private void OnDisable() =>
+    private void OnDestroy() =>
         _slider.onValueChanged.RemoveListener(OnChanged);
 
     public void OnPointerDown(PointerEventData _) =>
@@ -28,6 +25,9 @@ public class SliderInformer : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerUp(PointerEventData _) =>
         PointerUpPressed?.Invoke();
+
+    public void Initialize() =>
+        _slider.onValueChanged.AddListener(OnChanged);
 
     public void SetValue(float value) =>
         _slider.value = value;

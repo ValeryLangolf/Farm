@@ -10,4 +10,7 @@ public static class MonoExtansion
 
     public static void SetActive(this MonoBehaviour monoBehaviour, bool isActive) =>
         monoBehaviour.gameObject.SetActive(isActive);
+
+    public static bool IsActiveSelf(this MonoBehaviour monoBehaviour) =>
+        monoBehaviour.gameObject.activeSelf;
 }

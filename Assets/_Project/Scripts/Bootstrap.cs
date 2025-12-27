@@ -5,10 +5,11 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private List<Garden> _gardens;
-    [SerializeField] private ParticleSystem _trailParticle;
+    [SerializeField] private InputTrailParticle _trailParticle;
     [SerializeField] private Audio _audio;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
+
     private void Awake()
     {
         RegisterServices();
@@ -60,7 +61,7 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Register(interactionDetector);
         ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
         ServiceLocator.Register(new InteractionHandler(interactionDetector));
-        ServiceLocator.Register(new InputTrailParticle(_trailParticle, interactionDetector));
+        ServiceLocator.Register(_trailParticle);
     }
 
     private void StartRunServices()

@@ -7,4 +7,8 @@ public interface IInteractionDetector : IService
     event Action<RaycastHit2D[], int> Clicked;
     event Action InputStarted;
     event Action InputEnded;
+
+    void PauseRun();
+
+    void ResumeRun();
 }

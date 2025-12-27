@@ -30,10 +30,8 @@ public class Music : MonoBehaviour
         Play();
     }
 
-    public void Play()
-    {
+    public void Play() =>
         Play(_music);
-    }
 
     public void Pause()
     {

@@ -10,56 +10,55 @@ public class SettingsPanel : MonoBehaviour
     private VolumeModifier _musicModifier;
     private VolumeModifier _sfxModifier;
 
-    private void Awake()
-    {
-        InitializeVolumeSliders();
-        InitializeVolumeModifiers();
-    }
-
-    private void OnEnable()
-    {
-        _musicSlider.Changed += OnChangedMusicSlider;
-        _sfxSlider.Changed += OnChangedSfxSlider;
-    }
-
-    private void OnDisable()
-    {
-        _musicSlider.Changed -= OnChangedMusicSlider;
-        _sfxSlider.Changed -= OnChangedSfxSlider;
-    }
-
     private void OnDestroy()
     {
         _musicModifier?.Dispose();
         _sfxModifier?.Dispose();
+
+        Unsubscribe();
     }
 
-    public void SetData(SavesData savesData) =>
-        _savesData = savesData;
-
-    private void InitializeVolumeSliders() =>
-        ResetSlidersToSavedValues();
-
-    private void InitializeVolumeModifiers()
+    public void SetData(SavesData savesData)
     {
+        _savesData = savesData;
+        SetDataVolume();
+    }
+
+    public void Initialize()
+    {
+        Subscribe();
+        _musicSlider.Initialize();
+        _sfxSlider.Initialize();
+
         AudioMixer mixer = ServiceLocator.Get<IAudioService>().Mixer;
         _musicModifier = new(mixer, _musicSlider, Constants.MusicGroup);
         _sfxModifier = new(mixer, _sfxSlider, Constants.SfxGroup);
     }
 
-    private void ResetSlidersToSavedValues()
+    private void SetDataVolume()
     {
         _musicSlider.SetValue(_savesData.MusicVolume);
         _sfxSlider.SetValue(_savesData.SfxVolume);
     }
 
-    private void OnChangedMusicSlider(float obj)
+    private void Subscribe()
     {
-        _savesData.MusicVolume = _musicSlider.Value;
+        _musicSlider.Changed += OnChangedMusicSlider;
+        _sfxSlider.Changed += OnChangedSfxSlider;
     }
 
-    private void OnChangedSfxSlider(float obj)
+    private void Unsubscribe()
     {
-        _savesData.SfxVolume = _sfxSlider.Value;
+        if (_musicSlider != null)
+            _musicSlider.Changed -= OnChangedMusicSlider;
+
+        if (_sfxSlider != null)
+            _sfxSlider.Changed -= OnChangedSfxSlider;
     }
+
+    private void OnChangedMusicSlider(float volume) =>
+        _savesData.MusicVolume = volume;
+
+    private void OnChangedSfxSlider(float volume) =>
+        _savesData.SfxVolume = volume;
 }

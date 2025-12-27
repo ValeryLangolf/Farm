@@ -5,8 +5,7 @@ public class TestUpgrdeShopStarter : MonoBehaviour
 {
     public List<UpgradeInfo> UpgradeInfos;
 
-    public UpgradeShopUI _shop;
-    public UpgradeModeUI _mode;
+    public ShopPanel _shop;
 
     private void Awake()
     {
