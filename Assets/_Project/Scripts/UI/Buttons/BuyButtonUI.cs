@@ -10,10 +10,10 @@ public class BuyButtonUI : ButtonClickHandler
     private float _lastPrice;
     private BuyButtonState _state;
 
-    public void Init(BuyButtonState state, float price)
+    public void Init()
     {
-        SetState(state);
-        SetPriceText(price);
+        SetState(_state);
+        SetPriceText(0);
     }
 
     public void SetState(BuyButtonState state)

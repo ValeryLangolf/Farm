@@ -93,7 +93,6 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IRunnable,
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         int hitCount = Physics2D.RaycastNonAlloc(ray.origin, ray.direction, _hits);
-
         Clicked?.Invoke(_hits, hitCount);
     }
 

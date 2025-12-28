@@ -28,7 +28,7 @@ public class UIDirector : MonoBehaviour, IService
     public event Action<bool> UpgradeModeEnabledChanged;
 
     public UpgradeModeCountButtonType UpgradeModeCountButtonType => _currentCountButtonType;
-    public bool IsUpgradeModeActive => _upgradeModePanel.IsActiveSelf();
+    public bool IsUpgradeModeActive { get; private set; }
 
     private void Awake()
     {
@@ -99,6 +99,7 @@ public class UIDirector : MonoBehaviour, IService
         _upgradeModePanel.SetActive(isOn == false);
         _openerShopPanelButton.SetActive(isOn);
         SwitchInteractionDetector(isOn);
+        IsUpgradeModeActive = isOn == false;
 
         UpgradeModeEnabledChanged?.Invoke(isOn == false);
     }

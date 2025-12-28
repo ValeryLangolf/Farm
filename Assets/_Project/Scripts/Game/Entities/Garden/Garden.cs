@@ -1,6 +1,4 @@
-using JetBrains.Annotations;
 using System;
-using System.Data.SqlTypes;
 using UnityEngine;
 
 public class Garden : MonoBehaviour, ICollectable, IClickable
@@ -90,6 +88,12 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         }
 
         return _data.IsPurchased;
+    }
+
+    public void MakeUpgradePlantsCount()
+    {
+        _upgrader.UpgradePlantsCount();
+
     }
 
     private void Purchase()

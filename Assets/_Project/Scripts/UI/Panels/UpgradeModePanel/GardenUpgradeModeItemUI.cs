@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeModeItemUI : MonoBehaviour 
+public class GardenUpgradeModeItemUI : MonoBehaviour 
 { 
     [SerializeField] private Garden _garden;
     [SerializeField] private Image _icon; //’з имеет ли смысл добавл€ть спрайт через сериалайз или лучше через инит.
@@ -13,6 +13,7 @@ public class UpgradeModeItemUI : MonoBehaviour
     [SerializeField] private GameObject _childObject;
 
     private UIDirector _uiDirector;
+    private IWallet _wallet;
 
     public event Action Upgraded;
 
@@ -27,6 +28,9 @@ public class UpgradeModeItemUI : MonoBehaviour
     {
         _icon.sprite = _garden.Icon;
         _uiDirector = ServiceLocator.Get<UIDirector>();
+        _wallet = ServiceLocator.Get<IWallet>();
+        _buyButton.Init();
+        OnUpgradeModeEnabledChanged(false);
     }
 
     private void OnEnable()
@@ -37,6 +41,7 @@ public class UpgradeModeItemUI : MonoBehaviour
         _garden.RecalculateUpgradeInfo += OnUpgradeModeCountChanged;
         _garden.PurchaseStatusChanged += OnPurchaseStatusChaged;
         _uiDirector.UpgradeModeEnabledChanged += OnUpgradeModeEnabledChanged;
+        _buyButton.Clicked += OnBuyClicked;
 
     }
 
@@ -45,6 +50,13 @@ public class UpgradeModeItemUI : MonoBehaviour
         _garden.RecalculateUpgradeInfo -= OnUpgradeModeCountChanged;
         _garden.PurchaseStatusChanged -= OnPurchaseStatusChaged;
         _uiDirector.UpgradeModeEnabledChanged -= OnUpgradeModeEnabledChanged;
+        _buyButton.Clicked -= OnBuyClicked;
+    }
+
+    private void OnBuyClicked(ButtonClickHandler _)
+    {
+        _garden.MakeUpgradePlantsCount();
+        OnUpgradeModeCountChanged();
     }
 
     private void OnUpgradeModeCountChanged()
@@ -53,16 +65,9 @@ public class UpgradeModeItemUI : MonoBehaviour
         _currentCountText.text = _garden.PlantsCount.ToString();
         _buyButton.SetPriceText(_garden.UpgradesCountPrice); // ќткудат-то надо получить этот текст
         _buyButton.Clicked += ApplyUpgrade;
-    }
 
-    public void SetBuyCountText(float count)
-    {
-        _buyCountText.text = count.ToString();
-    }
-
-    public void SetCurrentCountText(float count)
-    {
-        _currentCountText.text = count.ToString();
+        BuyButtonState state = _wallet.CanSpend(_garden.UpgradesCountPrice) ? BuyButtonState.Unblocked : BuyButtonState.Blocked;
+        _buyButton.SetState(state); 
     }
 
     public void ApplyUpgrade(ButtonClickHandler _)
@@ -72,12 +77,11 @@ public class UpgradeModeItemUI : MonoBehaviour
 
     private void OnPurchaseStatusChaged(bool isPurchased)
     {
-        _childObject.SetActive(isPurchased);
+        _childObject.SetActive(_uiDirector.IsUpgradeModeActive && isPurchased);
     }
 
     private void OnUpgradeModeEnabledChanged(bool enabled)
     {
         _childObject.SetActive(enabled && _garden.IsPurchased);
     }
-
 }
