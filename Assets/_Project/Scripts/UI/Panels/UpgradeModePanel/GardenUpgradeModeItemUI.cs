@@ -14,6 +14,7 @@ public class GardenUpgradeModeItemUI : MonoBehaviour
 
     private UIDirector _uiDirector;
     private IWallet _wallet;
+    private IReadOnlyGardenData _data;
 
     public event Action Upgraded;
 
@@ -26,7 +27,8 @@ public class GardenUpgradeModeItemUI : MonoBehaviour
 
     private void Awake()
     {
-        _icon.sprite = _garden.Icon;
+        _data = _garden.ReadOnlyData;
+        _icon.sprite = _data.Icon;
         _uiDirector = ServiceLocator.Get<UIDirector>();
         _wallet = ServiceLocator.Get<IWallet>();
         _buyButton.Init();
@@ -36,19 +38,18 @@ public class GardenUpgradeModeItemUI : MonoBehaviour
     private void OnEnable()
     {
         OnUpgradeModeCountChanged();
-        OnPurchaseStatusChaged(_garden.IsPurchased);
+        OnPurchaseStatusChaged(_data.IsPurchased);
         OnUpgradeModeEnabledChanged(_uiDirector.IsUpgradeModeActive);
-        _garden.RecalculateUpgradeInfo += OnUpgradeModeCountChanged;
-        _garden.PurchaseStatusChanged += OnPurchaseStatusChaged;
+        _garden.RecalculatedUpgradeInfo += OnUpgradeModeCountChanged;
+        _data.PurchaseStatusChanged += OnPurchaseStatusChaged;
         _uiDirector.UpgradeModeEnabledChanged += OnUpgradeModeEnabledChanged;
         _buyButton.Clicked += OnBuyClicked;
-
     }
 
     private void OnDisable()
     {
-        _garden.RecalculateUpgradeInfo -= OnUpgradeModeCountChanged;
-        _garden.PurchaseStatusChanged -= OnPurchaseStatusChaged;
+        _garden.RecalculatedUpgradeInfo -= OnUpgradeModeCountChanged;
+        _data.PurchaseStatusChanged -= OnPurchaseStatusChaged;
         _uiDirector.UpgradeModeEnabledChanged -= OnUpgradeModeEnabledChanged;
         _buyButton.Clicked -= OnBuyClicked;
     }
@@ -62,7 +63,7 @@ public class GardenUpgradeModeItemUI : MonoBehaviour
     private void OnUpgradeModeCountChanged()
     {
         _buyCountText.text = "+" + _garden.UpgradePlantsCount;
-        _currentCountText.text = _garden.PlantsCount.ToString();
+        _currentCountText.text = _data.PlantsCount.ToString();
         _buyButton.SetPriceText(_garden.UpgradesCountPrice); // Откудат-то надо получить этот текст
         _buyButton.Clicked += ApplyUpgrade;
 
@@ -82,6 +83,6 @@ public class GardenUpgradeModeItemUI : MonoBehaviour
 
     private void OnUpgradeModeEnabledChanged(bool enabled)
     {
-        _childObject.SetActive(enabled && _garden.IsPurchased);
+        _childObject.SetActive(enabled && _data.IsPurchased);
     }
 }

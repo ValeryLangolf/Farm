@@ -66,7 +66,7 @@ public class Saver
     {
         for (int i = _currentData.GardenDatas.Count; i < _initialData.GardenDatas.Count; i++)
         {
-            GardenData newGardenData = DeepCopy(_initialData.GardenDatas[i]);
+            SavedGardenData newGardenData = DeepCopy(_initialData.GardenDatas[i]);
             _currentData.GardenDatas.Add(newGardenData);
         }
     }

@@ -8,14 +8,14 @@ public class Upgrader : IDisposable
     private readonly Action _recalculated;
     private readonly UIDirector _uidirector;
 
-    private GardenData _data;
-    private IWallet _wallet;
+    private readonly ExtendedGardenData _data;
+    private readonly IWallet _wallet;
     private float _priceToUpgrade = 1; //Добавить инфу в дату?
     private int _plantsCountToUpgrade;
     private float _initialPrice;
     private int _countTreshold = 25;
 
-    public Upgrader(GardenData data, Action<int, float> onUpgradedCount, Action recalculated)
+    public Upgrader(ExtendedGardenData data, Action<int, float> onUpgradedCount, Action recalculated)
     {
         _data = data;
         _wallet = ServiceLocator.Get<IWallet>();
@@ -37,7 +37,7 @@ public class Upgrader : IDisposable
         {
             _priceToUpgrade = CalculatePrice(_countTreshold);
             _upgradedCount?.Invoke(_plantsCountToUpgrade, _priceToUpgrade);
-            _data.PlantCount += _plantsCountToUpgrade;
+            _data.SetPlantsCount(_data.PlantsCount + _plantsCountToUpgrade);
         }
     }
 
@@ -59,7 +59,7 @@ public class Upgrader : IDisposable
         {
             UpgradeModeCountButtonType.x1 => 1,
             UpgradeModeCountButtonType.x10 => 10,
-            UpgradeModeCountButtonType.treshold => Math.Max(0, _countTreshold - _data.PlantCount),
+            UpgradeModeCountButtonType.treshold => Math.Max(0, _countTreshold - _data.PlantsCount),
             UpgradeModeCountButtonType.max => CalculateMaxCount(),
             _ => throw new InvalidCastException(nameof(_plantsCountToUpgrade)),
         };

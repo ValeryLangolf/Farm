@@ -1,0 +1,29 @@
+using System;
+using UnityEngine;
+
+public interface IReadOnlyGardenData
+{
+    event Action<float> GroverProgressChanged;
+    event Action<float> StorageProgressChanged;
+    event Action<bool> PurchaseStatusChanged;
+
+    Sprite Icon { get; }
+
+    float InitialGrowingCycleRevenue {  get; }
+
+    float GardenPurchasePrice { get; }
+
+    bool IsPurchased { get; }
+
+    int PlantsCount { get; }
+
+    float StorageCapacity { get; }
+
+    float StorageFullness { get; }
+
+    float GroverElapsedTime { get; }
+
+    float GroverProgress { get; }
+
+    float StorageProgress { get; }
+}

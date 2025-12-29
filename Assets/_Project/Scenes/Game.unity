@@ -789,6 +789,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: fc08b64d864ce4b4e833d096b8f2d3d4, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -801,8 +805,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GrowingCycleRevenuePerSinglePlant
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -890,6 +906,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -900,6 +920,18 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 178000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 178000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -8222,6 +8254,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -8234,8 +8270,20 @@ PrefabInstance:
       value: 105000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GrowingCycleRevenuePerSinglePlant
       value: 14000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -8785,6 +8833,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -8797,8 +8849,20 @@ PrefabInstance:
       value: 8640
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GrowingCycleRevenuePerSinglePlant
       value: 1900
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -9149,6 +9213,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -9159,6 +9227,18 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 15000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 15000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -9396,6 +9476,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -9408,8 +9492,20 @@ PrefabInstance:
       value: 1250000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GrowingCycleRevenuePerSinglePlant
       value: 450000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -15359,6 +15455,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -15371,8 +15471,20 @@ PrefabInstance:
       value: 720
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GrowingCycleRevenuePerSinglePlant
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -15610,6 +15722,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _isPurchased
       value: 0
       objectReference: {fileID: 0}
@@ -15620,6 +15736,18 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 2.15e+9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._purchasePrice
+      value: 2.15e+9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialGrowingCycleRevenue
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialCultivationDurationInSeconds
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
@@ -15911,11 +16039,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 98725f2580174fd4dbd162f605427a4c, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PlantCount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.IsPurchased
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._isInitialPurchased
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}

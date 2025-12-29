@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Garden : MonoBehaviour, ICollectable, IClickable
 {
-    [SerializeField] private GardenData _data;
-    [SerializeField] private Sprite _icon;
+    [SerializeField] private ExtendedGardenData _data;    
 
     private IWallet _wallet;
     private Sfx _sfx;
@@ -13,62 +12,48 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     private Storage _storage;
     private Upgrader _upgrader;
 
-    public event Action<float> GroverProgressChanged;
-    public event Action<float> StorageProgressChanged;
-    public event Action<bool> PurchaseStatusChanged;
     public event Action<int, float> UpgradeInfoChanged;
-    public event Action RecalculateUpgradeInfo;
+    public event Action RecalculatedUpgradeInfo;
 
-    public float GroverProgress => _grover != null ? _grover.Progress : 0;
-
-    public float StorageProgress => _storage != null ? _storage.Progress : 0;
-
-    public bool IsPurchased => _data.IsPurchased;
-
-    public float Price => _data.PurchasePrice;
-
-    public float Fullness => _data.StorageData.CurrentFullness;
-
-    public GardenData Data => _data;
-
-    public Sprite Icon => _icon;
+    public IReadOnlyGardenData ReadOnlyData => _data;
 
     public int UpgradePlantsCount => _upgrader != null ? _upgrader.Count : 1;
-    public float UpgradesCountPrice => _upgrader != null ? _upgrader.Price : 0;
 
-    public int PlantsCount => _data.PlantCount;
+    public float UpgradesCountPrice => _upgrader != null ? _upgrader.Price : 0;
 
     private void Awake()
     {
         _wallet = ServiceLocator.Get<IWallet>();
         _sfx = ServiceLocator.Get<IAudioService>().Sfx;
+
+        _data.StorageProgressChanged += OnStorageProgressChanged;
     }
 
-    private void OnDestroy() 
-    { 
+    private void OnDestroy()
+    {
         _grover.Dispose();
         _upgrader.Dispose();
+
+        _data.StorageProgressChanged -= OnStorageProgressChanged;
     }
 
-    public void SetData(GardenData data)
+    public void SetData(SavedGardenData data)
     {
-        _data = data;
+        if(data == null)
+            throw new ArgumentNullException(nameof(data));
 
+        _data.SetSavedData(data); 
         _grover?.Dispose();
+        _upgrader?.Dispose();
 
-        _storage = new(_data.StorageData, OnStorageProgressChanged);
-        _grover = new(_data.GroverData, OnGrowCompleted, OnGroverProgressChanged);
-        _grover.Grow(_data.GroverData.ElapsedTime);
+        _storage = new(_data);
+        _grover = new(_data, OnGrowCompleted);
+        _grover.Grow(_data.GroverElapsedTime);
         _upgrader = new(_data, OnUpgradedPlantsCount, OnRecalculatedUpgradeInfo);
 
         if (_data.IsPurchased && _storage.IsFilled == false)
             _grover.StartRun();
-
-        StorageProgressChanged?.Invoke(_storage.Progress);
-        GroverProgressChanged?.Invoke(_grover.Progress);
-        PurchaseStatusChanged?.Invoke(_data.IsPurchased);
     }
-
 
     public void HandleClick()
     {
@@ -78,49 +63,45 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public bool TryCollect(out float value)
     {
-        value = 0;
-
-        if (_data.StorageData.CurrentFullness > 0)
+        if (_data.StorageFullness > 0)
         {
             value = _storage.GiveCoins();
             _grover.StartRun();
             _sfx.PlayCollectedCoin();
+
+            return true;
         }
 
-        return _data.IsPurchased;
+        value = 0;
+
+        return false;
     }
 
-    public void MakeUpgradePlantsCount()
-    {
+    public void MakeUpgradePlantsCount() =>
         _upgrader.UpgradePlantsCount();
-
-    }
 
     private void Purchase()
     {
-        if (_wallet.TrySpend(_data.PurchasePrice) == false)
+        if (_data.IsPurchased)
             return;
 
-        _data.IsPurchased = true;
-        _grover.StartRun();
-        PurchaseStatusChanged?.Invoke(_data.IsPurchased);
+        if (_wallet.TrySpend(_data.GardenPurchasePrice))
+        {
+            _data.SetPurchasedStatus(true);
+            _grover.StartRun();
+        }
     }
 
     private void OnGrowCompleted()
     {
-        _storage.Increase(_data.GrowingCycleRevenuePerSinglePlant * _data.PlantCount);
+        _storage.Increase(_data.InitialGrowingCycleRevenue * _data.PlantsCount);
 
         if (_storage.IsFilled)
             _grover.StopRun();
     }
 
-    private void OnGroverProgressChanged(float progress) =>
-        GroverProgressChanged?.Invoke(progress);
-
     private void OnStorageProgressChanged(float value)
     {
-        StorageProgressChanged?.Invoke(value);
-
         if (_storage.IsFilled)
         {
             _grover.StopRun();
@@ -132,14 +113,9 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _grover.StartRun();
     }
 
-    private void OnUpgradedPlantsCount(int plantCount, float plantsPrice)
-    {
+    private void OnUpgradedPlantsCount(int plantCount, float plantsPrice) =>
         UpgradeInfoChanged?.Invoke(plantCount, plantsPrice);
-    }
 
-
-    private void OnRecalculatedUpgradeInfo()
-    {
-        RecalculateUpgradeInfo?.Invoke();
-    }
+    private void OnRecalculatedUpgradeInfo() =>
+        RecalculatedUpgradeInfo?.Invoke();
 }

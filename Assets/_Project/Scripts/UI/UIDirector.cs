@@ -100,6 +100,7 @@ public class UIDirector : MonoBehaviour, IService
         _openerShopPanelButton.SetActive(isOn);
         SwitchInteractionDetector(isOn);
         IsUpgradeModeActive = isOn == false;
+        _inputTrailParticle.SetActive(isOn);
 
         UpgradeModeEnabledChanged?.Invoke(isOn == false);
     }

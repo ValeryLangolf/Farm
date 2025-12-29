@@ -6,13 +6,18 @@ public class GardenPurchaseStateIndicator : SwitchableSprite
     [SerializeField] private Color _enoughMoneyColor;
 
     private IWallet _wallet;
+    private IReadOnlyGardenData _data;
+
+    private void Awake()
+    {
+        _data = _garden.ReadOnlyData;
+        _wallet = ServiceLocator.Get<IWallet>();
+    }
 
     private void OnEnable()
     {
-        _wallet ??= ServiceLocator.Get<IWallet>();
-
-        OnPurchaseStatusChanged(_garden.IsPurchased);
-        _garden.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged(_data.IsPurchased);
+        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
 
         OnWalletChanged(_wallet.Amount);
         _wallet.Changed += OnWalletChanged;
@@ -31,7 +36,7 @@ public class GardenPurchaseStateIndicator : SwitchableSprite
 
     private void OnWalletChanged(float value)
     {
-        Color color = _garden.IsPurchased || _wallet.CanSpend(_garden.Price) == false ? Color.white : _enoughMoneyColor;
+        Color color = _data.IsPurchased || _wallet.CanSpend(_data.GardenPurchasePrice) == false ? Color.white : _enoughMoneyColor;
         SetColor(color);
     }
 }

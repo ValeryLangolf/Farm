@@ -10,30 +10,15 @@ public class SavesData
     public float SfxVolume = 0.75f;
     public long LastServerTime = -1;
 
-    public List<GardenData> GardenDatas = new();
+    public List<SavedGardenData> GardenDatas = new();
 }
 
 [Serializable]
-public class GardenData
+public class SavedGardenData
 {
     public bool IsPurchased = false;
-    [Min(1)] public float PurchasePrice = 1;
     [Min(1)] public int PlantCount = 1;
-    [Min(1)] public float GrowingCycleRevenuePerSinglePlant = 1;
-    public StorageData StorageData;
-    public GroverData GroverData;
-}
-
-[Serializable]
-public class StorageData
-{
-    [Min(1)] public float Capacity = 1;
-    [Min(0)] public float CurrentFullness = 0;
-}
-
-[Serializable]
-public class GroverData
-{
-    [Min(0.005f)] public float CultivationDurationInSeconds = 30;
-    [Min(0)] public float ElapsedTime;
+    [Min(1)] public float StorageCapacity = 1;
+    [Min(0)] public float StorageFullness = 0;
+    [Min(0)] public float GroverElapsedTime;
 }

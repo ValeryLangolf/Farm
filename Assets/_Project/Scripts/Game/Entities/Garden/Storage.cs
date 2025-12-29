@@ -1,32 +1,27 @@
 using System;
 public class Storage
 {
-    private readonly StorageData _data;
-    private readonly Action<float> _changed;
+    private readonly ExtendedGardenData _data;
 
-    public Storage(StorageData data, Action<float> changed)
+    public Storage(ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _changed = changed;
     }
 
-    public bool IsFilled => _data.CurrentFullness >= _data.Capacity;
-
-    public float Progress => _data.CurrentFullness / _data.Capacity;
+    public bool IsFilled => _data.StorageFullness >= _data.StorageCapacity;
 
     public void SetCapacity(float value)
     {
         if(value <= 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"значение должно быть больше нуля");
 
-        _data.Capacity = value;
+        _data.SetStorageCapacity(value);
     }
 
     public float GiveCoins()
     {
-        float tempCapacity = _data.CurrentFullness;
-        _data.CurrentFullness = 0;
-        _changed?.Invoke(Progress);
+        float tempCapacity = _data.StorageFullness;
+        _data.SetStorageFullnes(0);
 
         return tempCapacity;
     }
@@ -36,8 +31,6 @@ public class Storage
         if (value < 0)
             throw new ArgumentOutOfRangeException(nameof(value), value, $"Значение должно быть положительным");
 
-        _data.CurrentFullness += value;
-
-        _changed?.Invoke(Progress);
+        _data.SetStorageFullnes(_data.StorageFullness + value);
     }
 }

@@ -42,8 +42,8 @@ public class SavingMediator : IService
             WalletAmount = _wallet.Amount
         };
 
-        foreach (Garden garden in _gardens)
-            data.GardenDatas.Add(garden.Data);
+        foreach (Garden _ in _gardens)
+            data.GardenDatas.Add(new());
 
         return data;
     }
@@ -52,12 +52,13 @@ public class SavingMediator : IService
     {
         _wallet?.SetData(_saver.Data);
 
-        List<GardenData> datas = _saver.Data.GardenDatas;
+        List<SavedGardenData> datas = _saver.Data.GardenDatas;
 
         for (int i = 0; i < _gardens.Count; i++)
             if (_gardens[i] != null)
                 _gardens[i].SetData(datas[i]);
 
-        _settingsPanel?.SetData(_saver.Data);
+        if (_settingsPanel != null)
+            _settingsPanel.SetData(_saver.Data);
     }
 }

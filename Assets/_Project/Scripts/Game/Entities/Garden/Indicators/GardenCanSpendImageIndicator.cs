@@ -2,28 +2,34 @@ using UnityEngine;
 
 public class GardenCanSpendImageIndicator : SwitchableImage
 {
-    private IWallet _wallet;
     [SerializeField] private Garden _garden;
+
+    private IWallet _wallet;
+    private IReadOnlyGardenData _data;
+
+    private void Awake()
+    {
+        _data = _garden.ReadOnlyData;
+        _wallet = ServiceLocator.Get<IWallet>();
+    }
 
     private void OnEnable()
     {
-        _wallet ??= ServiceLocator.Get<IWallet>();
-
         OnWalletChanged(_wallet.Amount);
         _wallet.Changed += OnWalletChanged;
 
-        OnPurchaseStatusChanged(_garden.IsPurchased);
-        _garden.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged(_data.IsPurchased);
+        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
     }
 
     private void OnDisable()
     {
         _wallet.Changed -= OnWalletChanged;
-        _garden.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+        _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
     }
 
     private void OnWalletChanged(float value) =>
-        UpdateState(value >= _garden.Price);
+        UpdateState(value >= _data.GardenPurchasePrice);
 
     private void OnPurchaseStatusChanged(bool isPurchased) =>
         SetActiveIcon(isPurchased == false);
