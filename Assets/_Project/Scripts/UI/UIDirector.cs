@@ -21,6 +21,8 @@ public class UIDirector : MonoBehaviour, IService
 
     private SavingMediator _savingMediator;
     private IInteractionDetector _interactionDetector;
+    private CoinCollector _coinCollector;
+    private EntityClickHandler _entityClickHandler;
     private InputTrailParticle _inputTrailParticle;
     private UpgradeModeCountButtonType _currentCountButtonType = UpgradeModeCountButtonType.x1;
 
@@ -35,6 +37,8 @@ public class UIDirector : MonoBehaviour, IService
         _savingMediator = ServiceLocator.Get<SavingMediator>();
         _interactionDetector = ServiceLocator.Get<IInteractionDetector>();
         _inputTrailParticle = ServiceLocator.Get<InputTrailParticle>();
+        _coinCollector = ServiceLocator.Get<CoinCollector>();
+        _entityClickHandler = ServiceLocator.Get<EntityClickHandler>();
 
         _settingsPanel.Hide();
         _upgradeModePanel.Hide();
@@ -98,9 +102,9 @@ public class UIDirector : MonoBehaviour, IService
         bool isOn = _upgradeModePanel.IsActiveSelf();
         _upgradeModePanel.SetActive(isOn == false);
         _openerShopPanelButton.SetActive(isOn);
-        SwitchInteractionDetector(isOn);
+        _coinCollector.SetEnabled(isOn);
+        _entityClickHandler.SetEnabled(isOn);
         IsUpgradeModeActive = isOn == false;
-        _inputTrailParticle.SetActive(isOn);
 
         UpgradeModeEnabledChanged?.Invoke(isOn == false);
     }

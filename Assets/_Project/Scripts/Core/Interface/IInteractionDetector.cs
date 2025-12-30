@@ -1,14 +1,14 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 
-public interface IInteractionDetector : IService
+public interface IInteractionDetector : IService, IRunnable
 {
-    event Action<RaycastHit2D[], int> Swiped;
-    event Action<RaycastHit2D[], int> Clicked;
-    event Action InputStarted;
-    event Action InputEnded;
+    event Action<IReadOnlyList<InteractionInfo>> Swiped;
+    event Action<IReadOnlyList<InteractionInfo>> Clicked;
 
-    void PauseRun();
+    event Action<IReadOnlyList<InteractionInfo>> InteractionsUpdated;
+    event Action<IReadOnlyList<InteractionInfo>> InteractionsStarted;
+    event Action<IReadOnlyList<InteractionInfo>> InteractionsEnded;
 
-    void ResumeRun();
+    IReadOnlyList<InteractionInfo> CurrentInteractions { get; }
 }

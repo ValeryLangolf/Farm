@@ -58,23 +58,15 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Register(new SavingMediator(_gardens, _settingsPanel));
 
         IInteractionDetector interactionDetector;
-        IInputFollower inputFollower;
 
         if (Application.isMobilePlatform)
-        {
             interactionDetector = new TouchInteractionDetector();
-            inputFollower = new TouchInputFollower(_trailParticle.transform);
-        }
         else
-        {
             interactionDetector = new MouseInteractionDetector();
-            inputFollower = new MouseInputFollower(_trailParticle.transform);
-        }
 
-        ServiceLocator.Register(inputFollower);
         ServiceLocator.Register(interactionDetector);
         ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
-        ServiceLocator.Register(new InteractionHandler(interactionDetector));
+        ServiceLocator.Register(new EntityClickHandler(interactionDetector));
         ServiceLocator.Register(_trailParticle);
     }
 

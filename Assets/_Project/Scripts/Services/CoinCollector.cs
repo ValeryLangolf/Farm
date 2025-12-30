@@ -1,32 +1,34 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinCollector : IService, IDisposable
 {
     private readonly IInteractionDetector _interactionDetector;
     private readonly IWallet _wallet;
-
-    private bool _isOn;
+    private bool _isEnabled;
 
     public CoinCollector(IInteractionDetector interactionDetector, IWallet wallet)
     {
-        _interactionDetector = interactionDetector ?? throw new ArgumentNullException(nameof(interactionDetector));
-        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _interactionDetector = interactionDetector ??
+            throw new ArgumentNullException(nameof(interactionDetector));
+        _wallet = wallet ??
+            throw new ArgumentNullException(nameof(wallet));
 
-        SetEnable(true);
+        SetEnabled(true);
     }
 
     public void Dispose() =>
-        SetEnable(false);
+        SetEnabled(false);
 
-    public void SetEnable(bool isOn)
+    public void SetEnabled(bool isEnabled)
     {
-        if(_isOn == isOn) 
+        if (_isEnabled == isEnabled)
             return;
 
-        _isOn = isOn;
+        _isEnabled = isEnabled;
 
-        if (isOn)
+        if (isEnabled)
             Subscribe();
         else
             Unsubscribe();
@@ -44,7 +46,13 @@ public class CoinCollector : IService, IDisposable
         _interactionDetector.Clicked -= OnSwiped;
     }
 
-    private void OnSwiped(RaycastHit2D[] hits, int hitCount)
+    private void OnSwiped(IReadOnlyList<InteractionInfo> interactions)
+    {
+        foreach (InteractionInfo interaction in interactions)
+            ProcessInteractionHits(interaction.RaycastHits, interaction.HitCount);
+    }
+
+    private void ProcessInteractionHits(RaycastHit2D[] hits, int hitCount)
     {
         for (int i = 0; i < hitCount; i++)
             if (hits[i].collider.TryGetComponent(out ICollectable collectable))
