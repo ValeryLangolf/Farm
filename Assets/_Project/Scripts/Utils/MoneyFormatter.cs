@@ -1,7 +1,7 @@
 using System.Globalization;
 using UnityEngine;
 
-public static class NumberFormatter
+public static class MoneyFormatter
 {
     private static CultureInfo s_culture = CultureInfo.InvariantCulture;
     private static readonly string[] s_suffixes = { "", "K", "M", "B", "T" };
@@ -37,6 +37,28 @@ public static class NumberFormatter
         return false;
     }
 
+    public static string FormatNumber(float value)
+    {
+        if (Mathf.Approximately(value, 0f))
+            return "0";
+
+        float absoluteValue = Mathf.Abs(value);
+        int suffixIndex = 0;
+
+        while (absoluteValue >= 1000f && suffixIndex < s_suffixes.Length - 1)
+        {
+            absoluteValue /= 1000f;
+            suffixIndex++;
+        }
+
+        string formattedValue = FormatWithAppropriateDecimals(absoluteValue);
+
+        if (value < 0f)
+            return $"-{formattedValue}{s_suffixes[suffixIndex]}";
+
+        return $"{formattedValue}{s_suffixes[suffixIndex]}";
+    }
+
     private static int GetSuffixIndex(float absoluteValue)
     {
         int suffixIndex = 0;
@@ -64,28 +86,6 @@ public static class NumberFormatter
             return (float)System.Math.Round(absoluteValue, 1);
 
         return Mathf.Round(absoluteValue);
-    }
-
-    public static string FormatNumber(float value)
-    {
-        if (Mathf.Approximately(value, 0f))
-            return "0";
-
-        float absoluteValue = Mathf.Abs(value);
-        int suffixIndex = 0;
-
-        while (absoluteValue >= 1000f && suffixIndex < s_suffixes.Length - 1)
-        {
-            absoluteValue /= 1000f;
-            suffixIndex++;
-        }
-
-        string formattedValue = FormatWithAppropriateDecimals(absoluteValue);
-
-        if (value < 0f)
-            return $"-{formattedValue}{s_suffixes[suffixIndex]}";
-
-        return $"{formattedValue}{s_suffixes[suffixIndex]}";
     }
 
     private static string FormatWithAppropriateDecimals(float value)

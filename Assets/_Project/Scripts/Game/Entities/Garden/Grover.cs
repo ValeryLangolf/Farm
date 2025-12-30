@@ -3,14 +3,12 @@ using System;
 public class Grover : IDisposable
 {
     private readonly ExtendedGardenData _data;
-    private readonly Action _completed;
 
     private bool _isRunning;
 
-    public Grover(ExtendedGardenData data, Action completed)
+    public Grover(ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _completed = completed;
     }
 
     public void Dispose() =>
@@ -49,13 +47,16 @@ public class Grover : IDisposable
             CompleteGrowing();
     }
 
-    public void ResetElapsedTime() =>
-        _data.SetGroverElapsedTime(0);
-
     private void CompleteGrowing()
     {
         _data.SetGroverElapsedTime(_data.GroverElapsedTime - _data.InitialCultivationDurationInSeconds);
-        _completed?.Invoke();
+        _data.SetStorageFullnes(_data.StorageFullness + _data.InitialGrowingCycleRevenue * _data.PlantsCount);
+
+        if (_data.StorageFullness >= _data.StorageCapacity)
+        {
+            StopRun();
+            _data.SetGroverElapsedTime(0);
+        }
     }
 
     private void OnUpdated(float deltaTime) =>

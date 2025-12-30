@@ -22,7 +22,7 @@ public class WalletTextIndicator : MonoBehaviour
 
     private void UpdateTextIfNeeded(float value)
     {
-        if (NumberFormatter.NeedUpdateText(out string formattedText, _lastValue, value) == false)
+        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, value) == false)
             return;
 
         _lastValue = value;

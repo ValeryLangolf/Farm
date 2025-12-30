@@ -46,7 +46,7 @@ public class StorageFullnesTextIndicator : MonoBehaviour
 
         if (fullness > 0)
         {
-            if (NumberFormatter.NeedUpdateText(out string formattedText, _lastValue, fullness) == false)
+            if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, fullness) == false)
                 return;
 
             _lastValue = fullness;

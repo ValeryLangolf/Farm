@@ -9,24 +9,20 @@ public class ButtonClickHandler : MonoBehaviour
 
     public event Action<ButtonClickHandler> Clicked;
 
-    private void Awake() =>
+    protected virtual void Awake() =>
         _button = GetComponent<Button>();
 
-    private void OnEnable() =>
+    protected virtual void OnEnable() =>
         _button.onClick.AddListener(OnClick);
 
-    private void OnDisable() =>
+    protected virtual void OnDisable() =>
         _button.onClick.RemoveListener(OnClick);
 
-    public virtual void SetInteractable(bool isInteractable)
-    {
+    public virtual void SetInteractable(bool isInteractable) =>
         _button.interactable = isInteractable;
-    }
 
-    protected virtual void SetColor(Color color)
-    {
+    protected virtual void SetColor(Color color) =>
         _button.image.color = color;
-    }
 
     protected virtual void OnClick() =>
         Clicked?.Invoke(this);

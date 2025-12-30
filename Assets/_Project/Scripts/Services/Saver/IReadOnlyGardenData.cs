@@ -6,6 +6,9 @@ public interface IReadOnlyGardenData
     event Action<float> GroverProgressChanged;
     event Action<float> StorageProgressChanged;
     event Action<bool> PurchaseStatusChanged;
+    event Action<int> PlantsCountToUpgradeChanged;
+    event Action<float> PlantsPriceToUpgradeChanged;
+    event Action<int> PlantsCountChanged;
 
     Sprite Icon { get; }
 
@@ -26,4 +29,8 @@ public interface IReadOnlyGardenData
     float GroverProgress { get; }
 
     float StorageProgress { get; }
+
+    int PlantsCountToUpgrade { get; }
+
+    float PlantsPriceToUpgrade { get; }
 }

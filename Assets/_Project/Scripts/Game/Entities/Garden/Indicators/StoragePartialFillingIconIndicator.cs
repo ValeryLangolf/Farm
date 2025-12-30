@@ -17,8 +17,8 @@ public class StoragePartialFillingIconIndicator : MonoBehaviour
     }
 
     private void OnDisable() =>
-        _data.StorageProgressChanged += OnStorageChanged;
+        _data.StorageProgressChanged -= OnStorageChanged;
 
     private void OnStorageChanged(float progress) =>
-        _indicator.SetActive(progress > 0);
+        _indicator.SetActive(progress > Mathf.Epsilon);
 }

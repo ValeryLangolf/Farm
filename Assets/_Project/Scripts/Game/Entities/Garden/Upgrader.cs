@@ -3,74 +3,103 @@ using UnityEngine;
 
 public class Upgrader : IDisposable
 {
-    private const float MULTIPLYER = 1.2f;
-    private readonly Action<int, float> _upgradedCount;
-    private readonly Action _recalculated;
-    private readonly UIDirector _uidirector;
+    private const float PriceMultiplier = 1.2f;
+    private const float CountTresholdMultiplier = 2f;
+    private const int InitialCountTreshold = 25;
 
-    private readonly ExtendedGardenData _data;
     private readonly IWallet _wallet;
-    private float _priceToUpgrade = 1; //Добавить инфу в дату?
-    private int _plantsCountToUpgrade;
-    private float _initialPrice;
-    private int _countTreshold = 25;
+    private readonly UIDirector _uiDirector;
+    private readonly ExtendedGardenData _data;
 
-    public Upgrader(ExtendedGardenData data, Action<int, float> onUpgradedCount, Action recalculated)
+
+    public Upgrader(ExtendedGardenData data)
     {
         _data = data;
         _wallet = ServiceLocator.Get<IWallet>();
-        _upgradedCount = onUpgradedCount;
-        _uidirector = ServiceLocator.Get<UIDirector>();
-        _recalculated = recalculated;
-        _uidirector.UpgradeModeCountChanged += OnUpgradeModeCountChanged;
-    }
+        _uiDirector = ServiceLocator.Get<UIDirector>();
 
-    public Action<float> UpgradeApproved;
-
-    public float CurrentUpgradePrice => _priceToUpgrade;
-    public float Price => _priceToUpgrade;
-    public int Count => _plantsCountToUpgrade;
-
-    public void UpgradePlantsCount()
-    {
-        if (_wallet.TrySpend(_priceToUpgrade))
-        {
-            _priceToUpgrade = CalculatePrice(_countTreshold);
-            _upgradedCount?.Invoke(_plantsCountToUpgrade, _priceToUpgrade);
-            _data.SetPlantsCount(_data.PlantsCount + _plantsCountToUpgrade);
-        }
-    }
-
-    private float CalculatePrice(int count)
-    {
-        _priceToUpgrade = _initialPrice * ((Mathf.Pow(MULTIPLYER, count) - 1f) / (MULTIPLYER - 1f));
-        return _priceToUpgrade;
-    }
-
-    private int CalculateMaxCount()
-    {
-        _plantsCountToUpgrade = Mathf.FloorToInt(Mathf.Log(1f + _wallet.Amount * (MULTIPLYER - 1f) / _initialPrice) / Mathf.Log(MULTIPLYER));
-        return _plantsCountToUpgrade;
-    }
-
-    private void OnUpgradeModeCountChanged(UpgradeModeCountButtonType type)
-    {
-        _plantsCountToUpgrade = type switch
-        {
-            UpgradeModeCountButtonType.x1 => 1,
-            UpgradeModeCountButtonType.x10 => 10,
-            UpgradeModeCountButtonType.treshold => Math.Max(0, _countTreshold - _data.PlantsCount),
-            UpgradeModeCountButtonType.max => CalculateMaxCount(),
-            _ => throw new InvalidCastException(nameof(_plantsCountToUpgrade)),
-        };
-
-        _priceToUpgrade = CalculatePrice(_plantsCountToUpgrade);
-
-        _recalculated?.Invoke();
+        _uiDirector.UpgradeModeCountChanged += OnUpgradeModeCountChanged;
+        _wallet.Changed += OnWalletChanged;
+        _data.PlantsCountChanged += OnPlantsCountChanged;
     }
 
     public void Dispose()
     {
-        _uidirector.UpgradeModeCountChanged -= OnUpgradeModeCountChanged;
+        _uiDirector.UpgradeModeCountChanged -= OnUpgradeModeCountChanged;
+        _wallet.Changed -= OnWalletChanged;
+        _data.PlantsCountChanged -= OnPlantsCountChanged;
     }
+
+    public void UpgradePlantsCount()
+    {
+        if (_wallet.TrySpend(_data.PlantsPriceToUpgrade))
+            _data.SetPlantsCount(_data.PlantsCount + _data.PlantsCountToUpgrade);
+    }
+
+    private void ProcessChanges()
+    {
+        UpgradeModeCountButtonType type = _uiDirector.UpgradeModeCountButtonType;
+
+        int count = type switch
+        {
+            UpgradeModeCountButtonType.x1 => 1,
+            UpgradeModeCountButtonType.x10 => 10,
+            UpgradeModeCountButtonType.treshold => CalculateCountTreshold(),
+            UpgradeModeCountButtonType.max => CalculateMaxCount(),
+            _ => throw new InvalidCastException(nameof(type)),
+        };
+
+        float price = CalculatePrice(count + _data.PlantsCount) - CalculatePrice(_data.PlantsCount);
+        _data.SetPlantsCountToUpgrade(count);
+        _data.SetPlantsPriceToUpgrade(price);
+    }
+
+    private float CalculatePrice(int count) =>
+        _data.InitialPlantPrice * ((Mathf.Pow(PriceMultiplier, count) - 1f) / (PriceMultiplier - 1f));
+
+    private int CalculateCountTreshold()
+    {
+        int currentCount = _data.PlantsCount;
+        int treshold = InitialCountTreshold;
+
+        while (treshold <= currentCount)
+        {
+            int nextTreshold = Mathf.RoundToInt(treshold * CountTresholdMultiplier);
+
+            if (nextTreshold <= treshold || nextTreshold > int.MaxValue * 0.5f)
+                return 0;
+
+            treshold = nextTreshold;
+        }
+
+        int remainingCount = Math.Max(0, treshold - currentCount);
+
+        return remainingCount;
+    }
+
+    private int CalculateMaxCount()
+    {
+        int currentCount = _data.PlantsCount;
+        float availableMoney = _wallet.Amount;
+        float currentPrice = CalculatePrice(currentCount);
+        float moneyWithCurrentPrice = availableMoney + currentPrice;
+
+        if (moneyWithCurrentPrice <= currentPrice)
+            return 1;
+
+        float maxCountFloat = Mathf.Log(1f + moneyWithCurrentPrice * (PriceMultiplier - 1f) / _data.InitialPlantPrice) / Mathf.Log(PriceMultiplier);
+        int maxPossibleCount = Mathf.FloorToInt(maxCountFloat);
+        int affordableCount = Math.Max(1, maxPossibleCount - currentCount);
+
+        return affordableCount;
+    }
+
+    private void OnUpgradeModeCountChanged(UpgradeModeCountButtonType _) =>
+        ProcessChanges();
+
+    private void OnWalletChanged(float _) =>
+        ProcessChanges();
+
+    private void OnPlantsCountChanged(int _) =>
+        ProcessChanges();
 }

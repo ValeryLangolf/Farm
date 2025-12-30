@@ -8,18 +8,12 @@ public class UpgradeShopItemUI : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _upgradeDescriptionText;
     [SerializeField] private TextMeshProUGUI _gardenNameText;
-    [SerializeField] private BuyButtonUI _buyButton;
 
     private UpgradeInfo _upgradeInfo;
 
     public event Action<UpgradeInfo> Upgraded;
 
     public UpgradeInfo UpgradeInfo => _upgradeInfo;
-
-    private void OnDestroy()
-    {
-        _buyButton.Clicked -= ApplyUpgrade;
-    }
 
     public void SetUpgradeInfo(UpgradeInfo upgradeInfo)
     {
@@ -31,19 +25,6 @@ public class UpgradeShopItemUI : MonoBehaviour
     {
         SetUpgradeInfo(upgradeInfo);
         _image.sprite = _upgradeInfo.Icon;
-        _buyButton.SetPriceText(upgradeInfo.Price);
-        
-        _buyButton.Clicked += ApplyUpgrade;
-    }
-
-    public void AllowBuy()
-    {
-        _buyButton.SetState(BuyButtonState.Unblocked);
-    }
-
-    public void DenyBuy()
-    {
-        _buyButton.SetState(BuyButtonState.Blocked);
     }
 
     private void ApplyUpgrade(ButtonClickHandler _)

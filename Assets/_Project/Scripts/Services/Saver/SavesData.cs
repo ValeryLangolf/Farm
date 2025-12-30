@@ -20,5 +20,5 @@ public class SavedGardenData
     [Min(1)] public int PlantCount = 1;
     [Min(1)] public float StorageCapacity = 1;
     [Min(0)] public float StorageFullness = 0;
-    [Min(0)] public float GroverElapsedTime;
+    [Min(0)] public float GroverElapsedTime = 0;
 }

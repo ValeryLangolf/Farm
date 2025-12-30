@@ -25,9 +25,19 @@ public class GroverProgressBarIndicator : MonoBehaviour
         _data.GroverProgressChanged -= OnGroverProgressChanged;
     }
 
-    private void OnPurchaseStatusChanged(bool isPurchased) =>
-        _bar.SetActive(isPurchased);
+    private void ProcessChanges()
+    {
+        bool isActive = _data.IsPurchased && _data.GroverProgress > Mathf.Epsilon;
 
-    private void OnGroverProgressChanged(float progress) =>
-        _bar.SetProgress(progress);
+        _bar.SetActive(isActive);
+
+        if (isActive)
+            _bar.SetProgress(_data.GroverProgress);
+    }
+
+    private void OnPurchaseStatusChanged(bool _) =>
+        ProcessChanges();
+
+    private void OnGroverProgressChanged(float _) =>
+        ProcessChanges();
 }

@@ -28,7 +28,7 @@ public class GardenPriceTextIndicator : MonoBehaviour
         if (isPurchased)
             return;
 
-        if (NumberFormatter.NeedUpdateText(out string formattedText, _lastValue, _data.GardenPurchasePrice) == false)
+        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, _data.GardenPurchasePrice) == false)
             return;
 
         _lastValue = _data.GardenPurchasePrice;

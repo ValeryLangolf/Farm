@@ -7,16 +7,22 @@ public class ExtendedGardenData : IReadOnlyGardenData
     [SerializeField] private Sprite _icon;
     [SerializeField, Min(1)] private float _purchasePrice = 1;
     [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
-    [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = 1;
+    [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
+    [SerializeField, Min(1)] private float _initialPlantPrice = 1;
     [SerializeField] private bool _isInitialPurchased;
 
     private SavedGardenData _savedData = new();
     private float _groverProgress;
     private float _storageProgress;
+    private int _plantsCountToUpgrade;
+    private float _plantsPriceToUpgrade;
 
+    public event Action<int> PlantsCountChanged;
     public event Action<float> GroverProgressChanged;
     public event Action<float> StorageProgressChanged;
     public event Action<bool> PurchaseStatusChanged;
+    public event Action<int> PlantsCountToUpgradeChanged;
+    public event Action<float> PlantsPriceToUpgradeChanged;
 
     public SavedGardenData SavedData => _savedData;
 
@@ -44,6 +50,12 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public float StorageProgress => _storageProgress;
 
+    public int PlantsCountToUpgrade => _plantsCountToUpgrade;
+
+    public float PlantsPriceToUpgrade => _plantsPriceToUpgrade;
+
+    public float InitialPlantPrice => _initialPlantPrice;
+
     public void SetSavedData(SavedGardenData savedData)
     {
         _savedData = savedData;
@@ -55,6 +67,10 @@ public class ExtendedGardenData : IReadOnlyGardenData
         UpdadeStorageProgress();
 
         PurchaseStatusChanged?.Invoke(_savedData.IsPurchased);
+        PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+        PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
+        GroverProgressChanged?.Invoke(_groverProgress);
+        StorageProgressChanged?.Invoke(_storageProgress);
     }
 
     public void SetPurchasedStatus(bool isPurchased)
@@ -84,6 +100,19 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public void SetPlantsCount(int value)
     {
         _savedData.PlantCount = value;
+        PlantsCountChanged?.Invoke(value);
+    }
+
+    public void SetPlantsCountToUpgrade(int value)
+    {
+        _plantsCountToUpgrade = value;
+        PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+    }
+
+    public void SetPlantsPriceToUpgrade(float value)
+    {
+        _plantsPriceToUpgrade = value;
+        PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
     }
 
     private void UpdateGroverProgress()
