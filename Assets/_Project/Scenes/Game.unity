@@ -801,6 +801,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u041E\u0433\u0443\u0440\u0446\u044B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 5
       objectReference: {fileID: 0}
@@ -920,6 +924,10 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PlantCount
       value: 12000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u041F\u043E\u043C\u0438\u0434\u043E\u0440\u044B"
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
@@ -1251,7 +1259,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.1
+      scalar: 0.9
       minScalar: 0.05
       maxCurve:
         serializedVersion: 2
@@ -1421,9 +1429,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0.2
-      minScalar: 1
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1474,7 +1482,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -1527,7 +1535,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -2058,7 +2066,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -8274,6 +8282,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0410\u0440\u0431\u0443\u0437\u044B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 105000
       objectReference: {fileID: 0}
@@ -8857,6 +8869,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0411\u0430\u043A\u043B\u0430\u0436\u0430\u043D\u044B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 8640
       objectReference: {fileID: 0}
@@ -9241,6 +9257,10 @@ PrefabInstance:
       value: 9000000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0410\u0432\u043E\u043A\u0430\u0434\u043E"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 15000000
       objectReference: {fileID: 0}
@@ -9506,6 +9526,10 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PlantCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0424\u0435\u0439\u0445\u0443\u0430"
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
@@ -9881,21 +9905,21 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 1
+      minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.92399204, b: 0, a: 1}
-        key1: {r: 1, g: 0.3622684, b: 0, a: 1}
-        key2: {r: 1, g: 0.9254902, b: 0, a: 0}
+        key1: {r: 1, g: 0.92399204, b: 0, a: 1}
+        key2: {r: 0.82400036, g: 0, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 32768
+        ctime1: 65535
         ctime2: 65535
         ctime3: 0
         ctime4: 0
@@ -9912,7 +9936,7 @@ ParticleSystem:
         atime7: 0
         m_Mode: 0
         m_ColorSpace: 0
-        m_NumColorKeys: 3
+        m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -10960,7 +10984,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -10968,9 +10992,9 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 1, g: 0.92399204, b: 0, a: 1}
+        key1: {r: 1, g: 0, b: 0.054335594, a: 1}
+        key2: {r: 1, g: 0.64582115, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -10978,7 +11002,7 @@ ParticleSystem:
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
         ctime1: 65535
-        ctime2: 0
+        ctime2: 65516
         ctime3: 0
         ctime4: 0
         ctime5: 0
@@ -10993,7 +11017,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -13211,7 +13235,7 @@ ParticleSystem:
     separateAxes: 0
     range: {x: 0, y: 1}
   ColorBySpeedModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -13219,8 +13243,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 0.8562947, b: 0, a: 1}
+        key1: {r: 0.9402294, g: 0, b: 1, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -13244,7 +13268,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -14425,12 +14449,12 @@ Transform:
   m_GameObject: {fileID: 1600766712}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1018.2338, y: -509.1169, z: 0}
-  m_LocalScale: {x: 0.9428091, y: 0.9428091, z: 0.9428091}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 395518856}
-  m_Father: {fileID: 1889045312}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1600766716
 MonoBehaviour:
@@ -14998,7 +15022,6 @@ RectTransform:
   - {fileID: 1024907542}
   - {fileID: 207349517}
   - {fileID: 2045210284}
-  - {fileID: 1600766715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -15491,6 +15514,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0420\u0435\u0434\u0438\u0441"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
       value: 720
       objectReference: {fileID: 0}
@@ -15760,6 +15787,10 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PlantCount
       value: 240000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u0427\u0435\u0441\u043D\u043E\u043A"
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.PurchasePrice
@@ -16087,6 +16118,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._gardenName
+      value: "\u041A\u0430\u0440\u0442\u043E\u0444\u0435\u043B\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._isInitialPurchased
       value: 1
       objectReference: {fileID: 0}
@@ -16159,5 +16194,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1345296083}
   - {fileID: 1889045312}
+  - {fileID: 1600766715}
   - {fileID: 239231571}
   - {fileID: 1650682427}

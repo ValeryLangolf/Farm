@@ -15,11 +15,8 @@ public class InputTrailParticle : MonoBehaviour, IService
     private void OnDisable() =>
         Unsubscribe();
 
-    private void PlayParticle()
-    {
-        if (_particle.isPlaying == false)
-            _particle.Play();
-    }
+    private void PlayParticle() =>
+        _particle.Play();
 
     private void StopParticle() =>
         _particle.Stop();

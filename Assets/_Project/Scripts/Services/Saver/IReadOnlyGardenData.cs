@@ -12,8 +12,6 @@ public interface IReadOnlyGardenData
 
     Sprite Icon { get; }
 
-    float InitialGrowingCycleRevenue {  get; }
-
     float GardenPurchasePrice { get; }
 
     bool IsPurchased { get; }

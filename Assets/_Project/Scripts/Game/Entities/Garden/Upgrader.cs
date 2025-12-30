@@ -11,7 +11,6 @@ public class Upgrader : IDisposable
     private readonly UIDirector _uiDirector;
     private readonly ExtendedGardenData _data;
 
-
     public Upgrader(ExtendedGardenData data)
     {
         _data = data;

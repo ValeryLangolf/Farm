@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class ExtendedGardenData : IReadOnlyGardenData
 {
+    [SerializeField] private string _gardenName;
     [SerializeField] private Sprite _icon;
     [SerializeField, Min(1)] private float _purchasePrice = 1;
     [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
@@ -16,6 +17,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
     private float _storageProgress;
     private int _plantsCountToUpgrade;
     private float _plantsPriceToUpgrade;
+    private float _cultivationDurationInSeconds = float.MaxValue;
 
     public event Action<int> PlantsCountChanged;
     public event Action<float> GroverProgressChanged;
@@ -26,11 +28,11 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public SavedGardenData SavedData => _savedData;
 
+    public string GardenName => _gardenName;
+
     public Sprite Icon => _icon;
 
     public float GardenPurchasePrice => _purchasePrice;
-
-    public float InitialGrowingCycleRevenue => _initialGrowingCycleRevenue;
 
     public float CurrentGrowingCycleRevenue => _initialGrowingCycleRevenue * _savedData.PlantCount;
 
@@ -55,6 +57,8 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public float PlantsPriceToUpgrade => _plantsPriceToUpgrade;
 
     public float InitialPlantPrice => _initialPlantPrice;
+
+    public float CultivationDurationInSeconds => _cultivationDurationInSeconds;
 
     public void SetSavedData(SavedGardenData savedData)
     {
@@ -115,9 +119,15 @@ public class ExtendedGardenData : IReadOnlyGardenData
         PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
     }
 
+    public void SetCultivationDurationInSeconds(float value)
+    {
+        _cultivationDurationInSeconds = value;
+    }
+
+
     private void UpdateGroverProgress()
     {
-        _groverProgress = _savedData.GroverElapsedTime / InitialCultivationDurationInSeconds;
+        _groverProgress = _savedData.GroverElapsedTime / _cultivationDurationInSeconds;
         GroverProgressChanged?.Invoke(_groverProgress);
     }
 
