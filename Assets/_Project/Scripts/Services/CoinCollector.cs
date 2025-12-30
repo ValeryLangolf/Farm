@@ -27,9 +27,21 @@ public class CoinCollector : IService, IDisposable
         _isOn = isOn;
 
         if (isOn)
-            _interactionDetector.Swiped += OnSwiped;
+            Subscribe();
         else
-            _interactionDetector.Swiped -= OnSwiped;
+            Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        _interactionDetector.Swiped += OnSwiped;
+        _interactionDetector.Clicked += OnSwiped;
+    }
+
+    private void Unsubscribe()
+    {
+        _interactionDetector.Swiped -= OnSwiped;
+        _interactionDetector.Clicked -= OnSwiped;
     }
 
     private void OnSwiped(RaycastHit2D[] hits, int hitCount)

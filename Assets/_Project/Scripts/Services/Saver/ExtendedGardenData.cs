@@ -34,13 +34,13 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public float GardenPurchasePrice => _purchasePrice;
 
-    public float CurrentGrowingCycleRevenue => _initialGrowingCycleRevenue * _savedData.PlantCount;
+    public float CurrentGrowingCycleRevenue => _initialGrowingCycleRevenue * _savedData.PlantsCount;
 
     public float InitialCultivationDurationInSeconds => _initialCultivationDurationInSeconds;
 
     public bool IsPurchased => _savedData.IsPurchased;
 
-    public int PlantsCount => _savedData.PlantCount;
+    public int PlantsCount => _savedData.PlantsCount;
 
     public float StorageCapacity => _savedData.StorageCapacity;
 
@@ -103,7 +103,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public void SetPlantsCount(int value)
     {
-        _savedData.PlantCount = value;
+        _savedData.PlantsCount = value;
         PlantsCountChanged?.Invoke(value);
     }
 

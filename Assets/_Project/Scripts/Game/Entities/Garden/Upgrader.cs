@@ -31,8 +31,10 @@ public class Upgrader : IDisposable
 
     public void UpgradePlantsCount()
     {
+        int plantsCountToUpgrade = _data.PlantsCountToUpgrade;
+
         if (_wallet.TrySpend(_data.PlantsPriceToUpgrade))
-            _data.SetPlantsCount(_data.PlantsCount + _data.PlantsCountToUpgrade);
+            _data.SetPlantsCount(_data.PlantsCount + plantsCountToUpgrade);
     }
 
     private void ProcessChanges()

@@ -10,6 +10,8 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
 
+    private bool _isApplicationQuitting = false;
+
     private void Awake()
     {
         RegisterServices();
@@ -18,10 +20,22 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Get<IAudioService>().Music.Play();
     }
 
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            SaveProgress();
+    }
+
+    private void OnApplicationQuit()
+    {
+        _isApplicationQuitting = true;
+        SaveProgress();
+    }
+
     private void OnDisable()
     {
-        if (ServiceLocator.TryGet(out SavingMediator savingMediator))
-            savingMediator.Save();
+        if (_isApplicationQuitting == false)
+            SaveProgress();
     }
 
     private void OnDestroy()
@@ -86,5 +100,11 @@ public class Bootstrap : MonoBehaviour
 
         foreach (IDisposable disposable in disposables)
             disposable?.Dispose();
+    }
+
+    private void SaveProgress()
+    {
+        if (ServiceLocator.TryGet(out SavingMediator savingMediator))
+            savingMediator.Save();
     }
 }

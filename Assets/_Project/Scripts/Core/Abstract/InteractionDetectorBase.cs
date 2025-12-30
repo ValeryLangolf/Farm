@@ -6,10 +6,12 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IRunnable,
     private const int MaxHits = 10;
     private const float ClickMaxDuration = 0.3f;
     private const float ClickMaxDistance = 10f;
+    private const float StationaryTimeThreshold = 0.05f;
 
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[MaxHits];
     private Vector2 _inputStartPosition;
     private float _inputStartTime;
+    private float _stationaryTime;
     private bool _isSubscribed;
 
     public event Action<RaycastHit2D[], int> Swiped;
@@ -48,7 +50,10 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IRunnable,
         float inputDuration = Time.time - _inputStartTime;
         float inputDistance = Vector2.Distance(_inputStartPosition, screenPosition);
 
-        if (inputDuration <= ClickMaxDuration && inputDistance <= ClickMaxDistance)
+        bool isClick = (inputDuration <= ClickMaxDuration && inputDistance <= ClickMaxDistance)
+            || _stationaryTime >= StationaryTimeThreshold;
+
+        if (isClick)
             ProcessRaycastForClick(screenPosition);
     }
 
@@ -63,6 +68,9 @@ public abstract class InteractionDetectorBase : IInteractionDetector, IRunnable,
         if (hitCount > 0)
             Swiped?.Invoke(_hits, hitCount);
     }
+
+    protected void UpdateStationaryTime(float deltaTime) =>
+        _stationaryTime += deltaTime;
 
     private void Subscribe()
     {

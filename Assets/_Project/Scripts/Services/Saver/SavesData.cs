@@ -17,7 +17,7 @@ public class SavesData
 public class SavedGardenData
 {
     public bool IsPurchased = false;
-    [Min(1)] public int PlantCount = 1;
+    [Min(1)] public int PlantsCount = 1;
     [Min(1)] public float StorageCapacity = 1;
     [Min(0)] public float StorageFullness = 0;
     [Min(0)] public float GroverElapsedTime = 0;

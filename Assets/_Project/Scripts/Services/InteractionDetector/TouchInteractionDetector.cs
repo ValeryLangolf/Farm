@@ -2,44 +2,79 @@ using UnityEngine;
 
 public class TouchInteractionDetector : InteractionDetectorBase
 {
-    private bool _wasTouching = false;
     private bool _hasActiveTouch = false;
     private Vector2 _lastTouchPosition;
+    private int _lastTouchId = -1;
 
     protected override void HandleUpdate()
     {
-        bool hasTouch = Input.touchCount > 0;
-
-        if (hasTouch && _wasTouching == false)
+        if (Input.touchCount == 0)
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began)
+            if (_hasActiveTouch)
             {
-                _hasActiveTouch = true;
-                InvokeInputStarted(_lastTouchPosition);
-            }
-        }
-        else if (hasTouch == false && _wasTouching && _hasActiveTouch)
-        {
-            InvokeInputEnded(_lastTouchPosition);
-            _hasActiveTouch = false;
-        }
-
-        if (_hasActiveTouch)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                ProcessRaycast(touch.position);
-
-            if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-            {
-                InvokeInputEnded(touch.position);
+                InvokeInputEnded(_lastTouchPosition);
                 _hasActiveTouch = false;
+                _lastTouchId = -1;
+            }
+
+            return;
+        }
+
+        Touch touch = GetRelevantTouch();
+
+        switch (touch.phase)
+        {
+            case TouchPhase.Began:
+                if (_hasActiveTouch == false)
+                {
+                    _hasActiveTouch = true;
+                    _lastTouchId = touch.fingerId;
+                    _lastTouchPosition = touch.position;
+                    InvokeInputStarted(_lastTouchPosition);
+                }
+                break;
+
+            case TouchPhase.Moved:
+                if (_hasActiveTouch && touch.fingerId == _lastTouchId)
+                {
+                    _lastTouchPosition = touch.position;
+                    ProcessRaycast(_lastTouchPosition);
+                }
+                break;
+
+            case TouchPhase.Stationary:
+                if (_hasActiveTouch && touch.fingerId == _lastTouchId)
+                {
+                    UpdateStationaryTime(Time.deltaTime);
+                }
+                break;
+
+            case TouchPhase.Ended:
+            case TouchPhase.Canceled:
+                if (_hasActiveTouch && touch.fingerId == _lastTouchId)
+                {
+                    _lastTouchPosition = touch.position;
+                    InvokeInputEnded(_lastTouchPosition);
+                    _hasActiveTouch = false;
+                    _lastTouchId = -1;
+                }
+                break;
+        }
+    }
+
+    private Touch GetRelevantTouch()
+    {
+        if (_lastTouchId != -1)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                Touch touch = Input.GetTouch(i);
+
+                if (touch.fingerId == _lastTouchId)
+                    return touch;
             }
         }
 
-        _wasTouching = hasTouch;
+        return Input.GetTouch(0);
     }
 }
