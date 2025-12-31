@@ -29,7 +29,7 @@ public class StoragePartialFillingIconIndicator : MonoBehaviour
 
     private void ProcessChanges()
     {
-        bool isActive = _data.IsPurchased && _data.StorageProgress > Mathf.Epsilon;
+        bool isActive = _data.IsPurchased && _data.StorageFullness > 0;
         _indicator.SetActive(isActive);
     }
 

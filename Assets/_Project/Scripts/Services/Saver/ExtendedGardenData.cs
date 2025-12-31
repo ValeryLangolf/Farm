@@ -10,6 +10,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
     [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
     [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
     [SerializeField, Min(1)] private float _initialPlantPrice = 1;
+    [SerializeField, Min(1)] private float _initialProfitPrice = 1;
 
     private SavedGardenData _savedData = new();
     private float _groverProgress;
@@ -24,6 +25,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public event Action<bool> PurchaseStatusChanged;
     public event Action<int> PlantsCountToUpgradeChanged;
     public event Action<float> PlantsPriceToUpgradeChanged;
+    public event Action<float> ProfitLevelChanged;
 
     public SavedGardenData SavedData => _savedData;
 
@@ -41,7 +43,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public int PlantsCount => _savedData.PlantsCount;
 
-    public float StorageCapacity => _savedData.StorageCapacity;
+    public bool IsStorageInfinity => _savedData.ProfitLevel > 0;
 
     public float StorageFullness => _savedData.StorageFullness;
 
@@ -58,6 +60,10 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public float InitialPlantPrice => _initialPlantPrice;
 
     public float CultivationDurationInSeconds => _cultivationDurationInSeconds;
+
+    public float InitialProfitPrice => _initialProfitPrice;
+    public int ProfitLevel => _savedData.ProfitLevel;
+
 
     public void SetSavedData(SavedGardenData savedData)
     {
@@ -83,12 +89,6 @@ public class ExtendedGardenData : IReadOnlyGardenData
     {
         _savedData.GroverElapsedTime = value;
         UpdateGroverProgress();
-    }
-
-    public void SetStorageCapacity(float value)
-    {
-        _savedData.StorageCapacity = value;
-        UpdadeStorageProgress();
     }
 
     public void SetStorageFullnes(float value)
@@ -120,6 +120,11 @@ public class ExtendedGardenData : IReadOnlyGardenData
         _cultivationDurationInSeconds = value;
     }
 
+    public void SetProfitLevel(int level)
+    {
+        _savedData.ProfitLevel = level;
+        ProfitLevelChanged?.Invoke(level);
+    }
 
     private void UpdateGroverProgress()
     {
@@ -129,7 +134,6 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     private void UpdadeStorageProgress()
     {
-        _storageProgress = _savedData.StorageFullness / _savedData.StorageCapacity;
         StorageProgressChanged?.Invoke(_storageProgress);
     }
 }

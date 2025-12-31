@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 830447526416541424}
   - component: {fileID: 8111120896935470653}
   - component: {fileID: 1162294450227245384}
+  - component: {fileID: 2693296585973253389}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -710,6 +711,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2693296585973253389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6564857121644564734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f799a24f346313b479f45890130c2af8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1162294450227245384}
 --- !u!1 &6802714206514230418
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,8 +751,8 @@ RectTransform:
   m_GameObject: {fileID: 6802714206514230418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.92, y: 1.92, z: 1.92}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6899933182236785313}
   - {fileID: 4966166525980576773}
@@ -774,3 +788,4 @@ MonoBehaviour:
   _image: {fileID: 462786210069410679}
   _upgradeDescriptionText: {fileID: 3577729999448052521}
   _gardenNameText: {fileID: 960519894704743092}
+  _purchaseButton: {fileID: 2693296585973253389}

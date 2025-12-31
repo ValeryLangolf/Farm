@@ -65,9 +65,18 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     public void UpgradePlantsCount() =>
         _upgrader.UpgradePlantsCount();
 
+    public void UpgradeProfit()
+    {
+        float price = 500;
+        if (_wallet.TrySpend(price))
+        {
+            _data.SetProfitLevel(_data.ProfitLevel + 1);
+        }
+    }
+
     private void ProcessRunnableStatusGrover()
     {
-        if (_data.IsPurchased && _data.StorageFullness < _data.StorageCapacity)
+        if (_data.IsPurchased && (_data.StorageFullness == 0 || _data.IsStorageInfinity))
             _grover.StartRun();
         else
             _grover.StopRun();

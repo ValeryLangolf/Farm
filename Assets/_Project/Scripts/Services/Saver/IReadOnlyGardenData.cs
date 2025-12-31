@@ -18,7 +18,7 @@ public interface IReadOnlyGardenData
 
     int PlantsCount { get; }
 
-    float StorageCapacity { get; }
+    bool IsStorageInfinity { get; }
 
     float StorageFullness { get; }
 
@@ -31,4 +31,7 @@ public interface IReadOnlyGardenData
     int PlantsCountToUpgrade { get; }
 
     float PlantsPriceToUpgrade { get; }
+
+    int ProfitLevel { get; }
+   string GardenName {  get; }  
 }

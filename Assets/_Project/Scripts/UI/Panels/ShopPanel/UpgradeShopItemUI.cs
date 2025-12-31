@@ -8,40 +8,30 @@ public class UpgradeShopItemUI : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _upgradeDescriptionText;
     [SerializeField] private TextMeshProUGUI _gardenNameText;
+    [SerializeField] private ProfitLevelUpPurchaseButton _purchaseButton;
 
-    private UpgradeInfo _upgradeInfo;
+    private Garden _garden;
 
-    public event Action<UpgradeInfo> Upgraded;
-
-    public UpgradeInfo UpgradeInfo => _upgradeInfo;
-
-    public void SetUpgradeInfo(UpgradeInfo upgradeInfo)
+    private void OnEnable()
     {
-        _upgradeInfo = upgradeInfo;
-        _upgradeDescriptionText.text = upgradeInfo.Description;
+        _purchaseButton.Clicked += OnClickUpgrade;
     }
 
-    public void Init(UpgradeInfo upgradeInfo)
+    private void OnDisable()
     {
-        SetUpgradeInfo(upgradeInfo);
-        _image.sprite = _upgradeInfo.Icon;
+        _purchaseButton.Clicked -= OnClickUpgrade;
+    }
+    public void Init(Garden garden, string description)
+    {
+        _garden = garden;
+        _upgradeDescriptionText.text = description;
+        _gardenNameText.text = _garden.ReadOnlyData.GardenName;
+        _image.sprite = _garden.ReadOnlyData.Icon;
     }
 
-    private void ApplyUpgrade(ButtonClickHandler _)
+    private void OnClickUpgrade(ButtonClickHandler _)
     {
-        Upgraded?.Invoke(_upgradeInfo);
-    }
-}
-
-public class UpgradeInfo //“естовый класс чтобы проверить работоспособность. ѕотом передалать или удалить
-{
-    public UpgradeInfo(string description, float price)
-    {
-        Description = description;
-        Price = price;
+        _garden.UpgradeProfit();
     }
 
-    public Sprite Icon;
-    public string Description;
-    public float Price;
 }

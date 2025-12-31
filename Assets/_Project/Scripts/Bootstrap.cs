@@ -68,6 +68,7 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
         ServiceLocator.Register(new EntityClickHandler(interactionDetector));
         ServiceLocator.Register(_trailParticle);
+        ServiceLocator.Register(new GardensDirector(_gardens));
     }
 
     private void StartRunServices()
