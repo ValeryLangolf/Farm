@@ -28,9 +28,18 @@ public class GardenCanSpendImageIndicator : SwitchableImage
         _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
     }
 
-    private void OnWalletChanged(float value) =>
-        UpdateState(value >= _data.GardenPurchasePrice);
+    private void ProcessChanges()
+    {
+        bool isActive = _data.IsPurchased == false;
+        SetActiveIcon(isActive);
 
-    private void OnPurchaseStatusChanged(bool isPurchased) =>
-        SetActiveIcon(isPurchased == false);
+        if(isActive)
+            UpdateState(_wallet.Amount >= _data.GardenPurchasePrice);
+    }
+
+    private void OnWalletChanged(float _) =>
+        ProcessChanges();
+
+    private void OnPurchaseStatusChanged(bool _) =>
+        ProcessChanges();
 }

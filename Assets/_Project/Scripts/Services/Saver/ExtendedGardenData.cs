@@ -6,11 +6,10 @@ public class ExtendedGardenData : IReadOnlyGardenData
 {
     [SerializeField] private string _gardenName;
     [SerializeField] private Sprite _icon;
-    [SerializeField, Min(1)] private float _purchasePrice = 1;
+    [SerializeField, Min(0)] private float _purchasePrice = 0;
     [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
     [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
     [SerializeField, Min(1)] private float _initialPlantPrice = 1;
-    [SerializeField] private bool _isInitialPurchased;
 
     private SavedGardenData _savedData = new();
     private float _groverProgress;
@@ -63,9 +62,6 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public void SetSavedData(SavedGardenData savedData)
     {
         _savedData = savedData;
-
-        if (_isInitialPurchased)
-            _savedData.IsPurchased = true;
 
         UpdateGroverProgress();
         UpdadeStorageProgress();

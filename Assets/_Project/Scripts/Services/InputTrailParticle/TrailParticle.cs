@@ -47,7 +47,7 @@ public class TrailParticle : MonoBehaviour, IPoolable<TrailParticle>
         if (_particleSystem.main.stopAction == ParticleSystemStopAction.Disable)
             StartCoroutine(WaitForParticlesToFinish());
         else
-            Deactivate();
+            ReturnToPool();
     }
 
     private IEnumerator WaitForParticlesToFinish()
@@ -55,9 +55,9 @@ public class TrailParticle : MonoBehaviour, IPoolable<TrailParticle>
         while (_particleSystem.IsAlive(true))
             yield return null;
 
-        Deactivate();
+        ReturnToPool();
     }
 
-    public void Deactivate() =>
+    public void ReturnToPool() =>
         Deactivated?.Invoke(this);
 }

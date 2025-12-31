@@ -2,51 +2,33 @@ using System;
 
 public class Grover : IDisposable
 {
-    private const int InitialTresholdPlantsTime = 25;
-    private const float TimeReductionMultiplier = 2f;
-
     private readonly ExtendedGardenData _data;
+    private readonly Updater _updater = new();
 
-    private float _currentTresholdMultiplier = 1;
-    private bool _isRunning;
+    private float _currentTresholdMultiplier;
 
     public Grover(ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
 
         _data.PlantsCountChanged += OnPlantsCountChanged;
-
+        _updater.Updated += OnUpdated;
         _currentTresholdMultiplier = CalculateTresholdMultiplier(_data.PlantsCount);
         UpdateCultivationDuration();
     }
 
     public void Dispose()
     {
+        _updater.Dispose();
         _data.PlantsCountChanged -= OnPlantsCountChanged;
         StopRun();
     }
 
-    public void StartRun()
-    {
-        if (_isRunning)
-            return;
+    public void StartRun() =>
+        _updater.Subscribe();
 
-        _isRunning = true;
-
-        if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated += OnUpdated;
-    }
-
-    public void StopRun()
-    {
-        if (_isRunning == false)
-            return;
-
-        _isRunning = false;
-
-        if (UpdateService.IsDestroyed == false)
-            UpdateService.Instance.Updated -= OnUpdated;
-    }
+    public void StopRun() =>
+        _updater.Unsubscribe();
 
     public void Grow(float deltaTime)
     {
@@ -73,18 +55,19 @@ public class Grover : IDisposable
 
     private float CalculateTresholdMultiplier(int plantsCount)
     {
-        if (plantsCount < InitialTresholdPlantsTime)
+        int treshold = Constants.TresholdPlants;
+
+        if (plantsCount < treshold)
             return 1f;
 
-        int treshold = InitialTresholdPlantsTime;
         float multiplier = 1f;
 
         while (plantsCount >= treshold)
         {
-            multiplier *= TimeReductionMultiplier;
-            int nextTreshold = (int)(treshold * TimeReductionMultiplier);
+            multiplier *= Constants.TresholdPlantsMultiplier;
+            int nextTreshold = (int)(treshold * Constants.TresholdPlantsMultiplier);
 
-            if (nextTreshold <= treshold || nextTreshold > float.MaxValue * 0.5f)
+            if (nextTreshold <= treshold || nextTreshold > int.MaxValue / Constants.TresholdPlantsMultiplier)
                 break;
 
             treshold = nextTreshold;
@@ -112,6 +95,6 @@ public class Grover : IDisposable
             UpdateCultivationDuration();
 
             UnityEngine.Debug.Log($"Теперь грядка \"{_data.GardenName}\" будет производить ресурсы на 50% быстрее");
-        }      
+        }
     }
 }

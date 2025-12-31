@@ -1,19 +1,17 @@
 using System;
 using UnityEngine;
 
-public class Upgrader : IDisposable
+public class GardenUpgrader : IDisposable
 {
     private const float PriceMultiplier = 1.2f;
-    private const float CountTresholdMultiplier = 2f;
-    private const int InitialCountTreshold = 25;
 
     private readonly IWallet _wallet;
     private readonly UIDirector _uiDirector;
     private readonly ExtendedGardenData _data;
 
-    public Upgrader(ExtendedGardenData data)
+    public GardenUpgrader(ExtendedGardenData data)
     {
-        _data = data;
+        _data = data ?? throw new ArgumentNullException(nameof(data));
         _wallet = ServiceLocator.Get<IWallet>();
         _uiDirector = ServiceLocator.Get<UIDirector>();
 
@@ -61,13 +59,13 @@ public class Upgrader : IDisposable
     private int CalculateCountTreshold()
     {
         int currentCount = _data.PlantsCount;
-        int treshold = InitialCountTreshold;
+        int treshold = Constants.TresholdPlants;
 
         while (treshold <= currentCount)
         {
-            int nextTreshold = Mathf.RoundToInt(treshold * CountTresholdMultiplier);
+            int nextTreshold = Mathf.RoundToInt(treshold * Constants.TresholdPlantsMultiplier);
 
-            if (nextTreshold <= treshold || nextTreshold > int.MaxValue * 0.5f)
+            if (nextTreshold <= treshold || nextTreshold > int.MaxValue / Constants.TresholdPlantsMultiplier)
                 return 0;
 
             treshold = nextTreshold;

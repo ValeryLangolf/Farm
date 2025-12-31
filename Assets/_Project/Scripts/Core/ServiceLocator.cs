@@ -16,10 +16,14 @@ public static class ServiceLocator
         return results;
     }
 
-    public static bool Has<T>() where T : class, IService
+    public static void Register<T>(T service) where T : class, IService
     {
         Type type = typeof(T);
-        return s_services.ContainsKey(type);
+
+        if (s_services.ContainsKey(type))
+            throw new InvalidOperationException($"Попытка повторной регистрации сервиса {type.Name}");
+
+        s_services[type] = service;
     }
 
     public static bool TryGet<T>(out T service) where T : class, IService
@@ -36,16 +40,6 @@ public static class ServiceLocator
         return false;
     }
 
-    public static void Register<T>(T service) where T : class, IService
-    {
-        Type type = typeof(T);
-
-        if (s_services.ContainsKey(type))
-            throw new InvalidOperationException($"Попытка повторной регистрации сервиса {type.Name}");
-
-        s_services[type] = service;
-    }
-
     public static T Get<T>() where T : class, IService
     {
         Type type = typeof(T);
@@ -54,19 +48,5 @@ public static class ServiceLocator
             return (T)existingService;
 
         throw new Exception($"Не удалось получить тип {type}");
-    }
-
-    public static bool TryRemove<T>() where T : class, IService
-    {
-        Type type = typeof(T);
-        bool isRemoved = false;
-
-        if (s_services.TryGetValue(type, out IService _))
-        {
-            s_services.Remove(type);
-            isRemoved = true;
-        }
-
-        return isRemoved;
     }
 }

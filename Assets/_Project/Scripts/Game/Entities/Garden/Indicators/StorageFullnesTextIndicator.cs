@@ -27,30 +27,25 @@ public class StorageFullnesTextIndicator : MonoBehaviour
         _data.StorageProgressChanged -= OnStorageProgressChanged;
     }
 
-    private void OnPurchaseStatusChanged(bool isPurchased)
-    {
-        if (isPurchased == false)
-        {
-            _text.SetActive(false);
-            return;
-        }
-
-        OnStorageProgressChanged(_data.StorageProgress);
-    }
-
-    private void OnStorageProgressChanged(float _)
+    private void ProceccChanges()
     {
         float fullness = _data.StorageFullness;
+        bool isActive = _data.IsPurchased && fullness > 0;
+        _text.SetActive(isActive);
 
-        _text.SetActive(fullness > 0);
-
-        if (fullness > 0)
+        if (isActive)
         {
-            if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, fullness) == false)
-                return;
-
-            _lastValue = fullness;
-            _text.text = formattedText + Constants.DollarChar;
+            if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, fullness))
+            {
+                _lastValue = fullness;
+                _text.text = formattedText + Constants.DollarChar;
+            }
         }
     }
+
+    private void OnPurchaseStatusChanged(bool isPurchased) =>
+        ProceccChanges();
+
+    private void OnStorageProgressChanged(float _) =>
+        ProceccChanges();
 }

@@ -1,4 +1,4 @@
 public interface IClickable
 {
-    void HandleClick();
+    void ProcessClick();
 }

@@ -23,15 +23,17 @@ public class GardenPriceTextIndicator : MonoBehaviour
 
     private void OnPurchaseStatusChanged(bool isPurchased)
     {
-        _text.SetActive(_data.IsPurchased == false);
+        bool isActive = isPurchased == false;
 
-        if (isPurchased)
+        _text.SetActive(isActive);
+
+        if (isActive == false)
             return;
 
-        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, _data.GardenPurchasePrice) == false)
-            return;
-
-        _lastValue = _data.GardenPurchasePrice;
-        _text.text = formattedText + Constants.DollarChar;
+        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastValue, _data.GardenPurchasePrice))
+        {
+            _lastValue = _data.GardenPurchasePrice;
+            _text.text = formattedText + Constants.DollarChar;
+        }
     }
 }

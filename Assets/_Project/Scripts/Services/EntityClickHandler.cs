@@ -10,7 +10,8 @@ public class EntityClickHandler : IService, IDisposable
 
     public EntityClickHandler(IInteractionDetector swipeHandler)
     {
-        _interactionDetector = swipeHandler;        
+        _interactionDetector = swipeHandler;
+        SetEnabled(true);
     }
 
     public void Dispose() =>
@@ -48,6 +49,6 @@ public class EntityClickHandler : IService, IDisposable
 
         for (int i = 0; i < hitCount; i++)
             if (hits[i].collider.TryGetComponent(out IClickable collectable))
-                collectable.HandleClick();
+                collectable.ProcessClick();
     }
 }

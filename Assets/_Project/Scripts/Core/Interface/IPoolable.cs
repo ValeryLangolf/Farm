@@ -1,1 +1,8 @@
-public interface IPoolable<T> : IDeactivatable<T> { }
+using System;
+
+public interface IPoolable<T>
+{
+    public event Action<T> Deactivated;
+
+    void ReturnToPool();
+}

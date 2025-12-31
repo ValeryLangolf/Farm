@@ -7,9 +7,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     private IWallet _wallet;
     private Sfx _sfx;
-
     private Grover _grover;
-    private Upgrader _upgrader;
+    private GardenUpgrader _upgrader;
 
     public IReadOnlyGardenData ReadOnlyData => _data;
 
@@ -21,8 +20,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     private void OnDestroy()
     {
-        _grover.Dispose();
-        _upgrader.Dispose();
+        _grover?.Dispose();
+        _upgrader?.Dispose();
     }
 
     public void SetData(SavedGardenData data)
@@ -32,23 +31,19 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
         _grover?.Dispose();
         _upgrader?.Dispose();
-
         _data.SetSavedData(data);
-
         _grover = new(_data);
         _grover.Grow(_data.GroverElapsedTime);
         _upgrader = new(_data);
-
-        if (_data.IsPurchased && _data.StorageFullness < _data.StorageCapacity)
-            _grover.StartRun();
+        ProcessRunnableStatusGrover();
     }
 
-    public void HandleClick()
+    public void ProcessClick()
     {
         if (_data.IsPurchased == false && _wallet.TrySpend(_data.GardenPurchasePrice))
         {
             _data.SetPurchasedStatus(true);
-            _grover.StartRun();
+            ProcessRunnableStatusGrover();
         }
     }
 
@@ -60,7 +55,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         if (isSuccessful)
         {
             _data.SetStorageFullnes(0);
-            _grover.StartRun();
+            ProcessRunnableStatusGrover();
             _sfx.PlayCollectedCoin();
         }
 
@@ -69,4 +64,12 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public void UpgradePlantsCount() =>
         _upgrader.UpgradePlantsCount();
+
+    private void ProcessRunnableStatusGrover()
+    {
+        if (_data.IsPurchased && _data.StorageFullness < _data.StorageCapacity)
+            _grover.StartRun();
+        else
+            _grover.StopRun();
+    }
 }
