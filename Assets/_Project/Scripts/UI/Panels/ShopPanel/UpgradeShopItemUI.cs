@@ -15,6 +15,7 @@ public class UpgradeShopItemUI : MonoBehaviour
     private Garden _garden;
 
     public float Price => _garden.ReadOnlyData.LevelUpPrice;
+
     public bool IsPurchased => _garden.ReadOnlyData.IsPurchased;
 
     private void Awake()
@@ -40,7 +41,7 @@ public class UpgradeShopItemUI : MonoBehaviour
     }
 
 
-    public void Init(Garden garden, string description)
+    public void UpdateInfo(Garden garden, string description)
     {
         _garden = garden;
         IReadOnlyGardenData data = garden.ReadOnlyData;
