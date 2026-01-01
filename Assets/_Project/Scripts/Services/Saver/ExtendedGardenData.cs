@@ -14,14 +14,13 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     private SavedGardenData _savedData = new();
     private float _groverProgress;
-    private float _storageProgress;
     private int _plantsCountToUpgrade;
     private float _plantsPriceToUpgrade;
     private float _cultivationDurationInSeconds = float.MaxValue;
 
     public event Action<int> PlantsCountChanged;
     public event Action<float> GroverProgressChanged;
-    public event Action<float> StorageProgressChanged;
+    public event Action<bool> StorageFilledChanged;
     public event Action<bool> PurchaseStatusChanged;
     public event Action<int> PlantsCountToUpgradeChanged;
     public event Action<float> PlantsPriceToUpgradeChanged;
@@ -51,7 +50,8 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public float GroverProgress => _groverProgress;
 
-    public float StorageProgress => _storageProgress;
+    public bool IsStorageFilled => _savedData.StorageFullness > 0 
+        && _savedData.ProfitLevel == 0;
 
     public int PlantsCountToUpgrade => _plantsCountToUpgrade;
 
@@ -62,21 +62,23 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public float CultivationDurationInSeconds => _cultivationDurationInSeconds;
 
     public float InitialProfitPrice => _initialProfitPrice;
+
     public int ProfitLevel => _savedData.ProfitLevel;
 
+    public float LevelUpPrice => 100;
 
     public void SetSavedData(SavedGardenData savedData)
     {
         _savedData = savedData;
 
         UpdateGroverProgress();
-        UpdadeStorageProgress();
+        UpdadeStorageFilledState();
 
         PurchaseStatusChanged?.Invoke(_savedData.IsPurchased);
         PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
         PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
         GroverProgressChanged?.Invoke(_groverProgress);
-        StorageProgressChanged?.Invoke(_storageProgress);
+        StorageFilledChanged?.Invoke(IsStorageFilled);
     }
 
     public void SetPurchasedStatus(bool isPurchased)
@@ -94,7 +96,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public void SetStorageFullnes(float value)
     {
         _savedData.StorageFullness = value;
-        UpdadeStorageProgress();
+        UpdadeStorageFilledState();
     }
 
     public void SetPlantsCount(int value)
@@ -132,8 +134,8 @@ public class ExtendedGardenData : IReadOnlyGardenData
         GroverProgressChanged?.Invoke(_groverProgress);
     }
 
-    private void UpdadeStorageProgress()
+    private void UpdadeStorageFilledState()
     {
-        StorageProgressChanged?.Invoke(_storageProgress);
+        StorageFilledChanged?.Invoke(IsStorageFilled);
     }
 }

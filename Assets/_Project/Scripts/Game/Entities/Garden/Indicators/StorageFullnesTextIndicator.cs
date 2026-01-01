@@ -17,14 +17,14 @@ public class StorageFullnesTextIndicator : MonoBehaviour
         OnPurchaseStatusChanged(_data.IsPurchased);
         _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
 
-        OnStorageProgressChanged(_data.StorageProgress);
-        _data.StorageProgressChanged += OnStorageProgressChanged;
+        OnStorageProgressChanged(_data.ProfitLevel > 0);
+        _data.StorageFilledChanged += OnStorageProgressChanged;
     }
 
     private void OnDisable()
     {
         _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-        _data.StorageProgressChanged -= OnStorageProgressChanged;
+        _data.StorageFilledChanged -= OnStorageProgressChanged;
     }
 
     private void ProceccChanges()
@@ -46,6 +46,6 @@ public class StorageFullnesTextIndicator : MonoBehaviour
     private void OnPurchaseStatusChanged(bool isPurchased) =>
         ProceccChanges();
 
-    private void OnStorageProgressChanged(float _) =>
+    private void OnStorageProgressChanged(bool _) =>
         ProceccChanges();
 }

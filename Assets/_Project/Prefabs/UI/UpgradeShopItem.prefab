@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 1162294450227245384}
+  _text: {fileID: 6273112314054814082}
 --- !u!1 &6802714206514230418
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,6 +842,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 462786210069410679}
+  _purchaseButton: {fileID: 2693296585973253389}
   _upgradeDescriptionText: {fileID: 3577729999448052521}
   _gardenNameText: {fileID: 960519894704743092}
-  _purchaseButton: {fileID: 2693296585973253389}

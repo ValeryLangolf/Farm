@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,9 +5,9 @@ using UnityEngine.UI;
 public class UpgradeShopItemUI : MonoBehaviour
 {
     [SerializeField] private Image _image;
+    [SerializeField] private ProfitLevelUpPurchaseButton _purchaseButton;
     [SerializeField] private TextMeshProUGUI _upgradeDescriptionText;
     [SerializeField] private TextMeshProUGUI _gardenNameText;
-    [SerializeField] private ProfitLevelUpPurchaseButton _purchaseButton;
 
     private Garden _garden;
 
@@ -24,13 +23,15 @@ public class UpgradeShopItemUI : MonoBehaviour
     public void Init(Garden garden, string description)
     {
         _garden = garden;
+        IReadOnlyGardenData data = garden.ReadOnlyData;
+        IWallet wallet = ServiceLocator.Get<IWallet>();
+
         _upgradeDescriptionText.text = description;
-        _gardenNameText.text = _garden.ReadOnlyData.GardenName;
-        _image.sprite = _garden.ReadOnlyData.Icon;
+        _gardenNameText.text = data.GardenName;
+        _image.sprite = data.Icon;
+        _purchaseButton.SetText(MoneyFormatter.FormatNumber(data.LevelUpPrice));
     }
 
-    private void OnClickUpgrade(ButtonClickHandler _)
-    {
+    private void OnClickUpgrade(ButtonClickHandler _) =>
         _garden.UpgradeProfit();
-    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IReadOnlyGardenData
 {
     event Action<float> GroverProgressChanged;
-    event Action<float> StorageProgressChanged;
+    event Action<bool> StorageFilledChanged;
     event Action<bool> PurchaseStatusChanged;
     event Action<int> PlantsCountToUpgradeChanged;
     event Action<float> PlantsPriceToUpgradeChanged;
@@ -26,7 +26,7 @@ public interface IReadOnlyGardenData
 
     float GroverProgress { get; }
 
-    float StorageProgress { get; }
+    bool IsStorageFilled { get; }
 
     int PlantsCountToUpgrade { get; }
 
@@ -34,5 +34,7 @@ public interface IReadOnlyGardenData
 
     int ProfitLevel { get; }
 
-   string GardenName {  get; }  
+    string GardenName { get; }
+
+    public float LevelUpPrice { get; }
 }
