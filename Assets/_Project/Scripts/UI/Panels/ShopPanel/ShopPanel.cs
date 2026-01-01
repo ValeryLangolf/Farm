@@ -26,7 +26,7 @@ public class ShopPanel : MonoBehaviour
     {
         _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
 
-        ClearChilds();
+        ClearChildren();
         CreateAllItems();
         UpdateShopItems();
         UpdateInfo();
@@ -60,7 +60,7 @@ public class ShopPanel : MonoBehaviour
         }
     }
 
-    private void ClearChilds()
+    private void ClearChildren()
     {
         foreach (Transform child in _parentObject)
             Destroy(child.gameObject);
@@ -86,7 +86,7 @@ public class ShopPanel : MonoBehaviour
     {
         return _gardens
             .Where(garden => garden.ReadOnlyData.IsPurchased)
-            .OrderByDescending(garden => garden.ReadOnlyData.LevelUpPrice)
+            .OrderBy(garden => garden.ReadOnlyData.LevelUpPrice)
             .ToList();
     }
 
