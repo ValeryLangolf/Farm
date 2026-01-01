@@ -27,8 +27,6 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public event Action<float> PlantsPriceToUpgradeChanged;
     public event Action<float> ProfitLevelChanged;
 
-    public SavedGardenData SavedData => _savedData;
-
     public string GardenName => _gardenName;
 
     public Sprite Icon => _icon;

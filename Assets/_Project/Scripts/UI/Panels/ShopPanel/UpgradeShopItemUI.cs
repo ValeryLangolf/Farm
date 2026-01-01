@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +12,8 @@ public class UpgradeShopItemUI : MonoBehaviour
     private IWallet _wallet;
 
     private Garden _garden;
+
+    public bool HasData => _garden != null;
 
     public float Price => _garden.ReadOnlyData.LevelUpPrice;
 
@@ -43,6 +44,11 @@ public class UpgradeShopItemUI : MonoBehaviour
 
     public void UpdateInfo(Garden garden, string description)
     {
+        if (_garden != null)
+        {
+            _garden.ReadOnlyData.ProfitLevelChanged -= OnLevelChanged;
+        }
+
         _garden = garden;
         IReadOnlyGardenData data = garden.ReadOnlyData;
 
@@ -50,6 +56,24 @@ public class UpgradeShopItemUI : MonoBehaviour
         _gardenNameText.text = data.GardenName;
         _image.sprite = data.Icon;
         ProcessChanged();
+
+        if (_garden != null)
+        {
+            _garden.ReadOnlyData.ProfitLevelChanged += OnLevelChanged;
+        }
+    }
+
+    public void ClearData()
+    {
+        if (_garden != null)
+        {
+            _garden.ReadOnlyData.ProfitLevelChanged -= OnLevelChanged;
+            _garden = null;
+        }
+
+        _upgradeDescriptionText.text = string.Empty;
+        _gardenNameText.text = string.Empty;
+        _image.sprite = null;
     }
 
     private void ProcessChanged()

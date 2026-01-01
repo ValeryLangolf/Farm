@@ -18,7 +18,6 @@ public class ShopPanel : MonoBehaviour
     [SerializeField][TextArea] private string _profitUpgradeDescription = "Profit x3";
 
     private int _currentPage = 0;
-    private readonly int _itemsPerPage = 3;
 
     private readonly List<UpgradeShopItemUI> _shopItems = new();
     private IReadOnlyList<Garden> _gardens;
@@ -43,7 +42,10 @@ public class ShopPanel : MonoBehaviour
         OnPurchaseStatusChanged(true);
 
         foreach (Garden garden in _gardens)
+        {
             garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
+            garden.ReadOnlyData.ProfitLevelChanged += OnProfitLevelChanged;
+        }
     }
 
     private void OnDisable()
@@ -52,7 +54,10 @@ public class ShopPanel : MonoBehaviour
         _prevPageButton.onClick.RemoveAllListeners();
 
         foreach (Garden garden in _gardens)
+        {
             garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+            garden.ReadOnlyData.ProfitLevelChanged -= OnProfitLevelChanged;
+        }
     }
 
     private void ClearChilds()
@@ -81,12 +86,15 @@ public class ShopPanel : MonoBehaviour
     {
         return _gardens
             .Where(garden => garden.ReadOnlyData.IsPurchased)
-            .OrderBy(garden => garden.ReadOnlyData.LevelUpPrice)
+            .OrderByDescending(garden => garden.ReadOnlyData.LevelUpPrice)
             .ToList();
     }
 
     private void FillItems(IReadOnlyList<Garden> sortedGardens)
     {
+        foreach (UpgradeShopItemUI shopItem in _shopItems)
+            shopItem.ClearData();
+
         for (int index = 0; index < _shopItems.Count; index++)
         {
             bool hasCorrespondingGarden = index < sortedGardens.Count;
@@ -129,9 +137,12 @@ public class ShopPanel : MonoBehaviour
 
     private int CalculateAvailablePagesCount()
     {
-        int activeItemsCount = _shopItems.Count(item => item.gameObject.activeSelf);
-        
-        return Mathf.CeilToInt((float)activeItemsCount / _itemsPerPage);
+        int itemsWithDataCount = _shopItems.Count(item => item.HasData);
+
+        if (itemsWithDataCount == 0)
+            return 1;
+
+        return Mathf.CeilToInt((float)itemsWithDataCount / ITEMS_PER_PAGE);
     }
 
     public void DecreasePage()
@@ -155,7 +166,12 @@ public class ShopPanel : MonoBehaviour
     {
         int availablePagesCount = CalculateAvailablePagesCount();
 
-        if (_currentPage == 0)
+        if (availablePagesCount <= 1)
+        {
+            _prevPageButton.gameObject.SetActive(false);
+            _nextPageButton.gameObject.SetActive(false);
+        }
+        else if (_currentPage == 0)
         {
             _prevPageButton.gameObject.SetActive(false);
             _nextPageButton.gameObject.SetActive(true);
@@ -174,23 +190,30 @@ public class ShopPanel : MonoBehaviour
 
     private void EnableItemsInRange()
     {
-        //DisableAllItems();
+        DisableAllItems();
 
-        //List<UpgradeShopItemUI> activeItems = _shopItems
-        //    .Where(item => item.Price)
-        //    .ToList();
+        List<UpgradeShopItemUI> itemsWithData = _shopItems
+            .Where(item => item.HasData)
+            .ToList();
 
-        //if (activeItems.Count == 0)
-        //    return;
+        if (itemsWithData.Count == 0)
+            return;
 
-        //int startIndex = _currentPage * ITEMS_PER_PAGE;
-        //int takeCount = Math.Min(ITEMS_PER_PAGE, activeItems.Count - startIndex);
+        int startIndex = _currentPage * ITEMS_PER_PAGE;
+        int takeCount = Math.Min(ITEMS_PER_PAGE, itemsWithData.Count - startIndex);
 
-        //for (int index = startIndex; index < startIndex + takeCount; index++)
-        //{
-        //    activeItems[index].gameObject.SetActive(true);
-        //    activeItems[index].transform.SetSiblingIndex(index - startIndex);
-        //}
+        if (startIndex >= itemsWithData.Count)
+        {
+            _currentPage = Mathf.Max(0, CalculateAvailablePagesCount() - 1);
+            startIndex = _currentPage * ITEMS_PER_PAGE;
+            takeCount = Math.Min(ITEMS_PER_PAGE, itemsWithData.Count - startIndex);
+        }
+
+        for (int index = startIndex; index < startIndex + takeCount; index++)
+        {
+            itemsWithData[index].gameObject.SetActive(true);
+            itemsWithData[index].transform.SetSiblingIndex(index - startIndex);
+        }
     }
 
     private void DisableAllItems()
@@ -199,10 +222,9 @@ public class ShopPanel : MonoBehaviour
             item.gameObject.SetActive(false);
     }
 
-    private void OnPurchaseStatusChanged(bool purchased)
-    {
-        Debug.Log(_shopItems.Count);
-
+    private void OnPurchaseStatusChanged(bool _) =>
         UpdateShopItems();
-    }
+
+    private void OnProfitLevelChanged(float _) =>
+        UpdateShopItems();
 }
