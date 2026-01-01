@@ -175,6 +175,8 @@ public class ShopPanel : MonoBehaviour
         {
             _prevPageButton.gameObject.SetActive(false);
             _nextPageButton.gameObject.SetActive(true);
+
+            
         }
         else if (_currentPage == availablePagesCount - 1)
         {
@@ -209,10 +211,15 @@ public class ShopPanel : MonoBehaviour
             takeCount = Math.Min(ITEMS_PER_PAGE, itemsWithData.Count - startIndex);
         }
 
-        for (int index = startIndex; index < startIndex + takeCount; index++)
+        // ÈÇÌÅÍÅÍÎ: ïîðÿäîê ýëåìåíòîâ íà ñòðàíèöå ðàçâ¸ðíóò
+        for (int i = 0; i < takeCount; i++)
         {
-            itemsWithData[index].gameObject.SetActive(true);
-            itemsWithData[index].transform.SetSiblingIndex(index - startIndex);
+            int dataIndex = startIndex + i;
+            int reversedSiblingIndex = takeCount - 1 - i; // ÈÇÌÅÍÅÍÎ: ìåíÿåì siblingIndex
+
+            var item = itemsWithData[dataIndex];
+            item.gameObject.SetActive(true);
+            item.transform.SetSiblingIndex(reversedSiblingIndex); // ÈÇÌÅÍÅÍÎ
         }
     }
 
