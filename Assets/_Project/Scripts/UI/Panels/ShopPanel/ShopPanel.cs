@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,16 +35,30 @@ public class ShopPanel : MonoBehaviour
 
        foreach (Garden garden in _gardens)
         {
-            if (garden.ReadOnlyData.IsPurchased)
-            {
                 AddShopItem(garden);
-            }
         }
+
+       UpdateVisualization();
     }
 
     private void OnEnable()
     {
         _currentPage = 0;
+
+        foreach (Garden garden in _gardens)
+        {
+            garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        }
+
+        OnPurchaseStatusChanged(true);
+    }
+
+    private void OnDisable()
+    {
+        foreach (Garden garden in _gardens)
+        {
+            garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+        }
     }
 
     private void OnDestroy()
@@ -101,7 +116,7 @@ public class ShopPanel : MonoBehaviour
 
     private void SortByPrice()
     {
-       // _shopItems = _shopItems.OrderBy(item => item.UpgradeInfo.Price).ToList();
+       _shopItems = _shopItems.OrderBy(item => item.Price).ToList();
     }
 
     private void DisableAllItems()
@@ -152,5 +167,11 @@ public class ShopPanel : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private void OnPurchaseStatusChanged(bool purchased)
+    {
+        AddShopItem(garden);
+        Debug.Log(_shopItems.Count);
     }
 }

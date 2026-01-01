@@ -11,6 +11,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
     [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
     [SerializeField, Min(1)] private float _initialPlantPrice = 1;
     [SerializeField, Min(1)] private float _initialProfitPrice = 1;
+    [SerializeField, Min(1)] private float _initialLevelUpPrice = 1;
 
     private SavedGardenData _savedData = new();
     private float _groverProgress;
@@ -65,7 +66,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public int ProfitLevel => _savedData.ProfitLevel;
 
-    public float LevelUpPrice => 100;
+    public float LevelUpPrice => _initialLevelUpPrice * (_savedData.ProfitLevel +1) * (_savedData.ProfitLevel + 1); //тнплскю пюяяверю ярнхлнярх сксвьемхи б люцюгме
 
     public void SetSavedData(SavedGardenData savedData)
     {
