@@ -1,3 +1,1 @@
-using UnityEngine;
-
-public class DarkPanel : MonoBehaviour { }
+public class DarkPanel : ButtonClickHandler { }

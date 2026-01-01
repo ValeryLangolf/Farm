@@ -1,60 +1,72 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class UpdateService : MonoBehaviour, IService, IRunnable, IDisposable
+public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposable
 {
-    private static UpdateService s_instance;
-
-    private static bool s_destroyed;
+    private readonly HashSet<Action<float>> _actionSet = new();
+    private Action<float> _updated;
     private bool _isRunning;
-
-    public static bool IsDestroyed => s_destroyed;
-
-    public static UpdateService Instance
-    {
-        get
-        {
-            if (s_instance == null)
-                CreateInstance();
-
-            return s_instance;
-        }
-    }
-
-    public event Action<float> Updated;
-
-    private void Awake()
-    {
-        if (s_instance != null)
-        {
-            Destroy(gameObject);
-
-            return;
-        }
-
-        s_instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     private void Update()
     {
-        if (_isRunning)
-            Updated?.Invoke(Time.deltaTime);
+        if (_isRunning == false)
+            return;
+
+        float deltaTime = Time.deltaTime;
+
+        _updated?.Invoke(deltaTime);
     }
 
-    private void OnDestroy()
+    public static UpdateService Create()
     {
-        if (s_instance == this)
-        {
-            s_instance = null;
-            s_destroyed = true;
-        }
+        GameObject gameObject = new(nameof(UpdateService));
+        UpdateService service = gameObject.AddComponent<UpdateService>();
+
+        return service;
     }
 
     public void Dispose()
     {
         _isRunning = false;
-        Updated = null;
+        _actionSet.Clear();
+        _updated = null;
+    }
+
+    public void Subscribe(Action<float> action)
+    {
+        if (_actionSet.Contains(action))
+        {
+            Debug.LogWarning($"{nameof(UpdateService)}: Повторная попытка подписать событие {action.Method.Name}.");
+
+            return;
+        }
+
+        _actionSet.Add(action);
+        _updated += action;
+    }
+
+    public void Unsubscribe(Action<float> action)
+    {
+        if (_actionSet.Contains(action) == false)
+        {
+            Debug.LogWarning($"{nameof(UpdateService)}: Попытка отписать неподписанное событие {action.Method.Name}.");
+            
+            return;
+        }
+
+        _actionSet.Remove(action);
+        _updated -= action;
+    }
+
+    public bool TryUnsubscribe(Action<float> action)
+    {
+        bool subscribed = _actionSet.Contains(action);
+
+        if(subscribed)
+            Unsubscribe(action);
+        
+        return subscribed;
     }
 
     public void StartRun() =>
@@ -67,11 +79,5 @@ public class UpdateService : MonoBehaviour, IService, IRunnable, IDisposable
         StartRun();
 
     public void StopRun() =>
-        _isRunning = true;
-
-    private static void CreateInstance()
-    {
-        GameObject gameObject = new(nameof(UpdateService));
-        s_instance = gameObject.AddComponent<UpdateService>();
-    }
+        _isRunning = false;
 }

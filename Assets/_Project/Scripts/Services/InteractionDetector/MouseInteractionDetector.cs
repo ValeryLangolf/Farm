@@ -11,7 +11,7 @@ public class MouseInteractionDetector : BaseInteractionDetector
     private readonly List<InteractionInfo> _swipeInteractions = new();
     private readonly List<InteractionInfo> _clickInteractions = new();
 
-    protected override void HandleUpdate(float deltaTime)
+    protected override void OnUpdate(float deltaTime)
     {
         _swipeInteractions.Clear();
         _clickInteractions.Clear();
@@ -28,7 +28,7 @@ public class MouseInteractionDetector : BaseInteractionDetector
         if (isMousePressed && _wasMousePressed == false)
         {
             _previousMousePosition = mousePosition;
-            StateHandler.StartInteraction(MouseInteractionId, mousePosition, InteractionType.Mouse);
+            StateHandler.StartInteraction(MouseInteractionId, mousePosition);
         }
         else if (isMousePressed == false && _wasMousePressed)
         {

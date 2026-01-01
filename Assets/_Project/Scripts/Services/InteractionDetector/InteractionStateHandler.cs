@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionStateHandler
+public partial class InteractionStateHandler
 {
     private const int MaxHits = 10;
     private const float ClickMaxDistance = 10f;
@@ -19,7 +19,7 @@ public class InteractionStateHandler
 
     public IReadOnlyList<InteractionInfo> CurrentInteractions => _currentInteractions;
 
-    public void StartInteraction(int id, Vector2 position, InteractionType type)
+    public void StartInteraction(int id, Vector2 position)
     {
         if (_interactionStates.ContainsKey(id))
             return;
@@ -29,7 +29,6 @@ public class InteractionStateHandler
             StartPosition = position,
             StartTime = Time.time,
             LastPosition = position,
-            Type = type,
             IsActive = true,
             StationaryTime = 0f,
             WasMoved = false
@@ -110,7 +109,6 @@ public class InteractionStateHandler
             position,
             state.StartPosition,
             state.StartTime,
-            state.Type,
             _hits,
             hitCount);
 
@@ -141,7 +139,6 @@ public class InteractionStateHandler
             position,
             state.StartPosition,
             state.StartTime,
-            state.Type,
             _hits,
             hitCount);
 
@@ -158,8 +155,7 @@ public class InteractionStateHandler
                 kvp.Key,
                 kvp.Value.LastPosition,
                 kvp.Value.StartPosition,
-                kvp.Value.StartTime,
-                kvp.Value.Type);
+                kvp.Value.StartTime);
 
             _currentInteractions.Add(interaction);
         }
@@ -177,22 +173,10 @@ public class InteractionStateHandler
                     id,
                     state.LastPosition,
                     state.StartPosition,
-                    state.StartTime,
-                    state.Type));
+                    state.StartTime));
             }
         }
 
         return result;
-    }
-
-    private struct InteractionState
-    {
-        public Vector2 StartPosition;
-        public float StartTime;
-        public Vector2 LastPosition;
-        public InteractionType Type;
-        public bool IsActive;
-        public float StationaryTime;
-        public bool WasMoved;
     }
 }

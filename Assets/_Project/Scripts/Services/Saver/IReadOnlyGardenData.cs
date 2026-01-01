@@ -33,5 +33,6 @@ public interface IReadOnlyGardenData
     float PlantsPriceToUpgrade { get; }
 
     int ProfitLevel { get; }
+
    string GardenName {  get; }  
 }

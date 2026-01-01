@@ -1,4 +1,1 @@
-public class ProfitLevelUpPurchaseButton : ButtonClickHandler
-{
-    
-}
+public class ProfitLevelUpPurchaseButton : ButtonClickHandler { }

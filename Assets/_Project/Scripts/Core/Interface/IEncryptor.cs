@@ -1,4 +1,4 @@
-public interface IDataEncryptor
+public interface IEncryptor
 {
     string Encrypt(string data);
 

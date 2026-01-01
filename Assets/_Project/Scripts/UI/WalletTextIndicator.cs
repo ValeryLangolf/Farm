@@ -8,14 +8,17 @@ public class WalletTextIndicator : MonoBehaviour
     private IWallet _wallet;
     private float _lastValue;
 
+    private void Awake() =>
+        _wallet = ServiceLocator.Get<IWallet>();
+
     private void OnEnable()
     {
-        _wallet ??= ServiceLocator.Get<IWallet>();
-
         OnChanged(_wallet.Amount);
-        UpdateTextIfNeeded(_wallet.Amount);
         _wallet.Changed += OnChanged;
     }
+
+    private void OnDisable() =>
+        _wallet.Changed -= OnChanged;
 
     private void OnChanged(float value) =>
         UpdateTextIfNeeded(value);

@@ -10,10 +10,8 @@ public class TrailParticle : MonoBehaviour, IPoolable<TrailParticle>
 
     public event Action<TrailParticle> Deactivated;
 
-    private void Awake()
-    {
+    private void Awake() =>
         _mainCamera = Camera.main;
-    }
 
     private void OnDisable() =>
         Deactivated?.Invoke(this);

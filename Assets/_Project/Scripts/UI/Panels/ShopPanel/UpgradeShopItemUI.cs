@@ -33,5 +33,4 @@ public class UpgradeShopItemUI : MonoBehaviour
     {
         _garden.UpgradeProfit();
     }
-
 }

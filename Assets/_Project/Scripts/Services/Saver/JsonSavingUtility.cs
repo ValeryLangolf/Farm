@@ -5,9 +5,9 @@ using UnityEngine;
 public class JsonSavingUtility : ISavingUtility
 {
     private readonly string _filePath;
-    private readonly IDataEncryptor _encryptor;
+    private readonly IEncryptor _encryptor;
 
-    public JsonSavingUtility(string fileName, IDataEncryptor encryptor)
+    public JsonSavingUtility(string fileName, IEncryptor encryptor)
     {
         if (string.IsNullOrEmpty(fileName))
             throw new ArgumentException("Имя файла не может быть пустым", nameof(fileName));

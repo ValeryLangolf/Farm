@@ -3,8 +3,6 @@ using UnityEngine.Audio;
 
 public class Audio : MonoBehaviour, IAudioService
 {
-    private static Audio s_instance;
-
     [SerializeField] private AudioMixer _mixer;
     [SerializeField] private Music _music;
     [SerializeField] private Sfx _sfx;
@@ -15,17 +13,9 @@ public class Audio : MonoBehaviour, IAudioService
 
     public AudioMixer Mixer => _mixer;
 
-    public void Initialize()
+    private void Awake()
     {
-        if (s_instance != null)
-        {
-            Destroy(gameObject);
-
-            return;
-        }
-
         transform.SetParent(null);
-        s_instance = this;
         DontDestroyOnLoad(gameObject);
     }
 }

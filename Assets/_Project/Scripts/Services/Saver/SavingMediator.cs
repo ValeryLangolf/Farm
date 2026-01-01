@@ -6,20 +6,17 @@ public class SavingMediator : IService
     private const string FileName = "Saves";
 
     private readonly IWallet _wallet;
-    private readonly List<Garden> _gardens;
+    private readonly GardensDirector _gardensDirector;
     private readonly SettingsPanel _settingsPanel;
     private readonly Saver _saver;
 
-    public SavingMediator(List<Garden> gardens, SettingsPanel settingsPanel)
+    public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel)
     {
-        if (gardens == null || gardens.Count == 0)
-            throw new ArgumentException(nameof(gardens));
-
-        _gardens = gardens;
+        _gardensDirector = gardensDirector ?? throw new ArgumentNullException(nameof(gardensDirector));
         _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
-        _wallet = ServiceLocator.Get<IWallet>();
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
 
-        IDataEncryptor dataEncryptor = new DataEncryptor();
+        IEncryptor dataEncryptor = new DataEncryptor();
         ISavingUtility savingUtility = new JsonSavingUtility(FileName, dataEncryptor);
         SavesData initialData = BuildData();
         _saver = new(savingUtility, initialData);
@@ -42,7 +39,7 @@ public class SavingMediator : IService
             WalletAmount = _wallet.Amount
         };
 
-        foreach (Garden _ in _gardens)
+        foreach (Garden _ in _gardensDirector.Gardens)
             data.GardenDatas.Add(new());
 
         return data;
@@ -53,10 +50,11 @@ public class SavingMediator : IService
         _wallet?.SetData(_saver.Data);
 
         List<SavedGardenData> datas = _saver.Data.GardenDatas;
+        IReadOnlyList<Garden> gardens = _gardensDirector.Gardens;
 
-        for (int i = 0; i < _gardens.Count; i++)
-            if (_gardens[i] != null)
-                _gardens[i].SetData(datas[i]);
+        for (int i = 0; i < gardens.Count; i++)
+            if (gardens[i] != null)
+                gardens[i].SetData(datas[i]);
 
         if (_settingsPanel != null)
             _settingsPanel.SetData(_saver.Data);

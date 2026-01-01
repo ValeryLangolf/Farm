@@ -9,8 +9,6 @@ public class TrailParticleFactory : IFactory<TrailParticle>
         _prefab = prefab;
     }
 
-    public TrailParticle Create()
-    {
-        return Object.Instantiate(_prefab);
-    }
+    public TrailParticle Create() =>
+        Object.Instantiate(_prefab);
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
-    [SerializeField] private List<Garden> _gardens;
+    [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private InputTrailParticle _trailParticle;
     [SerializeField] private Audio _audio;
     [SerializeField] private SettingsPanel _settingsPanel;
@@ -12,12 +12,16 @@ public class Bootstrap : MonoBehaviour
 
     private bool _isApplicationQuitting = false;
 
-    private void Awake()
-    {
+    private void Awake() =>
         RegisterServices();
+
+    private void Start() =>
         StartRunServices();
 
-        ServiceLocator.Get<IAudioService>().Music.Play();
+    private void OnDisable()
+    {
+        if (_isApplicationQuitting == false)
+            SaveProgress();
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -32,12 +36,6 @@ public class Bootstrap : MonoBehaviour
         SaveProgress();
     }
 
-    private void OnDisable()
-    {
-        if (_isApplicationQuitting == false)
-            SaveProgress();
-    }
-
     private void OnDestroy()
     {
         StopRunServices();
@@ -46,16 +44,15 @@ public class Bootstrap : MonoBehaviour
 
     private void RegisterServices()
     {
-        ServiceLocator.Register(UpdateService.Instance);
-
-        _audio.Initialize();
-        ServiceLocator.Register(_audio as IAudioService);
+        ServiceLocator.Register(UpdateService.Create() as IUpdateService);
 
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
 
+        ServiceLocator.Register(_gardensDirector);
+        ServiceLocator.Register(_audio as IAudioService);
         ServiceLocator.Register(_uiDirector);
-        ServiceLocator.Register(new SavingMediator(_gardens, _settingsPanel));
+        ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel));
 
         IInteractionDetector interactionDetector;
 
@@ -68,7 +65,6 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
         ServiceLocator.Register(new EntityClickHandler(interactionDetector));
         ServiceLocator.Register(_trailParticle);
-        ServiceLocator.Register(new GardensDirector(_gardens));
     }
 
     private void StartRunServices()
@@ -77,6 +73,8 @@ public class Bootstrap : MonoBehaviour
 
         foreach (IRunnable runnable in runnables)
             runnable?.StartRun();
+
+        ServiceLocator.Get<IAudioService>().Music.Play();
     }
 
     private void StopRunServices()
@@ -87,17 +85,17 @@ public class Bootstrap : MonoBehaviour
             runnable?.StopRun();
     }
 
+    private void SaveProgress()
+    {
+        if (ServiceLocator.TryGet(out SavingMediator savingMediator))
+            savingMediator.Save();
+    }
+
     private void DisposeServices()
     {
         IReadOnlyList<IDisposable> disposables = ServiceLocator.GetServices<IDisposable>();
 
         foreach (IDisposable disposable in disposables)
             disposable?.Dispose();
-    }
-
-    private void SaveProgress()
-    {
-        if (ServiceLocator.TryGet(out SavingMediator savingMediator))
-            savingMediator.Save();
     }
 }

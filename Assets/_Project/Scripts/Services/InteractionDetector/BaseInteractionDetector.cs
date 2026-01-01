@@ -4,12 +4,7 @@ using System.Collections.Generic;
 public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable, IDisposable
 {
     protected readonly InteractionStateHandler StateHandler = new();
-    protected readonly Updater Updater = new();
-
-    protected BaseInteractionDetector()
-    {
-        Updater.Updated += HandleUpdate;
-    }
+    protected readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
 
     public event Action<IReadOnlyList<InteractionInfo>> Swiped;
     public event Action<IReadOnlyList<InteractionInfo>> Clicked;
@@ -37,7 +32,7 @@ public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable,
     public virtual void Dispose()
     {
         StopRun();
-        Updater.Dispose();
+        _updater?.TryUnsubscribe(OnUpdate);
         Swiped = null;
         Clicked = null;
     }
@@ -49,12 +44,12 @@ public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable,
         StartRun();
 
     public void StartRun() =>
-        Updater.Subscribe();
+        _updater?.Subscribe(OnUpdate);
 
     public void StopRun() =>
-        Updater.Unsubscribe();
+        _updater?.TryUnsubscribe(OnUpdate);
 
-    protected abstract void HandleUpdate(float deltaTime);
+    protected abstract void OnUpdate(float deltaTime);
 
     protected void InvokeSwiped(IReadOnlyList<InteractionInfo> interactions) =>
         Swiped?.Invoke(interactions);

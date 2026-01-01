@@ -12,7 +12,6 @@ public class UIDirector : MonoBehaviour, IService
     [SerializeField] private ProgressResetterButton _progressResetterButton;
     [SerializeField] private SettingsOpenerButton _settingsOpenerButton;
     [SerializeField] private SettingsCloserButton _settingsCloserButton;
-
     [SerializeField] private OpenerUpgradePanelButton _openerUpgradePanelButton;
     [SerializeField] private OpenerUpgradePanelButton _closerUpgradePanelButton;
     [SerializeField] private OpenerShopPanelButton _openerShopPanelButton;
@@ -25,12 +24,14 @@ public class UIDirector : MonoBehaviour, IService
     private EntityClickHandler _entityClickHandler;
     private InputTrailParticle _inputTrailParticle;
     private UpgradeModeCountButtonType _currentCountButtonType = UpgradeModeCountButtonType.x1;
+    private bool _isUpgradeModeActive;
 
     public event Action<UpgradeModeCountButtonType> UpgradeModeCountChanged;
-    public event Action<bool> UpgradeModeEnabledChanged;
+    public event Action<bool> UpgradeModeEnabledStatusChanged;
 
     public UpgradeModeCountButtonType UpgradeModeCountButtonType => _currentCountButtonType;
-    public bool IsUpgradeModeActive { get; private set; }
+
+    public bool IsUpgradeModeActive => _isUpgradeModeActive;
 
     private void Awake()
     {
@@ -40,27 +41,23 @@ public class UIDirector : MonoBehaviour, IService
         _coinCollector = ServiceLocator.Get<CoinCollector>();
         _entityClickHandler = ServiceLocator.Get<EntityClickHandler>();
 
-        _settingsPanel.Hide();
-        _upgradeModePanel.Hide();
-        _shopPanel.Hide();
-        _darkPanel.Hide();
-        Toggle(_upgradeModeCountButtons[0]);
+        ToggleUpgradeModeCountButton(_upgradeModeCountButtons[0]);
+        ShowGameModeUI();
     }
 
-    private void Start()
-    {
+    private void Start() =>
         _settingsPanel.Initialize();
-    }
 
     private void OnEnable()
     {
         _progressResetterButton.Clicked += OnClickResetProgressButton;
-        _settingsOpenerButton.Clicked += OnClickOpenSettingsButton;
-        _settingsCloserButton.Clicked += OnClickCloseSettingsButton;
+        _settingsOpenerButton.Clicked += OnClickOpenSettingsPanelButton;
+        _settingsCloserButton.Clicked += OnClickOpenSettingsPanelButton;
         _openerUpgradePanelButton.Clicked += OnClickOpenUpgradePanelButton;
         _closerUpgradePanelButton.Clicked += OnClickOpenUpgradePanelButton;
         _openerShopPanelButton.Clicked += OnClickOpenShopPanelButton;
         _closerShopPanelButton.Clicked += OnClickOpenShopPanelButton;
+        _darkPanel.Clicked += OnClickDarkPanelCloserButton;
 
         foreach (var button in _upgradeModeCountButtons)
             button.Clicked += OnClickUpgradeModeCountButton;
@@ -69,12 +66,13 @@ public class UIDirector : MonoBehaviour, IService
     private void OnDisable()
     {
         _progressResetterButton.Clicked -= OnClickResetProgressButton;
-        _settingsOpenerButton.Clicked -= OnClickOpenSettingsButton;
-        _settingsCloserButton.Clicked -= OnClickCloseSettingsButton;
+        _settingsOpenerButton.Clicked -= OnClickOpenSettingsPanelButton;
+        _settingsCloserButton.Clicked -= OnClickOpenSettingsPanelButton;
         _openerUpgradePanelButton.Clicked -= OnClickOpenUpgradePanelButton;
         _closerUpgradePanelButton.Clicked -= OnClickOpenUpgradePanelButton;
         _openerShopPanelButton.Clicked -= OnClickOpenShopPanelButton;
         _closerShopPanelButton.Clicked -= OnClickOpenShopPanelButton;
+        _darkPanel.Clicked -= OnClickDarkPanelCloserButton;
 
         foreach (var button in _upgradeModeCountButtons)
             button.Clicked -= OnClickUpgradeModeCountButton;
@@ -88,36 +86,106 @@ public class UIDirector : MonoBehaviour, IService
             _interactionDetector.PauseRun();
     }
 
+    private void ToggleUpgradeModeCountButton(UpgradeModeCountButton button)
+    {
+        foreach (var item in _upgradeModeCountButtons)
+            item.SetUntoggled();
+
+        button.SetToggled();
+        UpgradeModeCountChanged?.Invoke(button.Type);
+    }
+
+    private void HideAllSwitchableUI()
+    {
+        _darkPanel.Hide();
+        _settingsPanel.Hide();
+        _upgradeModePanel.Hide();
+        _shopPanel.Hide();
+
+        _settingsOpenerButton.Hide();
+        _openerUpgradePanelButton.Hide();
+        _openerShopPanelButton.Hide();
+    }
+
+    private void ShowGameModeUI()
+    {
+        HideAllSwitchableUI();
+
+        _settingsOpenerButton.Show();
+        _openerUpgradePanelButton.Show();
+        _openerShopPanelButton.Show();
+    }
+
     private void OnClickResetProgressButton(ButtonClickHandler _) =>
         _savingMediator.ResetProgress();
 
-    private void OnClickOpenSettingsButton(ButtonClickHandler _) =>
-        _settingsPanel.Show();
+    private void OnClickOpenSettingsPanelButton(ButtonClickHandler _)
+    {
+        bool isOn = _settingsPanel.IsActiveSelf() == false;
 
-    private void OnClickCloseSettingsButton(ButtonClickHandler _) =>
-        _settingsPanel.Hide();
+        if (isOn)
+        {
+            HideAllSwitchableUI();
+            _darkPanel.Show();
+            _settingsPanel.Show();
+            _settingsOpenerButton.Show();
+        }
+        else
+        {
+            ShowGameModeUI();
+        }
+
+        SwitchInteractionDetector(isOn == false);
+        _inputTrailParticle.SetEnabled(isOn == false);
+    }
 
     private void OnClickOpenUpgradePanelButton(ButtonClickHandler _)
     {
-        bool isOn = _upgradeModePanel.IsActiveSelf();
-        _upgradeModePanel.SetActive(isOn == false);
-        _openerShopPanelButton.SetActive(isOn);
-        _coinCollector.SetEnabled(isOn);
-        _entityClickHandler.SetEnabled(isOn);
-        IsUpgradeModeActive = isOn == false;
+        _isUpgradeModeActive = !_isUpgradeModeActive;
 
-        UpgradeModeEnabledChanged?.Invoke(isOn == false);
+        if (_isUpgradeModeActive)
+        {
+            HideAllSwitchableUI();
+            _upgradeModePanel.Show();
+            _openerUpgradePanelButton.Show();
+        }
+        else
+        {
+            ShowGameModeUI();
+        }
+
+        _coinCollector.SetEnabled(_isUpgradeModeActive == false);
+        _entityClickHandler.SetEnabled(_isUpgradeModeActive == false);
+
+        UpgradeModeEnabledStatusChanged?.Invoke(_isUpgradeModeActive);
     }
 
     private void OnClickOpenShopPanelButton(ButtonClickHandler _)
     {
-        bool isOn = _shopPanel.IsActiveSelf();
+        bool isOn = _shopPanel.IsActiveSelf() == false;
 
-        _shopPanel.SetActive(isOn == false);
-        _openerUpgradePanelButton.SetActive(isOn);
-        _darkPanel.SetActive(isOn == false);
-        SwitchInteractionDetector(isOn);
-        _inputTrailParticle.SetActive(isOn);
+        if (isOn)
+        {
+            HideAllSwitchableUI();
+            _darkPanel.Show();
+            _shopPanel.Show();
+            _openerShopPanelButton.Show();
+        }
+        else
+        {
+            ShowGameModeUI();
+        }
+
+        SwitchInteractionDetector(isOn == false);
+        _inputTrailParticle.SetEnabled(isOn == false);
+    }
+
+    private void OnClickDarkPanelCloserButton(ButtonClickHandler handler)
+    {
+        ShowGameModeUI();
+
+        SwitchInteractionDetector(true);
+        _inputTrailParticle.SetEnabled(true);
     }
 
     private void OnClickUpgradeModeCountButton(ButtonClickHandler button)
@@ -126,15 +194,6 @@ public class UIDirector : MonoBehaviour, IService
             return;
 
         _currentCountButtonType = countButton.Type;
-        Toggle(countButton);
-    }
-
-    private void Toggle(UpgradeModeCountButton button)
-    {
-        foreach (var item in _upgradeModeCountButtons)
-            item.SetUntoggled();
-
-        button.SetToggled();
-        UpgradeModeCountChanged?.Invoke(button.Type);
+        ToggleUpgradeModeCountButton(countButton);
     }
 }

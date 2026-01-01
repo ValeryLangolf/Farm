@@ -7,6 +7,4 @@ public interface IAudioService : IService
     Sfx Sfx { get; }
 
     AudioMixer Mixer { get; }
-
-    void Initialize();
 }

@@ -20,13 +20,13 @@ public class GardenUpgradeModeDisplay : MonoBehaviour
         _data.PurchaseStatusChanged += OnPurchaseStatusChaged;
 
         OnUpgradeModeEnabledChanged(_uiDirector.IsUpgradeModeActive);
-        _uiDirector.UpgradeModeEnabledChanged += OnUpgradeModeEnabledChanged;
+        _uiDirector.UpgradeModeEnabledStatusChanged += OnUpgradeModeEnabledChanged;
     }
 
     private void OnDisable()
     {
         _data.PurchaseStatusChanged -= OnPurchaseStatusChaged;
-        _uiDirector.UpgradeModeEnabledChanged -= OnUpgradeModeEnabledChanged;
+        _uiDirector.UpgradeModeEnabledStatusChanged -= OnUpgradeModeEnabledChanged;
     }
 
     private void ProcessVisibleStateChanges() =>

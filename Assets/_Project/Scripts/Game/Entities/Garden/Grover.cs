@@ -3,7 +3,7 @@ using System;
 public class Grover : IDisposable
 {
     private readonly ExtendedGardenData _data;
-    private readonly Updater _updater = new();
+    private readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
 
     private float _currentCountTreshold;
     private float _profitMultiplier;
@@ -14,7 +14,6 @@ public class Grover : IDisposable
 
         _data.PlantsCountChanged += OnPlantsCountChanged;
         _data.ProfitLevelChanged += OnProfitLevelChanged;
-        _updater.Updated += OnUpdated;
         _currentCountTreshold = CalculateTresholdMultiplier(_data.PlantsCount);
         UpdateCultivationDuration();
         _profitMultiplier = CalculateProfitMultiplier();
@@ -22,18 +21,16 @@ public class Grover : IDisposable
 
     public void Dispose()
     {
-        _updater.Dispose();
         _data.PlantsCountChanged -= OnPlantsCountChanged;
         _data.ProfitLevelChanged -= OnProfitLevelChanged;
-        StopRun();
+        _updater?.TryUnsubscribe(OnUpdated);
     }
 
-
     public void StartRun() =>
-        _updater.Subscribe();
+        _updater?.Subscribe(OnUpdated);
 
     public void StopRun() =>
-        _updater.Unsubscribe();
+        _updater?.TryUnsubscribe(OnUpdated);
 
     public void Grow(float deltaTime)
     {
@@ -92,9 +89,7 @@ public class Grover : IDisposable
         int profitMultiplier = 1;
 
         for (int i = 1; i < _data.ProfitLevel; i++)
-        {
             profitMultiplier *= Constants.ProfitUpgradeMultiplier;
-        }
 
         return profitMultiplier;
     }
@@ -115,9 +110,6 @@ public class Grover : IDisposable
         }
     }
 
-    private void OnProfitLevelChanged(float obj)
-    {
+    private void OnProfitLevelChanged(float _) =>
        _profitMultiplier = CalculateProfitMultiplier();
-    }
-
 }

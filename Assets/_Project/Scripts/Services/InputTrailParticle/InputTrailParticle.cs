@@ -9,6 +9,7 @@ public class InputTrailParticle : MonoBehaviour, IService
     private IInteractionDetector _interactionDetector;
     private Pool<TrailParticle> _pool;
     private readonly Dictionary<int, TrailParticle> _activeParticles = new();
+    private bool _isSubscribed;
 
     private void Awake()
     {
@@ -22,6 +23,14 @@ public class InputTrailParticle : MonoBehaviour, IService
     private void OnDisable() =>
         Unsubscribe();
 
+    public void SetEnabled(bool isOn)
+    {
+        if(isOn)
+            Subscribe();
+        else
+            Unsubscribe();
+    }
+
     private void InitializePool()
     {
         IFactory<TrailParticle> factory = new TrailParticleFactory(_trailPrefab);
@@ -30,6 +39,11 @@ public class InputTrailParticle : MonoBehaviour, IService
 
     private void Subscribe()
     {
+        if(_isSubscribed) 
+            return;
+
+        _isSubscribed = true;
+
         _interactionDetector.InteractionsStarted += OnInteractionsStarted;
         _interactionDetector.InteractionsUpdated += OnInteractionsUpdated;
         _interactionDetector.InteractionsEnded += OnInteractionsEnded;
@@ -37,10 +51,14 @@ public class InputTrailParticle : MonoBehaviour, IService
 
     private void Unsubscribe()
     {
+        if (_isSubscribed == false)
+            return;
+
+        _isSubscribed = false;
+
         _interactionDetector.InteractionsStarted -= OnInteractionsStarted;
         _interactionDetector.InteractionsUpdated -= OnInteractionsUpdated;
         _interactionDetector.InteractionsEnded -= OnInteractionsEnded;
-
         StopAllParticles();
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class TouchInteractionDetector : BaseInteractionDetector
     private readonly List<InteractionInfo> _swipeInteractions = new();
     private readonly List<InteractionInfo> _clickInteractions = new();
 
-    protected override void HandleUpdate(float deltaTime)
+    protected override void OnUpdate(float deltaTime)
     {
         _swipeInteractions.Clear();
         _clickInteractions.Clear();
@@ -27,7 +26,7 @@ public class TouchInteractionDetector : BaseInteractionDetector
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    StateHandler.StartInteraction(touch.fingerId, touch.position, InteractionType.Touch);
+                    StateHandler.StartInteraction(touch.fingerId, touch.position);
                     break;
 
                 case TouchPhase.Moved:

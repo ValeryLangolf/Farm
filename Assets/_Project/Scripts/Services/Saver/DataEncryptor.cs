@@ -1,4 +1,4 @@
-public class DataEncryptor : IDataEncryptor
+public class DataEncryptor : IEncryptor
 {
     private const byte Key = 0x5A;
 
