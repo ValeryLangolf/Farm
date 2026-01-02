@@ -13,4 +13,11 @@ public class GardensDirector : MonoBehaviour, IService
     }
 
     public IReadOnlyList<Garden> Gardens => _gardens;
+
+    public void SetData(List<SavedGardenData> datas)
+    {
+        for (int i = 0; i < _gardens.Count; i++)
+            if (_gardens[i] != null)
+                _gardens[i].SetData(datas[i], i);
+    }
 }

@@ -24,20 +24,20 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _upgrader?.Dispose();
     }
 
-    public void SetData(SavedGardenData data)
+    public void SetData(SavedGardenData data, int index)
     {
         if (data == null)
             throw new ArgumentNullException(nameof(data));
 
         _grover?.Dispose();
         _upgrader?.Dispose();
-        _data.SetSavedData(data);
+        _data.SetSavedData(data, index);
         _grover = new(_data);
         _grover.Grow(_data.GroverElapsedTime);
         _upgrader = new(_data);
         ProcessRunnableStatusGrover();
     }
-
+        
     public void ProcessClick()
     {
         if (_data.IsPurchased == false && _wallet.TrySpend(_data.GardenPurchasePrice))

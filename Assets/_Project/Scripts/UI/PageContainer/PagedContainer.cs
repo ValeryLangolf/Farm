@@ -29,9 +29,9 @@ public class PagedContainer : MonoBehaviour
 
     private void InitializeComponents()
     {
-        _itemsCollection = new ItemsCollection(_itemsContainer);
-        _pageNavigation = new PageNavigation(_itemsPerPage, OnPageNavigationPageChanged);
-        _pagesRenderer = new PagesRenderer(_itemsCollection, _pageNavigation);
+        _itemsCollection = new(_itemsContainer);
+        _pageNavigation = new(_itemsPerPage, OnPageNavigationPageChanged);
+        _pagesRenderer = new(_itemsCollection, _pageNavigation);
 
         _pageNavigation.Initialize(() => _itemsCollection.ItemsWithDataCount);
     }

@@ -12,7 +12,7 @@ public class SavingMediator : IService
 
     public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel)
     {
-        _gardensDirector = gardensDirector ?? throw new ArgumentNullException(nameof(gardensDirector));
+        _gardensDirector = gardensDirector != null ? gardensDirector : throw new ArgumentNullException(nameof(gardensDirector));
         _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
 
@@ -50,11 +50,7 @@ public class SavingMediator : IService
         _wallet?.SetData(_saver.Data);
 
         List<SavedGardenData> datas = _saver.Data.GardenDatas;
-        IReadOnlyList<Garden> gardens = _gardensDirector.Gardens;
-
-        for (int i = 0; i < gardens.Count; i++)
-            if (gardens[i] != null)
-                gardens[i].SetData(datas[i]);
+        _gardensDirector.SetData(datas);
 
         if (_settingsPanel != null)
             _settingsPanel.SetData(_saver.Data);

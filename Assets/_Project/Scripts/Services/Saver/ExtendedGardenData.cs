@@ -6,13 +6,14 @@ public class ExtendedGardenData : IReadOnlyGardenData
 {
     [SerializeField] private string _gardenName;
     [SerializeField] private Sprite _icon;
-    [SerializeField, Min(0)] private float _purchasePrice = 0;
     [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
     [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
     [SerializeField, Min(1)] private float _initialPlantPrice = 1;
     [SerializeField, Min(1)] private float _initialProfitPrice = 1;
     [SerializeField, Min(1)] private float _initialLevelUpPrice = 1;
 
+    private int _gardenIndex;
+    private float _purchasePrice;
     private SavedGardenData _savedData = new();
     private float _groverProgress;
     private int _plantsCountToUpgrade;
@@ -67,10 +68,16 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public float LevelUpPrice => _initialLevelUpPrice * Mathf.Pow(1000, _savedData.ProfitLevel);
 
-    public void SetSavedData(SavedGardenData savedData)
+    public void SetSavedData(SavedGardenData savedData, int index)
     {
-        _savedData = savedData;
+        _gardenIndex = index;
 
+        _purchasePrice = FormulaCalculator.CalculatePurchasePrice(
+            _gardenIndex, 
+            Constants.BaseGardenPrice, 
+            Constants.GardenPriceMultiplier);
+        
+        _savedData = savedData;
         UpdateGroverProgress();
         UpdadeStorageFilledState();
 
