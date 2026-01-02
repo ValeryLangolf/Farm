@@ -6,6 +6,7 @@ public class PageNavigation
     private readonly Action<int, int> _pageChanged;
 
     private Func<int> _getTotalItemsCount;
+    private int _totalPages = 0;
     private int _currentPage = 0;
 
     public PageNavigation(int itemsPerPage, Action<int, int> pageChanged)
@@ -54,7 +55,15 @@ public class PageNavigation
         if (itemsCount == 0)
             return 1;
 
-        return (int)Math.Ceiling((double)itemsCount / _itemsPerPage);
+        int totalPages = (int)Math.Ceiling((double)itemsCount / _itemsPerPage);
+        
+        if (totalPages != _totalPages)
+        {
+            _totalPages = totalPages;
+            NotifyPageChanged();
+        }
+
+        return _totalPages;
     }
 
     public int GetCurrentStartIndex()

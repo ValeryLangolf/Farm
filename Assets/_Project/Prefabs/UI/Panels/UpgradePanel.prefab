@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 5148785451722634129}
   - component: {fileID: 9220125542921523474}
   m_Layer: 5
-  m_Name: TitleText
+  m_Name: HeadingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Upgrade mode
+  m_text: "\u041F\u0440\u043E\u043A\u0430\u0447\u043A\u0430 \u0440\u0430\u0441\u0442\u0435\u043D\u0438\u0439"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
   m_sharedMaterial: {fileID: -5554228330066444550, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
@@ -279,9 +279,9 @@ MonoBehaviour:
   m_fontSize: 45
   m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 1
+  m_fontSizeMax: 45
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -873,7 +873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 121137243107301573, guid: 79c740b374aab73498bbda740a72fb72, type: 3}
       propertyPath: m_fontSize
-      value: 34.55
+      value: 31.6
       objectReference: {fileID: 0}
     - target: {fileID: 2570259934950498726, guid: 79c740b374aab73498bbda740a72fb72, type: 3}
       propertyPath: m_Pivot.x
