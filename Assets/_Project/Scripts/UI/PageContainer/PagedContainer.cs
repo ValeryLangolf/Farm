@@ -20,8 +20,12 @@ public class PagedContainer : MonoBehaviour
     public int CurrentPage =>
         _pageNavigation?.CurrentPage ?? 1;
 
-    private void Awake() =>
+    public void Initialize<T>(T itemPrefab, int count) where T : MonoBehaviour, IPagedItem
+    {
         InitializeComponents();
+        _itemsCollection.CreateItems(itemPrefab, count);
+        _pagesRenderer.UpdateView();
+    }
 
     private void InitializeComponents()
     {
@@ -30,12 +34,6 @@ public class PagedContainer : MonoBehaviour
         _pagesRenderer = new PagesRenderer(_itemsCollection, _pageNavigation);
 
         _pageNavigation.Initialize(() => _itemsCollection.ItemsWithDataCount);
-    }
-
-    public void Initialize<T>(T itemPrefab, int count) where T : MonoBehaviour, IPagedItem
-    {
-        _itemsCollection.CreateItems(itemPrefab, count);
-        _pagesRenderer.UpdateView();
     }
 
     public void SetData(IEnumerable<object> data)
