@@ -25,7 +25,8 @@ public class ExtendedGardenData : IReadOnlyGardenData
     public event Action<bool> PurchaseStatusChanged;
     public event Action<int> PlantsCountToUpgradeChanged;
     public event Action<float> PlantsPriceToUpgradeChanged;
-    public event Action<float> ProfitLevelChanged;
+    public event Action<int> ProfitLevelChanged;
+    public event Action<Sprite> PlantCountTresholdChanged;
 
     public string GardenName => _gardenName;
 
@@ -64,7 +65,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public int ProfitLevel => _savedData.ProfitLevel;
 
-    public float LevelUpPrice => _initialLevelUpPrice * (_savedData.ProfitLevel +1) * (_savedData.ProfitLevel + 1); //ÔÎÐÌÓËÀ ÐÀÑÑ×ÅÒÀ ÑÒÎÈÌÎÑÒÈ ÓËÓ×ØÅÍÈÉ Â ÌÀÃÀÇÍÅ
+    public float LevelUpPrice => _initialLevelUpPrice * Mathf.Pow(1000, _savedData.ProfitLevel);
 
     public void SetSavedData(SavedGardenData savedData)
     {
@@ -126,6 +127,9 @@ public class ExtendedGardenData : IReadOnlyGardenData
         _savedData.ProfitLevel = level;
         ProfitLevelChanged?.Invoke(level);
     }
+
+    public void InvokePlantCountTresholdChanged() =>
+        PlantCountTresholdChanged?.Invoke(_icon);
 
     private void UpdateGroverProgress()
     {

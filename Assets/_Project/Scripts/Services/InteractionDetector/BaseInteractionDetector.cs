@@ -32,7 +32,7 @@ public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable,
     public virtual void Dispose()
     {
         StopRun();
-        _updater?.TryUnsubscribe(OnUpdate);
+        _updater?.Unsubscribe(OnUpdate);
         Swiped = null;
         Clicked = null;
     }
@@ -47,7 +47,7 @@ public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable,
         _updater?.Subscribe(OnUpdate);
 
     public void StopRun() =>
-        _updater?.TryUnsubscribe(OnUpdate);
+        _updater?.Unsubscribe(OnUpdate);
 
     protected abstract void OnUpdate(float deltaTime);
 

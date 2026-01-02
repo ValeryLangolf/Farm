@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -23}
-  m_SizeDelta: {x: 180, y: 100}
+  m_SizeDelta: {x: 450, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7819084614719907283
 MonoBehaviour:
@@ -86,7 +86,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -23}
-  m_SizeDelta: {x: 150, y: 90}
+  m_SizeDelta: {x: 450, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &501068904833589347
 MonoBehaviour:
@@ -276,8 +276,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 1a3e1fc7ada65bd4cbbd4f3678661cc2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: b69855a08afdb4c4fa8214d1358ad883, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -410,8 +410,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 1a3e1fc7ada65bd4cbbd4f3678661cc2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: b69855a08afdb4c4fa8214d1358ad883, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -584,6 +584,8 @@ MonoBehaviour:
     _initialGrowingCycleRevenue: 1
     _initialCultivationDurationInSeconds: 1
     _initialPlantPrice: 1
+    _initialProfitPrice: 1
+    _initialLevelUpPrice: 1
 --- !u!114 &7181079726453659373
 MonoBehaviour:
   m_ObjectHideFlags: 0

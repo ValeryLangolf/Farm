@@ -23,14 +23,14 @@ public class Grover : IDisposable
     {
         _data.PlantsCountChanged -= OnPlantsCountChanged;
         _data.ProfitLevelChanged -= OnProfitLevelChanged;
-        _updater?.TryUnsubscribe(OnUpdated);
+        _updater?.Unsubscribe(OnUpdated);
     }
 
     public void StartRun() =>
         _updater?.Subscribe(OnUpdated);
 
     public void StopRun() =>
-        _updater?.TryUnsubscribe(OnUpdated);
+        _updater?.Unsubscribe(OnUpdated);
 
     public void Grow(float deltaTime)
     {
@@ -48,7 +48,7 @@ public class Grover : IDisposable
         _data.SetGroverElapsedTime(_data.GroverElapsedTime - _data.CultivationDurationInSeconds);
         _data.SetStorageFullnes(_data.StorageFullness + _data.CurrentGrowingCycleRevenue * _profitMultiplier);
 
-        if (_data.IsStorageInfinity == false || _data.StorageFullness > 0)
+        if (_data.IsStorageInfinity == false && _data.StorageFullness > 0)
         {
             StopRun();
             _data.SetGroverElapsedTime(0);
@@ -107,9 +107,13 @@ public class Grover : IDisposable
             UpdateCultivationDuration();
 
             UnityEngine.Debug.Log($"Теперь грядка \"{_data.GardenName}\" будет производить ресурсы на 50% быстрее");
+            _data.InvokePlantCountTresholdChanged();
         }
     }
 
-    private void OnProfitLevelChanged(float _) =>
+    private void OnProfitLevelChanged(int _)
+    {
        _profitMultiplier = CalculateProfitMultiplier();
+        _updater?.Subscribe(OnUpdated);
+    }
 }

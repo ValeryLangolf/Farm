@@ -68,9 +68,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     public void UpgradeProfit()
     {
         if (_wallet.TrySpend(_data.LevelUpPrice))
-        {
             _data.SetProfitLevel(_data.ProfitLevel + 1);
-        }
     }
 
     private void ProcessRunnableStatusGrover()

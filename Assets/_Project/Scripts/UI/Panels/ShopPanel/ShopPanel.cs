@@ -97,7 +97,7 @@ public class ShopPanel : MonoBehaviour
     private void OnPurchaseStatusChanged(bool _) =>
         UpdateShopItems();
 
-    private void OnProfitLevelChanged(float _) =>
+    private void OnProfitLevelChanged(int _) =>
         UpdateShopItems();
 
     private void OnWalletChanged(float _) =>

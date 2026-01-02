@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposable
 {
+    [SerializeField] private bool _isLogRepeatSubscriptions = false;
+
     private readonly HashSet<Action<float>> _actionSet = new();
     private Action<float> _updated;
     private bool _isRunning;
@@ -18,14 +20,6 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
         _updated?.Invoke(deltaTime);
     }
 
-    public static UpdateService Create()
-    {
-        GameObject gameObject = new(nameof(UpdateService));
-        UpdateService service = gameObject.AddComponent<UpdateService>();
-
-        return service;
-    }
-
     public void Dispose()
     {
         _isRunning = false;
@@ -37,7 +31,8 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
     {
         if (_actionSet.Contains(action))
         {
-            Debug.LogWarning($"{nameof(UpdateService)}: Повторная попытка подписать событие {action.Method.Name}.");
+            if (_isLogRepeatSubscriptions)
+                Debug.LogWarning($"{nameof(UpdateService)}: Повторная попытка подписать событие {action.Method.Name}.");
 
             return;
         }
@@ -50,23 +45,14 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
     {
         if (_actionSet.Contains(action) == false)
         {
-            Debug.LogWarning($"{nameof(UpdateService)}: Попытка отписать неподписанное событие {action.Method.Name}.");
-            
+            if (_isLogRepeatSubscriptions)
+                Debug.LogWarning($"{nameof(UpdateService)}: Попытка отписать неподписанное событие {action.Method.Name}.");
+
             return;
         }
 
         _actionSet.Remove(action);
         _updated -= action;
-    }
-
-    public bool TryUnsubscribe(Action<float> action)
-    {
-        bool subscribed = _actionSet.Contains(action);
-
-        if(subscribed)
-            Unsubscribe(action);
-        
-        return subscribed;
     }
 
     public void StartRun() =>

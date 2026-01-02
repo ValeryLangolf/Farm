@@ -232,8 +232,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Price
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
+  m_sharedMaterial: {fileID: -5554228330066444550, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -366,8 +366,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041D\u0410\u0417\u0412\u0410\u041D\u0418\u0415"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 1a3e1fc7ada65bd4cbbd4f3678661cc2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
+  m_sharedMaterial: {fileID: -5554228330066444550, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -391,13 +391,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.9
+  m_fontSize: 19.15
   m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 20
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -576,8 +576,8 @@ MonoBehaviour:
   m_text: "\u0423\u0412\u0415\u041B\u0418\u0427\u0415\u041D\u0418\u0415 \u041F\u0420\u0418\u0411\u042B\u041B\u0418
     x3"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 1a3e1fc7ada65bd4cbbd4f3678661cc2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
+  m_sharedMaterial: {fileID: -5554228330066444550, guid: f64c5acc86db6554c86b5a5ed4ec373f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 12
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -845,5 +845,3 @@ MonoBehaviour:
   _purchaseButton: {fileID: 2693296585973253389}
   _upgradeDescriptionText: {fileID: 3577729999448052521}
   _gardenNameText: {fileID: 960519894704743092}
-  _stackUpgradeDescription: Stack Harvest
-  _profitUpgradeDescription: Profit x3

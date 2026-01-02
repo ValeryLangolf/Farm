@@ -9,7 +9,8 @@ public interface IReadOnlyGardenData
     event Action<int> PlantsCountToUpgradeChanged;
     event Action<float> PlantsPriceToUpgradeChanged;
     event Action<int> PlantsCountChanged;
-    event Action<float> ProfitLevelChanged;
+    event Action<int> ProfitLevelChanged;
+    event Action<Sprite> PlantCountTresholdChanged;
 
     Sprite Icon { get; }
 

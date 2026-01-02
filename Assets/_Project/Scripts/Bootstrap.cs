@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
+    [SerializeField] private UpdateService _updateService;
     [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private InputTrailParticle _trailParticle;
     [SerializeField] private Audio _audio;
@@ -44,7 +45,7 @@ public class Bootstrap : MonoBehaviour
 
     private void RegisterServices()
     {
-        ServiceLocator.Register(UpdateService.Create() as IUpdateService);
+        ServiceLocator.Register(_updateService as IUpdateService);
 
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
