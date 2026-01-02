@@ -9,6 +9,8 @@ public class ButtonClickHandler : MonoBehaviour
 
     public event Action<ButtonClickHandler> Clicked;
 
+    public Button Button => _button;
+
     protected virtual void Awake() =>
         _button = GetComponent<Button>();
 

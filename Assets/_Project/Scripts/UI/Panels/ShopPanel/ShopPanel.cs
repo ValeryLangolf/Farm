@@ -1,46 +1,46 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopPanel : MonoBehaviour
 {
-    private const int ITEMS_PER_PAGE = 3;
+    [SerializeField] private PagedContainer _pagedContainer;
+    [SerializeField] private ShopItem _shopItemPrefab;
 
-    [SerializeField] private Transform _parentObject;
-    [SerializeField] private UpgradeShopItemUI _upgradeShopItem;
-    [SerializeField] private Button _nextPageButton;
-    [SerializeField] private Button _prevPageButton;
-    [SerializeField] private TextMeshProUGUI _pageText;
     [SerializeField][TextArea] private string _stackUpgradeDescription = "Stack Harvest";
     [SerializeField][TextArea] private string _profitUpgradeDescription = "Profit x3";
 
-    private int _currentPage = 0;
-
-    private readonly List<UpgradeShopItemUI> _shopItems = new();
     private IReadOnlyList<Garden> _gardens;
+    private IWallet _wallet;
 
     private void Awake()
     {
         _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
+        _wallet = ServiceLocator.Get<IWallet>();
 
-        ClearChildren();
-        CreateAllItems();
-        UpdateShopItems();
-        UpdateInfo();
+        InitializePagedContainer();
     }
 
     private void OnEnable()
     {
-        _currentPage = 0;
+        SubscribeToGardenEvents();
+        _wallet.Changed += OnWalletChanged;
 
-        _nextPageButton.onClick.AddListener(IncreasePage);
-        _prevPageButton.onClick.AddListener(DecreasePage);
+        ResetPagination();
+        UpdateShopItems();
+    }
 
-        OnPurchaseStatusChanged(true);
+    private void OnDisable()
+    {
+        UnsubscribeFromGardenEvents();
+        _wallet.Changed -= OnWalletChanged;
+    }
 
+    private void InitializePagedContainer() =>
+        _pagedContainer.Initialize(_shopItemPrefab, _gardens.Count);
+
+    private void SubscribeToGardenEvents()
+    {
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
@@ -48,11 +48,8 @@ public class ShopPanel : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void UnsubscribeFromGardenEvents()
     {
-        _nextPageButton.onClick.RemoveAllListeners();
-        _prevPageButton.onClick.RemoveAllListeners();
-
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
@@ -60,178 +57,49 @@ public class ShopPanel : MonoBehaviour
         }
     }
 
-    private void ClearChildren()
-    {
-        foreach (Transform child in _parentObject)
-            Destroy(child.gameObject);
-    }
-
-    private void CreateAllItems()
-    {
-        foreach (Garden _ in _gardens)
-        {
-            UpgradeShopItemUI item = Instantiate(_upgradeShopItem, _parentObject);
-            item.gameObject.SetActive(false);
-            _shopItems.Add(item);
-        }
-    }
+    private void ResetPagination() =>
+        _pagedContainer.ResetToFirstPage();
 
     private void UpdateShopItems()
     {
-        IReadOnlyList<Garden> sortedGardens = SortGardens();
-        FillItems(sortedGardens);
-    }
+        List<object> upgradeDataList = new();
 
-    private IReadOnlyList<Garden> SortGardens()
-    {
-        return _gardens
+        List<Garden> purchasedGardens = _gardens
             .Where(garden => garden.ReadOnlyData.IsPurchased)
             .OrderBy(garden => garden.ReadOnlyData.LevelUpPrice)
             .ToList();
-    }
 
-    private void FillItems(IReadOnlyList<Garden> sortedGardens)
-    {
-        foreach (UpgradeShopItemUI shopItem in _shopItems)
-            shopItem.ClearData();
-
-        for (int index = 0; index < _shopItems.Count; index++)
+        foreach (Garden garden in purchasedGardens)
         {
-            bool hasCorrespondingGarden = index < sortedGardens.Count;
-
-            if (hasCorrespondingGarden == false)
-            {
-                _shopItems[index].gameObject.SetActive(false);
-
-                continue;
-            }
-
-            Garden garden = sortedGardens[index];
             string description = garden.ReadOnlyData.ProfitLevel == 0
                 ? _stackUpgradeDescription
                 : _profitUpgradeDescription;
 
-            _shopItems[index].UpdateInfo(garden, description);
+            bool canPurchase = _wallet.CanSpend(garden.ReadOnlyData.LevelUpPrice);
+
+            ShopItemData data = new(
+                gardenName: garden.ReadOnlyData.GardenName,
+                icon: garden.ReadOnlyData.Icon,
+                price: garden.ReadOnlyData.LevelUpPrice,
+                profitLevel: garden.ReadOnlyData.ProfitLevel,
+                upgradeRequested: () => garden.UpgradeProfit(),
+                description: description,
+                canPurchase: canPurchase,
+                onButtonClick: () => UpdateShopItems()
+            );
+
+            upgradeDataList.Add(data);
         }
 
-        UpdateInfo();
-    }
-
-    private void UpdateInfo()
-    {
-        EnableItemsInRange();
-        ChangeButtonsVisibility();
-        SetPageText();
-    }
-
-    public void IncreasePage()
-    {
-        bool canIncrease = _currentPage + 1 < CalculateAvailablePagesCount();
-
-        if (canIncrease == false)
-            return;
-
-        _currentPage++;
-        UpdateInfo();
-    }
-
-    private int CalculateAvailablePagesCount()
-    {
-        int itemsWithDataCount = _shopItems.Count(item => item.HasData);
-
-        if (itemsWithDataCount == 0)
-            return 1;
-
-        return Mathf.CeilToInt((float)itemsWithDataCount / ITEMS_PER_PAGE);
-    }
-
-    public void DecreasePage()
-    {
-        bool canDecrease = _currentPage - 1 >= 0;
-
-        if (canDecrease == false)
-            return;
-
-        _currentPage--;
-        UpdateInfo();
-    }
-
-    private void SetPageText()
-    {
-        string text = (_currentPage + 1) + "/" + CalculateAvailablePagesCount();
-        _pageText.text = text;
-    }
-
-    private void ChangeButtonsVisibility()
-    {
-        int availablePagesCount = CalculateAvailablePagesCount();
-
-        if (availablePagesCount <= 1)
-        {
-            _prevPageButton.gameObject.SetActive(false);
-            _nextPageButton.gameObject.SetActive(false);
-        }
-        else if (_currentPage == 0)
-        {
-            _prevPageButton.gameObject.SetActive(false);
-            _nextPageButton.gameObject.SetActive(true);
-
-            
-        }
-        else if (_currentPage == availablePagesCount - 1)
-        {
-            _nextPageButton.gameObject.SetActive(false);
-            _prevPageButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _prevPageButton.gameObject.SetActive(true);
-            _nextPageButton.gameObject.SetActive(true);
-        }
-    }
-
-    private void EnableItemsInRange()
-    {
-        DisableAllItems();
-
-        List<UpgradeShopItemUI> itemsWithData = _shopItems
-            .Where(item => item.HasData)
-            .ToList();
-
-        if (itemsWithData.Count == 0)
-            return;
-
-        int startIndex = _currentPage * ITEMS_PER_PAGE;
-        int takeCount = Math.Min(ITEMS_PER_PAGE, itemsWithData.Count - startIndex);
-
-        if (startIndex >= itemsWithData.Count)
-        {
-            _currentPage = Mathf.Max(0, CalculateAvailablePagesCount() - 1);
-            startIndex = _currentPage * ITEMS_PER_PAGE;
-            takeCount = Math.Min(ITEMS_PER_PAGE, itemsWithData.Count - startIndex);
-        }
-
-        // ИЗМЕНЕНО: порядок элементов на странице развёрнут
-        for (int i = 0; i < takeCount; i++)
-        {
-            int dataIndex = startIndex + i;
-            int reversedSiblingIndex = takeCount - 1 - i; // ИЗМЕНЕНО: меняем siblingIndex
-
-            var item = itemsWithData[dataIndex];
-            item.gameObject.SetActive(true);
-            item.transform.SetSiblingIndex(reversedSiblingIndex); // ИЗМЕНЕНО
-        }
-    }
-
-    private void DisableAllItems()
-    {
-        foreach (UpgradeShopItemUI item in _shopItems)
-            item.gameObject.SetActive(false);
+        _pagedContainer.SetData(upgradeDataList);
     }
 
     private void OnPurchaseStatusChanged(bool _) =>
         UpdateShopItems();
 
     private void OnProfitLevelChanged(float _) =>
+        UpdateShopItems();
+
+    private void OnWalletChanged(float _) =>
         UpdateShopItems();
 }

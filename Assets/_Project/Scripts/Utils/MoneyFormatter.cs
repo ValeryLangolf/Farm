@@ -4,7 +4,8 @@ using UnityEngine;
 public static class MoneyFormatter
 {
     private static CultureInfo s_culture = CultureInfo.InvariantCulture;
-    private static readonly string[] s_suffixes = { "", "K", "M", "B", "T" };
+    private static readonly string[] s_suffixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", 
+        "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd", "Nod", "Vg", "Uvg", "Dvg", "Tvg", "Od"};
 
     public static bool NeedUpdateText(out string formattedText, float lastValue, float currentValue)
     {

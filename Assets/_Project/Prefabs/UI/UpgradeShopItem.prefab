@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 4575824837763594661}
   - component: {fileID: 7872008490398151543}
   m_Layer: 5
-  m_Name: BG
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,3 +845,5 @@ MonoBehaviour:
   _purchaseButton: {fileID: 2693296585973253389}
   _upgradeDescriptionText: {fileID: 3577729999448052521}
   _gardenNameText: {fileID: 960519894704743092}
+  _stackUpgradeDescription: Stack Harvest
+  _profitUpgradeDescription: Profit x3
