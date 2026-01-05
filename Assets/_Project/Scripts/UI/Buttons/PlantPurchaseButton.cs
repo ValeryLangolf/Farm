@@ -22,7 +22,7 @@ public class PlantPurchaseButton : ButtonClickHandler
     {
         base.OnEnable();
 
-        OnPlantsPriceToUpgradeChanged(_data.PlantsPriceToUpgrade);
+        OnPlantsPriceToUpgradeChanged(0);
         _data.PlantsPriceToUpgradeChanged += OnPlantsPriceToUpgradeChanged;
     }
 
@@ -40,11 +40,11 @@ public class PlantPurchaseButton : ButtonClickHandler
         _garden.UpgradePlantsCount();
     }
 
-    private void OnPlantsPriceToUpgradeChanged(float price)
+    private void OnPlantsPriceToUpgradeChanged(float _)
     {
-        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastPrice, price))
+        if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastPrice, _data.PlantsPriceToUpgrade))
         {
-            _lastPrice = price;
+            _lastPrice = _data.PlantsPriceToUpgrade;
             _priceText.text = $"{formattedText}{Constants.DollarChar}";
         }
 

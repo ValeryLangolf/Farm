@@ -17,7 +17,7 @@ public class StorageFullnesTextIndicator : MonoBehaviour
         OnPurchaseStatusChanged(_data.IsPurchased);
         _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
 
-        OnStorageProgressChanged(_data.ProfitLevel > 0);
+        OnStorageProgressChanged(_data.IsStorageFilled);
         _data.StorageFilledChanged += OnStorageProgressChanged;
     }
 

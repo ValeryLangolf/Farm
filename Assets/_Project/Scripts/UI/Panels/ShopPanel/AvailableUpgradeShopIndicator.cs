@@ -23,7 +23,7 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
-            garden.ReadOnlyData.ProfitLevelChanged += OnProfitLevelChanged;
+            garden.ReadOnlyData.CostStoreLevelUpgradeChanged += OnCostStoreLevelUpgradeChanged;
         }
     }
 
@@ -36,7 +36,7 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-            garden.ReadOnlyData.ProfitLevelChanged -= OnProfitLevelChanged;
+            garden.ReadOnlyData.CostStoreLevelUpgradeChanged -= OnCostStoreLevelUpgradeChanged;
         }
     }
 
@@ -46,7 +46,7 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
 
         foreach (Garden garden in _gardens)
             if (garden.ReadOnlyData.IsPurchased)
-                if (_wallet.CanSpend(garden.ReadOnlyData.LevelUpPrice))
+                if (_wallet.CanSpend(garden.ReadOnlyData.CostStoreLevelUpgrade))
                     isActive = true;
 
         _arrow.SetActive(isActive);
@@ -55,7 +55,7 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
     private void OnPurchaseStatusChanged(bool _) =>
         ProcessChanges();
 
-    private void OnProfitLevelChanged(int _) =>
+    private void OnCostStoreLevelUpgradeChanged(float _) =>
         ProcessChanges();
 
     private void OnWalletChanged(float _) =>

@@ -1,28 +1,32 @@
 using System;
 
-public class Grover : IDisposable
+public class GardenGrover : IDisposable
 {
+    private const float InitialCultivationMultiplier = 2.2f;
     private readonly ExtendedGardenData _data;
     private readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
 
     private float _currentCountTreshold;
     private float _profitMultiplier;
 
-    public Grover(ExtendedGardenData data)
+    public GardenGrover(ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
 
         _data.PlantsCountChanged += OnPlantsCountChanged;
-        _data.ProfitLevelChanged += OnProfitLevelChanged;
+        _data.CostStoreLevelUpgradeChanged += OnCostStoreLevelUpgradeChanged;
+
+        _data.InitialCultivationDurationInSeconds = FormulaCalculator.CalculateInitialCultivationDurationInSeconds(_data.GardenIndex, InitialCultivationMultiplier);
         _currentCountTreshold = CalculateTresholdMultiplier(_data.PlantsCount);
         UpdateCultivationDuration();
         _profitMultiplier = CalculateProfitMultiplier();
+        UpdateProgress();
     }
 
     public void Dispose()
     {
         _data.PlantsCountChanged -= OnPlantsCountChanged;
-        _data.ProfitLevelChanged -= OnProfitLevelChanged;
+        _data.CostStoreLevelUpgradeChanged -= OnCostStoreLevelUpgradeChanged;
         _updater?.Unsubscribe(OnUpdated);
     }
 
@@ -32,12 +36,21 @@ public class Grover : IDisposable
     public void StopRun() =>
         _updater?.Unsubscribe(OnUpdated);
 
+    public void ProcessRunnableStatus()
+    {
+        if (_data.IsPurchased && (_data.StorageFullness == 0 || _data.IsStorageInfinity))
+            StartRun();
+        else
+            StopRun();
+    }
+
     public void Grow(float deltaTime)
     {
         if (deltaTime < 0)
             throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "«начение должно быть положительным");
 
-        _data.SetGroverElapsedTime(_data.GroverElapsedTime + deltaTime);
+        _data.GroverElapsedTime += deltaTime;
+        UpdateProgress();
 
         while (_data.GroverElapsedTime >= _data.CultivationDurationInSeconds)
             CompleteGrowing();
@@ -45,13 +58,14 @@ public class Grover : IDisposable
 
     private void CompleteGrowing()
     {
-        _data.SetGroverElapsedTime(_data.GroverElapsedTime - _data.CultivationDurationInSeconds);
-        _data.SetStorageFullnes(_data.StorageFullness + _data.CurrentGrowingCycleRevenue * _profitMultiplier);
+        _data.GroverElapsedTime -= _data.CultivationDurationInSeconds;
+        UpdateProgress();
+        _data.StorageFullness += _data.InitialPlantRevenue * _data.PlantsCount * _profitMultiplier;
 
         if (_data.IsStorageInfinity == false && _data.StorageFullness > 0)
         {
             StopRun();
-            _data.SetGroverElapsedTime(0);
+            _data.GroverElapsedTime = 0;
         }
     }
 
@@ -81,18 +95,21 @@ public class Grover : IDisposable
     private void UpdateCultivationDuration()
     {
         float cultivationDuration = _data.InitialCultivationDurationInSeconds / _currentCountTreshold;
-        _data.SetCultivationDurationInSeconds(cultivationDuration);
+        _data.CultivationDurationInSeconds = cultivationDuration;
     }
 
     private float CalculateProfitMultiplier()
     {
         int profitMultiplier = 1;
 
-        for (int i = 1; i < _data.ProfitLevel; i++)
+        for (int i = 1; i < _data.StoreLevelUpgrade; i++)
             profitMultiplier *= Constants.ProfitUpgradeMultiplier;
 
         return profitMultiplier;
     }
+
+    private void UpdateProgress() =>
+        _data.GroverProgress = _data.GroverElapsedTime / _data.CultivationDurationInSeconds;
 
     private void OnUpdated(float deltaTime) =>
         Grow(deltaTime);
@@ -105,15 +122,15 @@ public class Grover : IDisposable
         {
             _currentCountTreshold = newTresholdMultiplier;
             UpdateCultivationDuration();
-
-            UnityEngine.Debug.Log($"“еперь гр€дка \"{_data.GardenName}\" будет производить ресурсы на 50% быстрее");
             _data.InvokePlantCountTresholdChanged();
         }
     }
 
-    private void OnProfitLevelChanged(int _)
+    private void OnCostStoreLevelUpgradeChanged(float _)
     {
-       _profitMultiplier = CalculateProfitMultiplier();
-        _updater?.Subscribe(OnUpdated);
+        if (_data.StoreLevelUpgrade > 0)
+            StartRun();
+
+        _profitMultiplier = CalculateProfitMultiplier();
     }
 }

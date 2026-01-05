@@ -44,7 +44,7 @@ public class ShopPanel : MonoBehaviour
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
-            garden.ReadOnlyData.ProfitLevelChanged += OnProfitLevelChanged;
+            garden.ReadOnlyData.CostStoreLevelUpgradeChanged += CostStoreLevelUpgradeChanged;
         }
     }
 
@@ -53,7 +53,7 @@ public class ShopPanel : MonoBehaviour
         foreach (Garden garden in _gardens)
         {
             garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-            garden.ReadOnlyData.ProfitLevelChanged -= OnProfitLevelChanged;
+            garden.ReadOnlyData.CostStoreLevelUpgradeChanged -= CostStoreLevelUpgradeChanged;
         }
     }
 
@@ -66,23 +66,23 @@ public class ShopPanel : MonoBehaviour
 
         List<Garden> purchasedGardens = _gardens
             .Where(garden => garden.ReadOnlyData.IsPurchased)
-            .OrderBy(garden => garden.ReadOnlyData.LevelUpPrice)
+            .OrderBy(garden => garden.ReadOnlyData.CostStoreLevelUpgrade)
             .ToList();
 
         foreach (Garden garden in purchasedGardens)
         {
-            string description = garden.ReadOnlyData.ProfitLevel == 0
+            string description = garden.ReadOnlyData.StoreLevelUpgrade == 0
                 ? _stackUpgradeDescription
                 : _profitUpgradeDescription;
 
-            bool canPurchase = _wallet.CanSpend(garden.ReadOnlyData.LevelUpPrice);
+            bool canPurchase = _wallet.CanSpend(garden.ReadOnlyData.CostStoreLevelUpgrade);
 
             ShopItemData data = new(
                 gardenName: garden.ReadOnlyData.GardenName,
                 icon: garden.ReadOnlyData.Icon,
-                price: garden.ReadOnlyData.LevelUpPrice,
-                profitLevel: garden.ReadOnlyData.ProfitLevel,
-                upgradeRequested: () => garden.UpgradeProfit(),
+                price: garden.ReadOnlyData.CostStoreLevelUpgrade,
+                profitLevel: garden.ReadOnlyData.StoreLevelUpgrade,
+                upgradeRequested: () => garden.UpgradeStoreLevel(),
                 description: description,
                 canPurchase: canPurchase,
                 onButtonClick: () => UpdateShopItems()
@@ -97,7 +97,7 @@ public class ShopPanel : MonoBehaviour
     private void OnPurchaseStatusChanged(bool _) =>
         UpdateShopItems();
 
-    private void OnProfitLevelChanged(int _) =>
+    private void CostStoreLevelUpgradeChanged(float _) =>
         UpdateShopItems();
 
     private void OnWalletChanged(float _) =>

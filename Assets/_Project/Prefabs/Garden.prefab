@@ -307,7 +307,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 90
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 100
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -651,11 +651,8 @@ MonoBehaviour:
   _data:
     _gardenName: 
     _icon: {fileID: 0}
-    _purchasePrice: 1
-    _initialGrowingCycleRevenue: 1
     _initialCultivationDurationInSeconds: 1
-    _initialPlantPrice: 1
-    _initialProfitPrice: 1
+    _plantCostMultiplier: 1
     _initialLevelUpPrice: 1
 --- !u!114 &7181079726453659373
 MonoBehaviour:

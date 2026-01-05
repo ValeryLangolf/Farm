@@ -1006,6 +1006,22 @@ PrefabInstance:
       value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialPlantRevenue
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: fc08b64d864ce4b4e833d096b8f2d3d4, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0420\u0435\u0434\u0438\u0441"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 60
       objectReference: {fileID: 0}
@@ -1014,12 +1030,24 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 15000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 15000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -1135,8 +1163,24 @@ PrefabInstance:
       value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 8"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
@@ -1145,6 +1189,14 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 555560000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 555560000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -3730,6 +3782,18 @@ PrefabInstance:
       value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 5"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 5000
       objectReference: {fileID: 0}
@@ -3738,12 +3802,24 @@ PrefabInstance:
       value: 14000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 1200000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 1200000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -4468,6 +4544,18 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 57020
       objectReference: {fileID: 0}
@@ -4476,12 +4564,24 @@ PrefabInstance:
       value: 1900
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 500000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -4928,8 +5028,24 @@ PrefabInstance:
       value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 7"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
@@ -4938,6 +5054,14 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 10000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 10000000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -5203,6 +5327,18 @@ PrefabInstance:
       value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 6"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 50000
       objectReference: {fileID: 0}
@@ -5211,12 +5347,24 @@ PrefabInstance:
       value: 450000
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 3000000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -6389,11 +6537,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialPlantPrice
-      value: 500
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialLevelUpPrice
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialPlantRevenue
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 3"
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
@@ -6404,12 +6568,24 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -6675,8 +6851,24 @@ PrefabInstance:
       value: 1e+12
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u0413\u0440\u044F\u0434\u043A\u0430 9"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialCultivationDurationInSeconds
@@ -6685,6 +6877,14 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 1e+10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 1e+10
       objectReference: {fileID: 0}
     - target: {fileID: 8282656024236538077, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
@@ -6996,6 +7196,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._initialPlantPrice
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._isInitialPurchased
       value: 1
       objectReference: {fileID: 0}
@@ -7004,12 +7208,40 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data._plantCostMultiplier
+      value: 1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<Icon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 98725f2580174fd4dbd162f605427a4c, type: 3}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<GardenName>k__BackingField
+      value: "\u041A\u0430\u0440\u0442\u043E\u0444\u0435\u043B\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<PlantCostMultiplier>k__BackingField
+      value: 1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.GroverData.CultivationDurationInSeconds
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreUpgrade>k__BackingField
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialCostStoreLevelUpgrade>k__BackingField
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _data.<InitialShopUpgradeLevelPrice>k__BackingField
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8237647300361991511, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x

@@ -4,148 +4,211 @@ using UnityEngine;
 [Serializable]
 public class ExtendedGardenData : IReadOnlyGardenData
 {
-    [SerializeField] private string _gardenName;
-    [SerializeField] private Sprite _icon;
-    [SerializeField, Min(1)] private float _initialGrowingCycleRevenue = 1;
-    [SerializeField, Min(0.001f)] private float _initialCultivationDurationInSeconds = float.MaxValue;
-    [SerializeField, Min(1)] private float _initialPlantPrice = 1;
-    [SerializeField, Min(1)] private float _initialProfitPrice = 1;
-    [SerializeField, Min(1)] private float _initialLevelUpPrice = 1;
+    [field: SerializeField] public string GardenName { get; private set; }
 
-    private int _gardenIndex;
-    private float _purchasePrice;
+    [field: SerializeField] public Sprite Icon { get; private set; }
+
+    [field: SerializeField, Min(1)] public float PlantCostMultiplier { get; private set; }
+
+    [field: SerializeField, Min(1)] public float InitialCostStoreLevelUpgrade { get; private set; }
+
     private SavedGardenData _savedData = new();
-    private float _groverProgress;
-    private int _plantsCountToUpgrade;
-    private float _plantsPriceToUpgrade;
-    private float _cultivationDurationInSeconds = float.MaxValue;
+    private float _groverProgress = 0;
+    private int _plantsCountToUpgrade = 1;
+    private float _plantsPriceToUpgrade = float.MaxValue;
+    private float _costStoreLevelUpgrade = float.MaxValue;
 
     public event Action<int> PlantsCountChanged;
     public event Action<float> GroverProgressChanged;
+    public event Action<float> GroverElapsedTimeChanged;
     public event Action<bool> StorageFilledChanged;
     public event Action<bool> PurchaseStatusChanged;
     public event Action<int> PlantsCountToUpgradeChanged;
     public event Action<float> PlantsPriceToUpgradeChanged;
-    public event Action<int> ProfitLevelChanged;
+    public event Action<float> CostStoreLevelUpgradeChanged;
     public event Action<Sprite> PlantCountTresholdChanged;
 
-    public string GardenName => _gardenName;
+    public int GardenIndex { get; set; }
 
-    public Sprite Icon => _icon;
+    public float GardenPurchasePrice { get; set; }
 
-    public float GardenPurchasePrice => _purchasePrice;
+    public float InitialCultivationDurationInSeconds { get; set; }
 
-    public float CurrentGrowingCycleRevenue => _initialGrowingCycleRevenue * _savedData.PlantsCount;
+    public float InitialPlantPrice { get; set; }
 
-    public float InitialCultivationDurationInSeconds => _initialCultivationDurationInSeconds;
+    public float InitialPlantRevenue { get; set; }
 
-    public bool IsPurchased => _savedData.IsPurchased;
+    public float CultivationDurationInSeconds { get; set; }
 
-    public int PlantsCount => _savedData.PlantsCount;
+    public bool IsStorageInfinity => SavedData.StoreLevelUpgrade > 0;
 
-    public bool IsStorageInfinity => _savedData.ProfitLevel > 0;
+    public bool IsStorageFilled => SavedData.StorageFullness > 0
+        && IsStorageInfinity == false;
 
-    public float StorageFullness => _savedData.StorageFullness;
-
-    public float GroverElapsedTime => _savedData.GroverElapsedTime;
-
-    public float GroverProgress => _groverProgress;
-
-    public bool IsStorageFilled => _savedData.StorageFullness > 0 
-        && _savedData.ProfitLevel == 0;
-
-    public int PlantsCountToUpgrade => _plantsCountToUpgrade;
-
-    public float PlantsPriceToUpgrade => _plantsPriceToUpgrade;
-
-    public float InitialPlantPrice => _initialPlantPrice;
-
-    public float CultivationDurationInSeconds => _cultivationDurationInSeconds;
-
-    public float InitialProfitPrice => _initialProfitPrice;
-
-    public int ProfitLevel => _savedData.ProfitLevel;
-
-    public float LevelUpPrice => _initialLevelUpPrice * Mathf.Pow(1000, _savedData.ProfitLevel);
-
-    public void SetSavedData(SavedGardenData savedData, int index)
+    public SavedGardenData SavedData
     {
-        _gardenIndex = index;
-
-        _purchasePrice = FormulaCalculator.CalculatePurchasePrice(
-            _gardenIndex, 
-            Constants.BaseGardenPrice, 
-            Constants.GardenPriceMultiplier);
-        
-        _savedData = savedData;
-        UpdateGroverProgress();
-        UpdadeStorageFilledState();
-
-        PurchaseStatusChanged?.Invoke(_savedData.IsPurchased);
-        PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
-        PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
-        GroverProgressChanged?.Invoke(_groverProgress);
-        StorageFilledChanged?.Invoke(IsStorageFilled);
+        get
+        {
+            return _savedData;
+        }
+        set
+        {
+            _savedData = value;
+        }
     }
 
-    public void SetPurchasedStatus(bool isPurchased)
-    {
-        _savedData.IsPurchased = isPurchased;
-        PurchaseStatusChanged?.Invoke(isPurchased);
+    public float GroverProgress 
+    { 
+        get
+        {
+            return _groverProgress;
+        }
+        set
+        {
+            if (Mathf.Approximately(_groverProgress, value))
+                return;
+
+            _groverProgress = value;
+            GroverProgressChanged?.Invoke(_groverProgress);
+        }
     }
 
-    public void SetGroverElapsedTime(float value)
-    {
-        _savedData.GroverElapsedTime = value;
-        UpdateGroverProgress();
+    public int PlantsCountToUpgrade 
+    { 
+        get
+        {
+            return _plantsCountToUpgrade;
+        }
+        set
+        {
+            if (_plantsCountToUpgrade == value)
+                return;
+
+            _plantsCountToUpgrade = value;
+            PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+        }
     }
 
-    public void SetStorageFullnes(float value)
+    public float PlantsPriceToUpgrade 
     {
-        _savedData.StorageFullness = value;
-        UpdadeStorageFilledState();
+        get
+        {
+            return _plantsPriceToUpgrade;
+        }
+        set
+        {
+            if(Mathf.Approximately(_plantsPriceToUpgrade, value)) 
+                return;
+
+            _plantsPriceToUpgrade = value;
+            PlantsPriceToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+        }
     }
 
-    public void SetPlantsCount(int value)
+    public bool IsPurchased
     {
-        _savedData.PlantsCount = value;
-        PlantsCountChanged?.Invoke(value);
+        get
+        {
+            return SavedData.IsPurchased;
+        }
+        set
+        {
+            if (SavedData.IsPurchased == value)
+                return;
+
+            SavedData.IsPurchased = value;
+            PurchaseStatusChanged?.Invoke(value);
+        }
     }
 
-    public void SetPlantsCountToUpgrade(int value)
+    public int PlantsCount
     {
-        _plantsCountToUpgrade = value;
-        PlantsCountToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+        get
+        {
+            return SavedData.PlantsCount;
+        }
+        set
+        {
+            if(SavedData.PlantsCount == value) 
+                return;
+
+            SavedData.PlantsCount = value;
+            PlantsCountChanged?.Invoke(value);
+        }
     }
 
-    public void SetPlantsPriceToUpgrade(float value)
+    public float StorageFullness
     {
-        _plantsPriceToUpgrade = value;
-        PlantsPriceToUpgradeChanged?.Invoke(_plantsPriceToUpgrade);
+        get
+        {
+            return SavedData.StorageFullness;
+        }
+        set
+        {
+            if(Mathf.Approximately(SavedData.StorageFullness, value))
+                return;
+
+            SavedData.StorageFullness = value;
+            StorageFilledChanged?.Invoke(IsStorageFilled);
+        }
     }
 
-    public void SetCultivationDurationInSeconds(float value)
+    public float GroverElapsedTime
     {
-        _cultivationDurationInSeconds = value;
+        get
+        {
+            return SavedData.GroverElapsedTime;
+        }
+        set
+        {
+            if(Mathf.Approximately(SavedData.GroverElapsedTime, value)) 
+                return;
+
+            SavedData.GroverElapsedTime = value;
+            GroverElapsedTimeChanged?.Invoke(value);
+        }
     }
 
-    public void SetProfitLevel(int level)
+    public int StoreLevelUpgrade
     {
-        _savedData.ProfitLevel = level;
-        ProfitLevelChanged?.Invoke(level);
+        get
+        {
+            return SavedData.StoreLevelUpgrade;
+        }
+        set
+        {
+            SavedData.StoreLevelUpgrade = value;
+        }
+    }
+
+    public float CostStoreLevelUpgrade
+    {
+        get
+        {
+            return _costStoreLevelUpgrade;
+        }
+        set
+        {
+            if(Mathf.Approximately(_costStoreLevelUpgrade, value)) 
+                return;
+
+            _costStoreLevelUpgrade = value;
+            CostStoreLevelUpgradeChanged?.Invoke(value);
+        }
     }
 
     public void InvokePlantCountTresholdChanged() =>
-        PlantCountTresholdChanged?.Invoke(_icon);
+        PlantCountTresholdChanged?.Invoke(Icon);
 
-    private void UpdateGroverProgress()
+    public void InvokeAllDataChanged()
     {
-        _groverProgress = _savedData.GroverElapsedTime / _cultivationDurationInSeconds;
-        GroverProgressChanged?.Invoke(_groverProgress);
-    }
-
-    private void UpdadeStorageFilledState()
-    {
+        PlantsCountChanged?.Invoke(PlantsCount);
+        GroverProgressChanged?.Invoke(GroverProgress);
+        GroverElapsedTimeChanged?.Invoke(GroverElapsedTime);
         StorageFilledChanged?.Invoke(IsStorageFilled);
+        PurchaseStatusChanged?.Invoke(IsPurchased);
+        PlantsCountToUpgradeChanged?.Invoke(PlantsCountToUpgrade);
+        PlantsPriceToUpgradeChanged?.Invoke(PlantsPriceToUpgrade);
+        CostStoreLevelUpgradeChanged?.Invoke(CostStoreLevelUpgrade);
     }
 }

@@ -9,7 +9,7 @@ public interface IReadOnlyGardenData
     event Action<int> PlantsCountToUpgradeChanged;
     event Action<float> PlantsPriceToUpgradeChanged;
     event Action<int> PlantsCountChanged;
-    event Action<int> ProfitLevelChanged;
+    event Action<float> CostStoreLevelUpgradeChanged;
     event Action<Sprite> PlantCountTresholdChanged;
 
     Sprite Icon { get; }
@@ -34,9 +34,9 @@ public interface IReadOnlyGardenData
 
     float PlantsPriceToUpgrade { get; }
 
-    int ProfitLevel { get; }
+    int StoreLevelUpgrade { get; }
 
     string GardenName { get; }
 
-    float LevelUpPrice { get; }
+    float CostStoreLevelUpgrade { get; }
 }

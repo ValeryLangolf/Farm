@@ -7,7 +7,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     private IWallet _wallet;
     private Sfx _sfx;
-    private Grover _grover;
+    private GardenGrover _grover;
     private GardenUpgrader _upgrader;
 
     public IReadOnlyGardenData ReadOnlyData => _data;
@@ -26,24 +26,29 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
     public void SetData(SavedGardenData data, int index)
     {
-        if (data == null)
-            throw new ArgumentNullException(nameof(data));
+        _data.GardenIndex = index >= 0 ? index : throw new ArgumentOutOfRangeException(nameof(index), index, "Значение должно быть положительным");
+        _data.SavedData = data ?? throw new ArgumentNullException(nameof(data));
+
+        _data.GardenPurchasePrice = FormulaCalculator.CalculatePurchasePrice(index, Constants.BaseGardenPrice, Constants.GardenPriceMultiplier);
+        _data.InitialPlantPrice = index > 0 ? _data.GardenPurchasePrice : 3;
+        _data.InitialPlantRevenue = FormulaCalculator.CalculateInitialPlantRevenue(index, _data.GardenPurchasePrice);
 
         _grover?.Dispose();
         _upgrader?.Dispose();
-        _data.SetSavedData(data, index);
         _grover = new(_data);
-        _grover.Grow(_data.GroverElapsedTime);
         _upgrader = new(_data);
-        ProcessRunnableStatusGrover();
+        _grover.Grow(_data.GroverElapsedTime);
+        _grover.ProcessRunnableStatus();
+
+        _data.InvokeAllDataChanged();
     }
-        
+
     public void ProcessClick()
     {
         if (_data.IsPurchased == false && _wallet.TrySpend(_data.GardenPurchasePrice))
         {
-            _data.SetPurchasedStatus(true);
-            ProcessRunnableStatusGrover();
+            _data.IsPurchased = true;
+            _grover.ProcessRunnableStatus();
         }
     }
 
@@ -54,28 +59,25 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
         if (isSuccessful)
         {
-            _data.SetStorageFullnes(0);
-            ProcessRunnableStatusGrover();
+            _data.StorageFullness = 0;
+            _grover.ProcessRunnableStatus();
             _sfx.PlayCollectedCoin();
         }
 
         return isSuccessful;
     }
 
-    public void UpgradePlantsCount() =>
-        _upgrader.UpgradePlantsCount();
-
-    public void UpgradeProfit()
+    public void UpgradePlantsCount()
     {
-        if (_wallet.TrySpend(_data.LevelUpPrice))
-            _data.SetProfitLevel(_data.ProfitLevel + 1);
+        int plantsCountToUpgrade = _data.PlantsCountToUpgrade;
+
+        if (_wallet.TrySpend(_data.PlantsPriceToUpgrade))
+            _data.PlantsCount += plantsCountToUpgrade;
     }
 
-    private void ProcessRunnableStatusGrover()
+    public void UpgradeStoreLevel()
     {
-        if (_data.IsPurchased && (_data.StorageFullness == 0 || _data.IsStorageInfinity))
-            _grover.StartRun();
-        else
-            _grover.StopRun();
+        if (_wallet.TrySpend(_data.CostStoreLevelUpgrade))
+            _upgrader.UpgradeStoreLevel();
     }
 }
