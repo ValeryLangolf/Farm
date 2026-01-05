@@ -29,8 +29,6 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
 
     private void OnDisable()
     {
-        ProcessChanges();
-
         _wallet.Changed -= OnWalletChanged;
 
         foreach (Garden garden in _gardens)
@@ -45,9 +43,17 @@ public class AvailableUpgradeShopIndicator : MonoBehaviour
         bool isActive = false;
 
         foreach (Garden garden in _gardens)
+        {
             if (garden.ReadOnlyData.IsPurchased)
+            {
                 if (_wallet.CanSpend(garden.ReadOnlyData.CostStoreLevelUpgrade))
+                {
                     isActive = true;
+
+                    break;
+                }
+            }                
+        }            
 
         _arrow.SetActive(isActive);
     }

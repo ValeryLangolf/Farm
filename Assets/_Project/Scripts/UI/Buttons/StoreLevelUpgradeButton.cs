@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class ProfitLevelUpPurchaseButton : ButtonClickHandler 
+public class StoreLevelUpgradeButton : ButtonClickHandler 
 {
     [SerializeField] private TextMeshProUGUI _text;
 

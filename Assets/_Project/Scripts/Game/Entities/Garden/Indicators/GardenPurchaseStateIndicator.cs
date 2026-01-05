@@ -16,15 +16,18 @@ public class GardenPurchaseStateIndicator : SwitchableSprite
 
     private void OnEnable()
     {
-        OnPurchaseStatusChanged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChanged();
 
-        OnWalletChanged(_wallet.Amount);
-        _wallet.Changed += OnWalletChanged;
+        OnWalletChanged();
+        _wallet.Changed += (_) => OnWalletChanged();
     }
 
-    private void OnDisable() =>
-        _wallet.Changed -= OnWalletChanged;
+    private void OnDisable()
+    {
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChanged();
+        _wallet.Changed -= (_) => OnWalletChanged();
+    }
 
     private void ProcessChanged()
     {
@@ -37,9 +40,9 @@ public class GardenPurchaseStateIndicator : SwitchableSprite
         SetColor(color);
     }
 
-    private void OnPurchaseStatusChanged(bool _) =>
+    private void OnPurchaseStatusChanged() =>
         ProcessChanged();
 
-    private void OnWalletChanged(float _) =>
+    private void OnWalletChanged() =>
         ProcessChanged();
 }

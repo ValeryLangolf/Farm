@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GroverProgressBarIndicator : MonoBehaviour
@@ -12,32 +13,39 @@ public class GroverProgressBarIndicator : MonoBehaviour
 
     private void OnEnable()
     {
-        OnPurchaseStatusChanged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChanged();
 
-        OnGroverProgressChanged(_data.GroverProgress);
-        _data.GroverProgressChanged += OnGroverProgressChanged;
+        OnGroverProgressChanged();
+        _data.GrowthProgressChanged += (_) => OnGroverProgressChanged();
+
+        OnStorageFilledChanged();
+        _data.StorageFullnessChanged += (_) => OnStorageFilledChanged();
     }
 
     private void OnDisable()
     {
-        _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-        _data.GroverProgressChanged -= OnGroverProgressChanged;
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChanged();
+        _data.GrowthProgressChanged -= (_) => OnGroverProgressChanged();
+        _data.StorageFullnessChanged -= (_) => OnStorageFilledChanged();
     }
 
     private void ProcessChanges()
     {
-        bool isActive = _data.IsPurchased && _data.GroverProgress > Mathf.Epsilon;
+        bool isActive = _data.IsPurchased && (_data.IsStorageInfinity || _data.StorageFullness == 0);
 
         _bar.SetActive(isActive);
 
         if (isActive)
-            _bar.SetProgress(_data.GroverProgress);
+            _bar.SetProgress(_data.GrowthProgress);
     }
 
-    private void OnPurchaseStatusChanged(bool _) =>
+    private void OnPurchaseStatusChanged() =>
         ProcessChanges();
 
-    private void OnGroverProgressChanged(float _) =>
+    private void OnGroverProgressChanged() =>
+        ProcessChanges();
+
+    private void OnStorageFilledChanged() =>
         ProcessChanges();
 }

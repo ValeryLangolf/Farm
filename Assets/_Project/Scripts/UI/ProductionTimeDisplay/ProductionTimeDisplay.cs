@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,13 +18,13 @@ public class ProductionTimeDisplay : MonoBehaviour
     private void OnEnable()
     {
         foreach(Garden garden in _gardens)
-            garden.ReadOnlyData.PlantCountTresholdChanged += OnPlantsCountChanged;
+            garden.ReadOnlyData.PlantCountThresholdChanged += OnTresholdChanged;
     }
 
     private void OnDisable()
     {
         foreach (Garden garden in _gardens)
-            garden.ReadOnlyData.PlantCountTresholdChanged -= OnPlantsCountChanged;
+            garden.ReadOnlyData.PlantCountThresholdChanged -= OnTresholdChanged;
     }
 
     private void CreateItem(Sprite sprite)
@@ -34,6 +33,6 @@ public class ProductionTimeDisplay : MonoBehaviour
         item.SetInfo(sprite);
     }
 
-    private void OnPlantsCountChanged(Sprite icon) =>
+    private void OnTresholdChanged(Sprite icon) =>
         CreateItem(icon);
 }

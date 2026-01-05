@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GardenUpgrader : IDisposable
 {
-    private const int CostStoreUpgradeMultiplier = 1000;
+    private const int CostStoreUpgradeMultiplier = 1250;
 
     private readonly IWallet _wallet;
     private readonly UIDirector _uiDirector;
@@ -71,7 +71,7 @@ public class GardenUpgrader : IDisposable
 
     private float CalculatePlantsPriceToUpgrade(int plantsCountToUpgrade)
     {
-        return FormulaCalculator.CalculateIntervalPrice(
+        return FormulaCalculator.CalculateIntervalPlantsPrice(
             _data.InitialPlantPrice,
             _data.PlantCostMultiplier,
             _data.PlantsCount,
@@ -95,10 +95,9 @@ public class GardenUpgrader : IDisposable
             return;
 
         if (_uiDirector.UpgradeModeCountButtonType == UpgradeModeCountButtonType.max)
-        {
             _data.PlantsCountToUpgrade = Mathf.Max(1, CalculateMaxCountPlantsWithThisMoney(_wallet.Amount));
-            _data.PlantsPriceToUpgrade = CalculatePlantsPriceToUpgrade(_data.PlantsCountToUpgrade);
-        }
+
+        _data.PlantsPriceToUpgrade = CalculatePlantsPriceToUpgrade(_data.PlantsCountToUpgrade);
     }
 
     private void OnPlantsCountChanged(int _) =>

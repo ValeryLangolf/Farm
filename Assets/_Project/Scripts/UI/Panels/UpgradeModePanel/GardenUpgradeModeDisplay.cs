@@ -16,25 +16,25 @@ public class GardenUpgradeModeDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        OnPurchaseStatusChaged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChaged;
+        OnPurchaseStatusChaged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChaged();
 
-        OnUpgradeModeEnabledChanged(_uiDirector.IsUpgradeModeActive);
-        _uiDirector.UpgradeModeEnabledStatusChanged += OnUpgradeModeEnabledChanged;
+        OnUpgradeModeEnabledChanged();
+        _uiDirector.UpgradeModeEnabledStatusChanged += (_) => OnUpgradeModeEnabledChanged();
     }
 
     private void OnDisable()
     {
-        _data.PurchaseStatusChanged -= OnPurchaseStatusChaged;
-        _uiDirector.UpgradeModeEnabledStatusChanged -= OnUpgradeModeEnabledChanged;
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChaged();
+        _uiDirector.UpgradeModeEnabledStatusChanged -= (_) => OnUpgradeModeEnabledChanged();
     }
 
     private void ProcessVisibleStateChanges() =>
         _childObject.SetActive(_uiDirector.IsUpgradeModeActive && _data.IsPurchased);
 
-    private void OnPurchaseStatusChaged(bool _) =>
+    private void OnPurchaseStatusChaged() =>
         ProcessVisibleStateChanges();
 
-    private void OnUpgradeModeEnabledChanged(bool enabled) =>
-        _childObject.SetActive(enabled && _data.IsPurchased);
+    private void OnUpgradeModeEnabledChanged() =>
+        ProcessVisibleStateChanges();
 }

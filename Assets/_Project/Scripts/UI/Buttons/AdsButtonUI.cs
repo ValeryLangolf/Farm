@@ -1,7 +1,4 @@
-public class AdsButtonUI : ButtonClickHandler
-{
-    
-}
+public class AdsButtonUI : ButtonClickHandler { }
 
 public enum AdsButtonState
 {

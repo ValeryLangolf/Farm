@@ -13,20 +13,20 @@ public class ExtendedGardenData : IReadOnlyGardenData
     [field: SerializeField, Min(1)] public float InitialCostStoreLevelUpgrade { get; private set; }
 
     private SavedGardenData _savedData = new();
-    private float _groverProgress = 0;
+    private float _growthProgress = 0;
     private int _plantsCountToUpgrade = 1;
     private float _plantsPriceToUpgrade = float.MaxValue;
     private float _costStoreLevelUpgrade = float.MaxValue;
 
     public event Action<int> PlantsCountChanged;
-    public event Action<float> GroverProgressChanged;
-    public event Action<float> GroverElapsedTimeChanged;
-    public event Action<bool> StorageFilledChanged;
+    public event Action<float> GrowthProgressChanged;
+    public event Action<float> GrowthElapsedTimeChanged;
+    public event Action<float> StorageFullnessChanged;
     public event Action<bool> PurchaseStatusChanged;
     public event Action<int> PlantsCountToUpgradeChanged;
     public event Action<float> PlantsPriceToUpgradeChanged;
     public event Action<float> CostStoreLevelUpgradeChanged;
-    public event Action<Sprite> PlantCountTresholdChanged;
+    public event Action<Sprite> PlantCountThresholdChanged;
 
     public int GardenIndex { get; set; }
 
@@ -42,9 +42,6 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public bool IsStorageInfinity => SavedData.StoreLevelUpgrade > 0;
 
-    public bool IsStorageFilled => SavedData.StorageFullness > 0
-        && IsStorageInfinity == false;
-
     public SavedGardenData SavedData
     {
         get
@@ -57,24 +54,24 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
     }
 
-    public float GroverProgress 
-    { 
+    public float GrowthProgress
+    {
         get
         {
-            return _groverProgress;
+            return _growthProgress;
         }
         set
         {
-            if (Mathf.Approximately(_groverProgress, value))
+            if (Mathf.Approximately(_growthProgress, value))
                 return;
 
-            _groverProgress = value;
-            GroverProgressChanged?.Invoke(_groverProgress);
+            _growthProgress = value;
+            GrowthProgressChanged?.Invoke(_growthProgress);
         }
     }
 
-    public int PlantsCountToUpgrade 
-    { 
+    public int PlantsCountToUpgrade
+    {
         get
         {
             return _plantsCountToUpgrade;
@@ -89,7 +86,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
     }
 
-    public float PlantsPriceToUpgrade 
+    public float PlantsPriceToUpgrade
     {
         get
         {
@@ -97,29 +94,15 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
         set
         {
-            if(Mathf.Approximately(_plantsPriceToUpgrade, value)) 
+            if (Mathf.Approximately(_plantsPriceToUpgrade, value))
                 return;
 
             _plantsPriceToUpgrade = value;
-            PlantsPriceToUpgradeChanged?.Invoke(_plantsCountToUpgrade);
+            PlantsPriceToUpgradeChanged?.Invoke(PlantsPriceToUpgrade);
         }
     }
 
-    public bool IsPurchased
-    {
-        get
-        {
-            return SavedData.IsPurchased;
-        }
-        set
-        {
-            if (SavedData.IsPurchased == value)
-                return;
-
-            SavedData.IsPurchased = value;
-            PurchaseStatusChanged?.Invoke(value);
-        }
-    }
+    public bool IsPurchased => SavedData.PlantsCount > 0;
 
     public int PlantsCount
     {
@@ -129,10 +112,16 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
         set
         {
-            if(SavedData.PlantsCount == value) 
+            if (SavedData.PlantsCount == value)
                 return;
 
+            int lastCount = SavedData.PlantsCount;
+
             SavedData.PlantsCount = value;
+
+            if ((lastCount == 0 && value != 0) || (lastCount != 0 && value == 0))
+                PurchaseStatusChanged?.Invoke(value > 0);
+
             PlantsCountChanged?.Invoke(value);
         }
     }
@@ -145,27 +134,27 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
         set
         {
-            if(Mathf.Approximately(SavedData.StorageFullness, value))
+            if (Mathf.Approximately(SavedData.StorageFullness, value))
                 return;
 
             SavedData.StorageFullness = value;
-            StorageFilledChanged?.Invoke(IsStorageFilled);
+            StorageFullnessChanged?.Invoke(StorageFullness);
         }
     }
 
-    public float GroverElapsedTime
+    public float GrowthElapsedTime
     {
         get
         {
-            return SavedData.GroverElapsedTime;
+            return SavedData.GrowthElapsedTime;
         }
         set
         {
-            if(Mathf.Approximately(SavedData.GroverElapsedTime, value)) 
+            if (Mathf.Approximately(SavedData.GrowthElapsedTime, value))
                 return;
 
-            SavedData.GroverElapsedTime = value;
-            GroverElapsedTimeChanged?.Invoke(value);
+            SavedData.GrowthElapsedTime = value;
+            GrowthElapsedTimeChanged?.Invoke(value);
         }
     }
 
@@ -189,7 +178,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
         set
         {
-            if(Mathf.Approximately(_costStoreLevelUpgrade, value)) 
+            if (Mathf.Approximately(_costStoreLevelUpgrade, value))
                 return;
 
             _costStoreLevelUpgrade = value;
@@ -197,15 +186,15 @@ public class ExtendedGardenData : IReadOnlyGardenData
         }
     }
 
-    public void InvokePlantCountTresholdChanged() =>
-        PlantCountTresholdChanged?.Invoke(Icon);
+    public void NotifyPlantCountThresholdChanged() =>
+        PlantCountThresholdChanged?.Invoke(Icon);
 
     public void InvokeAllDataChanged()
     {
         PlantsCountChanged?.Invoke(PlantsCount);
-        GroverProgressChanged?.Invoke(GroverProgress);
-        GroverElapsedTimeChanged?.Invoke(GroverElapsedTime);
-        StorageFilledChanged?.Invoke(IsStorageFilled);
+        GrowthProgressChanged?.Invoke(GrowthProgress);
+        GrowthElapsedTimeChanged?.Invoke(GrowthElapsedTime);
+        StorageFullnessChanged?.Invoke(StorageFullness);
         PurchaseStatusChanged?.Invoke(IsPurchased);
         PlantsCountToUpgradeChanged?.Invoke(PlantsCountToUpgrade);
         PlantsPriceToUpgradeChanged?.Invoke(PlantsPriceToUpgrade);

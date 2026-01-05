@@ -16,9 +16,8 @@ public class SavesData
 [Serializable]
 public class SavedGardenData
 {
-    public bool IsPurchased = false;
-    [Min(1)] public int PlantsCount = 1;
+    [Min(1)] public int PlantsCount = 0;
     [Min(0)] public float StorageFullness = 0;
-    [Min(0)] public float GroverElapsedTime = 0;
+    [Min(0)] public float GrowthElapsedTime = 0;
     [Min(0)] public int StoreLevelUpgrade = 0;
 }

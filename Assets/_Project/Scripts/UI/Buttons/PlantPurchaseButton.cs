@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -22,15 +23,19 @@ public class PlantPurchaseButton : ButtonClickHandler
     {
         base.OnEnable();
 
-        OnPlantsPriceToUpgradeChanged(0);
-        _data.PlantsPriceToUpgradeChanged += OnPlantsPriceToUpgradeChanged;
+        OnWalletChanged();
+        _wallet.Changed += (_) => OnWalletChanged();
+
+        OnPlantsPriceToUpgradeChanged();
+        _data.PlantsPriceToUpgradeChanged += (_) => OnPlantsPriceToUpgradeChanged();
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        _data.PlantsPriceToUpgradeChanged -= OnPlantsPriceToUpgradeChanged;
+        _wallet.Changed -= (_) => OnWalletChanged();
+        _data.PlantsPriceToUpgradeChanged -= (_) => OnPlantsPriceToUpgradeChanged();
     }
 
     protected override void OnClick()
@@ -40,7 +45,7 @@ public class PlantPurchaseButton : ButtonClickHandler
         _garden.UpgradePlantsCount();
     }
 
-    private void OnPlantsPriceToUpgradeChanged(float _)
+    private void ProcessChanged()
     {
         if (MoneyFormatter.NeedUpdateText(out string formattedText, _lastPrice, _data.PlantsPriceToUpgrade))
         {
@@ -51,4 +56,10 @@ public class PlantPurchaseButton : ButtonClickHandler
         bool canBuy = _wallet.CanSpend(_data.PlantsPriceToUpgrade);
         SetInteractable(canBuy);
     }
+
+    private void OnWalletChanged() =>
+        ProcessChanged();
+
+    private void OnPlantsPriceToUpgradeChanged() =>
+        ProcessChanged();
 }

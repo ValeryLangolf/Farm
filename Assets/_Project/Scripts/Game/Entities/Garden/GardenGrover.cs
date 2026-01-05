@@ -2,7 +2,7 @@ using System;
 
 public class GardenGrover : IDisposable
 {
-    private const float InitialCultivationMultiplier = 2.2f;
+    private const float InitialCultivationMultiplier = 2.4f;
     private readonly ExtendedGardenData _data;
     private readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
 
@@ -49,23 +49,23 @@ public class GardenGrover : IDisposable
         if (deltaTime < 0)
             throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "Значение должно быть положительным");
 
-        _data.GroverElapsedTime += deltaTime;
+        _data.GrowthElapsedTime += deltaTime;
         UpdateProgress();
 
-        while (_data.GroverElapsedTime >= _data.CultivationDurationInSeconds)
+        while (_data.GrowthElapsedTime >= _data.CultivationDurationInSeconds)
             CompleteGrowing();
     }
 
     private void CompleteGrowing()
     {
-        _data.GroverElapsedTime -= _data.CultivationDurationInSeconds;
+        _data.GrowthElapsedTime -= _data.CultivationDurationInSeconds;
         UpdateProgress();
         _data.StorageFullness += _data.InitialPlantRevenue * _data.PlantsCount * _profitMultiplier;
 
         if (_data.IsStorageInfinity == false && _data.StorageFullness > 0)
         {
             StopRun();
-            _data.GroverElapsedTime = 0;
+            _data.GrowthElapsedTime = 0;
         }
     }
 
@@ -109,7 +109,7 @@ public class GardenGrover : IDisposable
     }
 
     private void UpdateProgress() =>
-        _data.GroverProgress = _data.GroverElapsedTime / _data.CultivationDurationInSeconds;
+        _data.GrowthProgress = _data.GrowthElapsedTime / _data.CultivationDurationInSeconds;
 
     private void OnUpdated(float deltaTime) =>
         Grow(deltaTime);
@@ -122,7 +122,7 @@ public class GardenGrover : IDisposable
         {
             _currentCountTreshold = newTresholdMultiplier;
             UpdateCultivationDuration();
-            _data.InvokePlantCountTresholdChanged();
+            _data.NotifyPlantCountThresholdChanged();
         }
     }
 

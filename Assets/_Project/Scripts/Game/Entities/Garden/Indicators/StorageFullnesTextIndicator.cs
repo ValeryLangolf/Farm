@@ -14,17 +14,17 @@ public class StorageFullnesTextIndicator : MonoBehaviour
 
     private void OnEnable()
     {
-        OnPurchaseStatusChanged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChanged();
 
-        OnStorageProgressChanged(_data.IsStorageFilled);
-        _data.StorageFilledChanged += OnStorageProgressChanged;
+        OnStorageFilledChanged();
+        _data.StorageFullnessChanged += (_) => OnStorageFilledChanged();
     }
 
     private void OnDisable()
     {
-        _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-        _data.StorageFilledChanged -= OnStorageProgressChanged;
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChanged();
+        _data.StorageFullnessChanged -= (_) => OnStorageFilledChanged();
     }
 
     private void ProceccChanges()
@@ -43,9 +43,9 @@ public class StorageFullnesTextIndicator : MonoBehaviour
         }
     }
 
-    private void OnPurchaseStatusChanged(bool isPurchased) =>
+    private void OnPurchaseStatusChanged() =>
         ProceccChanges();
 
-    private void OnStorageProgressChanged(bool _) =>
+    private void OnStorageFilledChanged() =>
         ProceccChanges();
 }

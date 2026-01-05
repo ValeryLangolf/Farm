@@ -37,7 +37,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _upgrader?.Dispose();
         _grover = new(_data);
         _upgrader = new(_data);
-        _grover.Grow(_data.GroverElapsedTime);
+        _grover.Grow(_data.GrowthElapsedTime);
         _grover.ProcessRunnableStatus();
 
         _data.InvokeAllDataChanged();
@@ -47,7 +47,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
     {
         if (_data.IsPurchased == false && _wallet.TrySpend(_data.GardenPurchasePrice))
         {
-            _data.IsPurchased = true;
+            _data.PlantsCount++;
             _grover.ProcessRunnableStatus();
         }
     }

@@ -15,17 +15,17 @@ public class GardenCanSpendImageIndicator : SwitchableImage
 
     private void OnEnable()
     {
-        OnWalletChanged(_wallet.Amount);
-        _wallet.Changed += OnWalletChanged;
+        OnWalletChanged();
+        _wallet.Changed += (_) => OnWalletChanged();
 
-        OnPurchaseStatusChanged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChanged();
     }
 
     private void OnDisable()
     {
-        _wallet.Changed -= OnWalletChanged;
-        _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+        _wallet.Changed -= (_) => OnWalletChanged();
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChanged();
     }
 
     private void ProcessChanges()
@@ -37,9 +37,9 @@ public class GardenCanSpendImageIndicator : SwitchableImage
             UpdateState(_wallet.Amount >= _data.GardenPurchasePrice);
     }
 
-    private void OnWalletChanged(float _) =>
+    private void OnWalletChanged() =>
         ProcessChanges();
 
-    private void OnPurchaseStatusChanged(bool _) =>
+    private void OnPurchaseStatusChanged() =>
         ProcessChanges();
 }

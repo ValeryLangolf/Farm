@@ -14,17 +14,17 @@ public class StoragePartialFillingIconIndicator : MonoBehaviour
 
     private void OnEnable()
     {
-        OnPurchaseStatusChanged(_data.IsPurchased);
-        _data.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged();
+        _data.PurchaseStatusChanged += (_) => OnPurchaseStatusChanged();
 
-        OnStorageChanged(_data.IsStorageFilled);
-        _data.StorageFilledChanged += OnStorageChanged;
+        OnStorageChanged();
+        _data.StorageFullnessChanged += (_) => OnStorageChanged();
     }
 
     private void OnDisable()
     {
-        _data.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-        _data.StorageFilledChanged -= OnStorageChanged;
+        _data.PurchaseStatusChanged -= (_) => OnPurchaseStatusChanged();
+        _data.StorageFullnessChanged -= (_) => OnStorageChanged();
     }
 
     private void ProcessChanges()
@@ -33,9 +33,9 @@ public class StoragePartialFillingIconIndicator : MonoBehaviour
         _indicator.SetActive(isActive);
     }
 
-    private void OnPurchaseStatusChanged(bool _) =>
+    private void OnPurchaseStatusChanged() =>
         ProcessChanges();
 
-    private void OnStorageChanged(bool _) =>
+    private void OnStorageChanged() =>
         ProcessChanges();
 }

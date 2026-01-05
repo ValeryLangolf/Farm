@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShopItem : MonoBehaviour, IPagedItem
 {
     [SerializeField] private Image _image;
-    [SerializeField] private ProfitLevelUpPurchaseButton _purchaseButton;
+    [SerializeField] private StoreLevelUpgradeButton _purchaseButton;
     [SerializeField] private TextMeshProUGUI _upgradeDescriptionText;
     [SerializeField] private TextMeshProUGUI _gardenNameText;
 

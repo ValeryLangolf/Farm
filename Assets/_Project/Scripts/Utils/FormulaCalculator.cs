@@ -29,7 +29,7 @@ public static class FormulaCalculator
         return gardenPrice * multiplier;
     }
 
-    public static float CalculateIntervalPrice(float basePrice, float multiplier, int from, int to)
+    public static float CalculateIntervalPlantsPrice(float basePrice, float multiplier, int from, int to)
     {
         if (from >= to || Mathf.Approximately(multiplier, 1f))
             return basePrice * (to - from);
