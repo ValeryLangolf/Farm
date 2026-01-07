@@ -1,0 +1,10 @@
+skeleton.png
+size:2048,1024
+filter:Linear,Linear
+pma:true
+Body
+bounds:2,2,63,388
+Head
+bounds:451,2,447,687
+Stand
+bounds:900,2,308,381
