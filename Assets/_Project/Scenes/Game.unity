@@ -3036,7 +3036,7 @@ MonoBehaviour:
   _tutorial: {fileID: 829500610}
   _garden: {fileID: 897163785}
   _cursor: {fileID: 1530765565}
-  _cusrsorOffset: {x: 0, y: -0.5, z: 0}
+  _cusrsorOffset: {x: 0, y: -0.3, z: 0}
 --- !u!4 &958934553
 Transform:
   m_ObjectHideFlags: 0
