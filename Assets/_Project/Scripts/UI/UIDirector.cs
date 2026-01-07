@@ -25,9 +25,11 @@ public class UIDirector : MonoBehaviour, IService
     private InputTrailParticle _inputTrailParticle;
     private UpgradeModeCountButtonType _currentCountButtonType = UpgradeModeCountButtonType.x1;
     private bool _isUpgradeModeActive;
+    private bool _canShowUpgradeButtons = true;
 
     public event Action<UpgradeModeCountButtonType> UpgradeModeCountChanged;
     public event Action<bool> UpgradeModeEnabledStatusChanged;
+    public event Action Changed;
 
     public UpgradeModeCountButtonType UpgradeModeCountButtonType => _currentCountButtonType;
 
@@ -78,6 +80,22 @@ public class UIDirector : MonoBehaviour, IService
             button.Clicked -= OnClickUpgradeModeCountButton;
     }
 
+    public void HideUpgradesButtons()
+    {
+        _canShowUpgradeButtons = false;
+
+        _openerShopPanelButton.Hide();
+        _openerUpgradePanelButton.Hide();
+    }
+
+    public void ShowUpgradesButtons()
+    {
+        _canShowUpgradeButtons = true;
+
+        _openerShopPanelButton.Show();
+        _openerUpgradePanelButton.Show();
+    }
+
     private void SwitchInteractionDetector(bool enabled)
     {
         if (enabled)
@@ -112,8 +130,12 @@ public class UIDirector : MonoBehaviour, IService
         HideAllSwitchableUI();
 
         _settingsOpenerButton.Show();
-        _openerUpgradePanelButton.Show();
-        _openerShopPanelButton.Show();
+
+        if (_canShowUpgradeButtons)
+        {
+            _openerUpgradePanelButton.Show();
+            _openerShopPanelButton.Show();
+        }
     }
 
     private void OnClickResetProgressButton(ButtonClickHandler _) =>
@@ -137,6 +159,8 @@ public class UIDirector : MonoBehaviour, IService
 
         SwitchInteractionDetector(isOn == false);
         _inputTrailParticle.SetEnabled(isOn == false);
+
+        Changed?.Invoke();
     }
 
     private void OnClickOpenUpgradePanelButton(ButtonClickHandler _)
@@ -147,7 +171,10 @@ public class UIDirector : MonoBehaviour, IService
         {
             HideAllSwitchableUI();
             _upgradeModePanel.Show();
-            _openerUpgradePanelButton.Show();
+            if (_canShowUpgradeButtons)
+            {
+                _openerUpgradePanelButton.Show();
+            }
         }
         else
         {
@@ -169,7 +196,11 @@ public class UIDirector : MonoBehaviour, IService
             HideAllSwitchableUI();
             _darkPanel.Show();
             _shopPanel.Show();
-            _openerShopPanelButton.Show();
+
+            if (_canShowUpgradeButtons)
+            {
+                _openerShopPanelButton.Show();
+            }
         }
         else
         {

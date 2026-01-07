@@ -1,0 +1,60 @@
+{
+"skeleton": {
+	"hash": "jim5RLlBMUg",
+	"spine": "4.2.43",
+	"x": -202.13,
+	"y": -448.6,
+	"width": 512,
+	"height": 512,
+	"images": "",
+	"audio": "./audio"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "Finger", "parent": "root", "length": 434.76, "rotation": 90, "x": 79.37, "y": -390.49 }
+],
+"slots": [
+	{ "name": "Finger", "bone": "Finger", "attachment": "Finger" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Finger": {
+				"Finger": { "x": 197.89, "y": 25.5, "rotation": -90, "width": 512, "height": 512 }
+			}
+		}
+	}
+],
+"animations": {
+	"PurchaseTutorial": {
+		"bones": {
+			"Finger": {
+				"scale": [
+					{},
+					{ "time": 0.1667, "x": 0.829 },
+					{ "time": 0.3333 }
+				]
+			}
+		}
+	},
+	"SwipeTutorial": {
+		"bones": {
+			"Finger": {
+				"translate": [
+					{
+						"x": -142.46,
+						"curve": [ 0.078, -142.46, 0.156, 211.53, 0.078, 0, 0.156, 0 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 211.53,
+						"curve": [ 0.311, 211.53, 0.389, -142.46, 0.311, 0, 0.389, 0 ]
+					},
+					{ "time": 0.4667, "x": -142.46 }
+				]
+			}
+		}
+	}
+}
+}
