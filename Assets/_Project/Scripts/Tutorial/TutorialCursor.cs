@@ -20,7 +20,7 @@ public class TutorialCursor : MonoBehaviour
         return this;
     }
 
-    public TutorialCursor SetPosition(Vector3 worldPositon)
+    public TutorialCursor SetWorldPosition(Vector3 worldPositon)
     {
         if (_rect == null)
             _rect = transform as RectTransform;
@@ -29,7 +29,6 @@ public class TutorialCursor : MonoBehaviour
 
         Camera cam;
 
-        // Выбираем корректную камеру
         if (_canvas.renderMode == RenderMode.ScreenSpaceOverlay)
         {
             cam = null;
@@ -54,7 +53,13 @@ public class TutorialCursor : MonoBehaviour
         return this;
     }
 
+    public TutorialCursor SetScreenPosition(Vector3 screenPositon)
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.position = screenPositon;
 
+        return this;
+    }
 
     public TutorialCursor SetTouchAnimation()
     {

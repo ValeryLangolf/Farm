@@ -33,6 +33,8 @@ public class UIDirector : MonoBehaviour, IService
 
     public UpgradeModeCountButtonType UpgradeModeCountButtonType => _currentCountButtonType;
 
+    public OpenerUpgradePanelButton OpenerUpgradePanelButton => _openerUpgradePanelButton;
+
     public bool IsUpgradeModeActive => _isUpgradeModeActive;
 
     private void Awake()
@@ -93,6 +95,12 @@ public class UIDirector : MonoBehaviour, IService
         _canShowUpgradeButtons = true;
 
         _openerShopPanelButton.Show();
+        _openerUpgradePanelButton.Show();
+    }
+
+    public void ShowUpgradeModeButton()
+    {
+        _canShowUpgradeButtons = true;
         _openerUpgradePanelButton.Show();
     }
 

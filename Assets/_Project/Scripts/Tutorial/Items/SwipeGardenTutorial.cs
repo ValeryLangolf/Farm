@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class PurchaseGardenTutorial : TutorialItem
+public class SwipeGardenTutorial : TutorialItem
 {
     [SerializeField] private TutorialItem _nextItem;
     [SerializeField] private Tutorial _tutorial;
@@ -10,27 +9,29 @@ public class PurchaseGardenTutorial : TutorialItem
     [SerializeField] private Vector3 _cusrsorOffset;
 
     private UIDirector _uiDirector;
+    private IWallet _wallet;
 
     private void Awake()
     {
         _uiDirector = ServiceLocator.Get<UIDirector>();
+        _wallet = ServiceLocator.Get<IWallet>();
     }
 
     private void OnEnable()
     {
-        _garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        _wallet.Changed += OnWalletChanged;
     }
 
     private void OnDisable()
     {
-        _garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+        _garden.ReadOnlyData.StorageFullnessChanged -= OnWalletChanged;
     }
 
     public override void Activate()
     {
         _uiDirector.HideUpgradesButtons();
         _cursor.SetWorldPosition(_garden.transform.position + _cusrsorOffset)
-            .SetTouchAnimation()
+            .SetSwipeAnimation()
             .Show();
     }
 
@@ -38,13 +39,15 @@ public class PurchaseGardenTutorial : TutorialItem
     {
         _tutorial.SetCurrentItem(_nextItem);
         _cursor.Hide();
-        Destroy(gameObject);
         _nextItem.Activate();
+        Destroy(gameObject);
     }
 
-    private void OnPurchaseStatusChanged(bool isChanged)
+    private void OnWalletChanged(float obj)
     {
-        if (isChanged)
+        float targetCount = 3f;
+
+        if (obj > targetCount)
         {
             Deactivate();
         }
