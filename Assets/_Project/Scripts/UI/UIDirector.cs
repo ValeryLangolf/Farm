@@ -16,6 +16,7 @@ public class UIDirector : MonoBehaviour, IService
     [SerializeField] private OpenerUpgradePanelButton _closerUpgradePanelButton;
     [SerializeField] private OpenerShopPanelButton _openerShopPanelButton;
     [SerializeField] private OpenerShopPanelButton _closerShopPanelButton;
+    [SerializeField] private PlantPurchaseButton _firstGardenPlantPurchaseButton;
     [SerializeField] private List<UpgradeModeCountButton> _upgradeModeCountButtons;
 
     private SavingMediator _savingMediator;
@@ -25,7 +26,8 @@ public class UIDirector : MonoBehaviour, IService
     private InputTrailParticle _inputTrailParticle;
     private UpgradeModeCountButtonType _currentCountButtonType = UpgradeModeCountButtonType.x1;
     private bool _isUpgradeModeActive;
-    private bool _canShowUpgradeButtons = true;
+    private bool _canShowUpgradeModeButton = true;
+    private bool _canShowUpgradeShopButton = true;
 
     public event Action<UpgradeModeCountButtonType> UpgradeModeCountChanged;
     public event Action<bool> UpgradeModeEnabledStatusChanged;
@@ -34,8 +36,13 @@ public class UIDirector : MonoBehaviour, IService
     public UpgradeModeCountButtonType UpgradeModeCountButtonType => _currentCountButtonType;
 
     public OpenerUpgradePanelButton OpenerUpgradePanelButton => _openerUpgradePanelButton;
+    public OpenerShopPanelButton OpenerShopPanelButton => _openerShopPanelButton;
 
     public bool IsUpgradeModeActive => _isUpgradeModeActive;
+
+    public PlantPurchaseButton FirstGardenPlantPurchaseButton => _firstGardenPlantPurchaseButton;
+
+    public float CheapestUpgradePrice => _shopPanel.CheapestUpgrade;
 
     private void Awake()
     {
@@ -82,26 +89,28 @@ public class UIDirector : MonoBehaviour, IService
             button.Clicked -= OnClickUpgradeModeCountButton;
     }
 
-    public void HideUpgradesButtons()
+    public void HideUpgradesModeButton()
     {
-        _canShowUpgradeButtons = false;
-
-        _openerShopPanelButton.Hide();
+        _canShowUpgradeModeButton = false;
         _openerUpgradePanelButton.Hide();
     }
 
-    public void ShowUpgradesButtons()
+    public void ShowUpgradesModeButton()
     {
-        _canShowUpgradeButtons = true;
-
-        _openerShopPanelButton.Show();
+        _canShowUpgradeModeButton = true;
         _openerUpgradePanelButton.Show();
     }
 
-    public void ShowUpgradeModeButton()
+    public void ShowUpgradeShopButton()
     {
-        _canShowUpgradeButtons = true;
-        _openerUpgradePanelButton.Show();
+        _canShowUpgradeShopButton = true;
+        _openerShopPanelButton.Show();
+    }
+
+    public void HideUpgradeShopButton()
+    {
+        _canShowUpgradeShopButton = false;
+        _openerShopPanelButton.Hide();
     }
 
     private void SwitchInteractionDetector(bool enabled)
@@ -139,9 +148,14 @@ public class UIDirector : MonoBehaviour, IService
 
         _settingsOpenerButton.Show();
 
-        if (_canShowUpgradeButtons)
+        if (_canShowUpgradeModeButton)
         {
             _openerUpgradePanelButton.Show();
+        }
+
+
+        if (_canShowUpgradeShopButton)
+        {
             _openerShopPanelButton.Show();
         }
     }
@@ -179,7 +193,7 @@ public class UIDirector : MonoBehaviour, IService
         {
             HideAllSwitchableUI();
             _upgradeModePanel.Show();
-            if (_canShowUpgradeButtons)
+            if (_canShowUpgradeModeButton)
             {
                 _openerUpgradePanelButton.Show();
             }
@@ -205,7 +219,7 @@ public class UIDirector : MonoBehaviour, IService
             _darkPanel.Show();
             _shopPanel.Show();
 
-            if (_canShowUpgradeButtons)
+            if (_canShowUpgradeShopButton)
             {
                 _openerShopPanelButton.Show();
             }

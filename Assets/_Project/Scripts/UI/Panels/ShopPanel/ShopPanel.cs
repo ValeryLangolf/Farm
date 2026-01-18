@@ -12,6 +12,9 @@ public class ShopPanel : MonoBehaviour
 
     private IReadOnlyList<Garden> _gardens;
     private IWallet _wallet;
+    private float _cheapestUpgrade = float.MaxValue;
+
+    public float CheapestUpgrade => _cheapestUpgrade;
 
     private void Awake()
     {
@@ -68,6 +71,8 @@ public class ShopPanel : MonoBehaviour
             .Where(garden => garden.ReadOnlyData.IsPurchased)
             .OrderBy(garden => garden.ReadOnlyData.CostStoreLevelUpgrade)
             .ToList();
+
+        _cheapestUpgrade = purchasedGardens.Count > 0 ? purchasedGardens[0].ReadOnlyData.CostStoreLevelUpgrade : float.MaxValue;
 
         foreach (Garden garden in purchasedGardens)
         {

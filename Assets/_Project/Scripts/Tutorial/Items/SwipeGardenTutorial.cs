@@ -1,55 +1,56 @@
+using System;
 using UnityEngine;
 
 public class SwipeGardenTutorial : TutorialItem
 {
     [SerializeField] private TutorialItem _nextItem;
     [SerializeField] private Tutorial _tutorial;
-    [SerializeField] private Garden _garden;
     [SerializeField] private TutorialCursor _cursor;
     [SerializeField] private Vector3 _cusrsorOffset;
 
+    private Garden _garden;
     private UIDirector _uiDirector;
-    private IWallet _wallet;
+    private CoinCollector _coinCollector;
+
 
     private void Awake()
     {
         _uiDirector = ServiceLocator.Get<UIDirector>();
-        _wallet = ServiceLocator.Get<IWallet>();
-    }
-
-    private void OnEnable()
-    {
-        _wallet.Changed += OnWalletChanged;
-    }
-
-    private void OnDisable()
-    {
-        _garden.ReadOnlyData.StorageFullnessChanged -= OnWalletChanged;
+        _coinCollector = ServiceLocator.Get<CoinCollector>();
+        _garden = ServiceLocator.Get<GardensDirector>().Gardens[0];
     }
 
     public override void Activate()
     {
-        _uiDirector.HideUpgradesButtons();
-        _cursor.SetWorldPosition(_garden.transform.position + _cusrsorOffset)
-            .SetSwipeAnimation()
-            .Show();
+        _garden.ReadOnlyData.StorageFullnessChanged += OnStorageFullnessChanged;
     }
+
 
     public override void Deactivate()
     {
+        _garden.ReadOnlyData.StorageFullnessChanged -= OnStorageFullnessChanged;
+
         _tutorial.SetCurrentItem(_nextItem);
         _cursor.Hide();
         _nextItem.Activate();
         Destroy(gameObject);
     }
 
-    private void OnWalletChanged(float obj)
+    private void OnStorageFullnessChanged(float _)
     {
-        float targetCount = 3f;
+        _coinCollector.Collected += OnCoinCollected;
 
-        if (obj > targetCount)
-        {
-            Deactivate();
-        }
+        _uiDirector.HideUpgradeShopButton();
+        _uiDirector.HideUpgradesModeButton();
+        _cursor.SetWorldPosition(_garden.transform.position + _cusrsorOffset)
+            .SetSwipeAnimation()
+            .Show();
+    }
+
+
+    private void OnCoinCollected()
+    {
+        _coinCollector.Collected -= OnCoinCollected;
+        Deactivate();
     }
 }

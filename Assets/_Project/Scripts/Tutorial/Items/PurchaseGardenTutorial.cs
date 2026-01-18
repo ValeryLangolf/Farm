@@ -1,19 +1,22 @@
-using System;
+using TMPro;
 using UnityEngine;
 
 public class PurchaseGardenTutorial : TutorialItem
 {
     [SerializeField] private TutorialItem _nextItem;
     [SerializeField] private Tutorial _tutorial;
-    [SerializeField] private Garden _garden;
     [SerializeField] private TutorialCursor _cursor;
     [SerializeField] private Vector3 _cusrsorOffset;
+    [SerializeField] private TextMeshProUGUI _text;
 
+    private Garden _garden;
     private UIDirector _uiDirector;
 
     private void Awake()
     {
         _uiDirector = ServiceLocator.Get<UIDirector>();
+        _garden = ServiceLocator.Get<GardensDirector>().Gardens[0];
+        _text.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -28,16 +31,19 @@ public class PurchaseGardenTutorial : TutorialItem
 
     public override void Activate()
     {
-        _uiDirector.HideUpgradesButtons();
+        _uiDirector.HideUpgradeShopButton();
+        _uiDirector.HideUpgradesModeButton();
         _cursor.SetWorldPosition(_garden.transform.position + _cusrsorOffset)
             .SetTouchAnimation()
             .Show();
+        _text.gameObject.SetActive(true);
     }
 
     public override void Deactivate()
     {
         _tutorial.SetCurrentItem(_nextItem);
         _cursor.Hide();
+        _text.gameObject.SetActive(false);
         Destroy(gameObject);
         _nextItem.Activate();
     }

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,10 +5,13 @@ public class PlantPurchaseButton : ButtonClickHandler
 {
     [SerializeField] private Garden _garden;
     [SerializeField] private TextMeshProUGUI _priceText;
+    [SerializeField] private Transform _center;
 
     private IWallet _wallet;
     private IReadOnlyGardenData _data;
     private float _lastPrice;
+
+    public Transform Center => _center;
 
     protected override void Awake()
     {
