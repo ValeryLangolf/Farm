@@ -14,7 +14,6 @@ public class UpgradeModeOpenTutorial : TutorialItem
     private OpenerUpgradePanelButton _button;
     private UIDirector _uiDirector;
     private IWallet _wallet;
-    private bool _isActivated = false;
 
     private void Awake()
     {

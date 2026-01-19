@@ -92,8 +92,9 @@ public static class FormulaCalculator
         return remainingCount;
     }
 
-    public static float CalculateInitialCultivationDurationInSeconds(int gardenIndex, float multiplier) =>
-        Mathf.Pow(multiplier, gardenIndex);
+    // Эта формула возможно понадобится, пока Томми значения проставляет от руки
+    //public static float CalculateInitialCultivationDurationInSeconds(int gardenIndex, float multiplier) =>
+    //    Mathf.Pow(multiplier, gardenIndex);
 
     public static float CalculateInitialShopLevelPrice(int gardenIndex, float multiplier) =>
         Mathf.Pow(multiplier, gardenIndex);

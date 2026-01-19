@@ -2,7 +2,7 @@ using System;
 
 public class GardenGrover : IDisposable
 {
-    private const float InitialCultivationMultiplier = 2.4f;
+    // private const float InitialCultivationMultiplier = 2.4f;
     private readonly ExtendedGardenData _data;
     private readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
 
@@ -16,7 +16,6 @@ public class GardenGrover : IDisposable
         _data.PlantsCountChanged += OnPlantsCountChanged;
         _data.CostStoreLevelUpgradeChanged += OnCostStoreLevelUpgradeChanged;
 
-        _data.InitialCultivationDurationInSeconds = FormulaCalculator.CalculateInitialCultivationDurationInSeconds(_data.GardenIndex, InitialCultivationMultiplier);
         _currentCountTreshold = CalculateTresholdMultiplier(_data.PlantsCount);
         UpdateCultivationDuration();
         _profitMultiplier = CalculateProfitMultiplier();

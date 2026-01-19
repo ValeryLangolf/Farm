@@ -12,6 +12,8 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     [field: SerializeField, Min(1)] public float InitialCostStoreLevelUpgrade { get; private set; }
 
+    [field: SerializeField, Min(0.05f)] public float InitialCultivationDuration { get; private set; }
+
     private SavedGardenData _savedData = new();
     private float _growthProgress = 0;
     private int _plantsCountToUpgrade = 1;
@@ -32,7 +34,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     public float GardenPurchasePrice { get; set; }
 
-    public float InitialCultivationDurationInSeconds { get; set; }
+    public float InitialCultivationDurationInSeconds => InitialCultivationDuration;
 
     public float InitialPlantPrice { get; set; }
 
