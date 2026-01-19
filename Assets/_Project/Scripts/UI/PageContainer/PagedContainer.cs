@@ -20,6 +20,10 @@ public class PagedContainer : MonoBehaviour
     public int CurrentPage =>
         _pageNavigation?.CurrentPage ?? 1;
 
+    public ItemsCollection ItemsCollection => _itemsCollection;
+
+    public IPagedItem FirstPagedItem => _itemsCollection.FirstPagedItem;
+
     public void Initialize<T>(T itemPrefab, int count) where T : MonoBehaviour, IPagedItem
     {
         InitializeComponents();

@@ -15,6 +15,8 @@ public class ShopItem : MonoBehaviour, IPagedItem
 
     public bool HasData => _currentData.HasValue;
 
+    public StoreLevelUpgradeButton PurchaseButton => _purchaseButton;
+
     public void SetData(object data)
     {
         if (data is ShopItemData upgradeData)

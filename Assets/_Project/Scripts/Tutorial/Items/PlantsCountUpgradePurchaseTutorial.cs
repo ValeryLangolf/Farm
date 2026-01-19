@@ -21,7 +21,11 @@ public class PlantsCountUpgradePurchaseTutorial : TutorialItem
 
         _uiDirector.HideUpgradeShopButton();
         _uiDirector.HideUpgradesModeButton();
-        _cursor.SetWorldPosition(_purchaseButton.Center.position + _cursorOffset).Show().SetTouchAnimation();
+        _cursor.SetParent(_purchaseButton.transform)
+            .SetWorldPosition(_purchaseButton.Center.position + _cursorOffset)
+            .Show()
+            .SetTouchAnimation();
+            
     }
 
     public override void Deactivate()
@@ -35,7 +39,7 @@ public class PlantsCountUpgradePurchaseTutorial : TutorialItem
     private void OnPurchaseButtonClicked(ButtonClickHandler handler)
     {
         _purchaseButton.Clicked -= OnPurchaseButtonClicked;
-        _cursor.Hide();
+        _cursor.ResetParent().Hide();
         Deactivate();
     }
 

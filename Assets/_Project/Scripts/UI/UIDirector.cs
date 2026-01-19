@@ -44,6 +44,8 @@ public class UIDirector : MonoBehaviour, IService
 
     public float CheapestUpgradePrice => _shopPanel.CheapestUpgrade;
 
+    public IPagedItem FirstPagedItem => _shopPanel.FirstPagedItem;
+
     private void Awake()
     {
         _savingMediator = ServiceLocator.Get<SavingMediator>();
@@ -54,6 +56,8 @@ public class UIDirector : MonoBehaviour, IService
 
         ToggleUpgradeModeCountButton(_upgradeModeCountButtons[0]);
         ShowGameModeUI();
+
+        _shopPanel.Init();
     }
 
     private void Start() =>

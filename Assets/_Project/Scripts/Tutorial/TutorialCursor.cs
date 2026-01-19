@@ -7,6 +7,25 @@ public class TutorialCursor : MonoBehaviour
     [SerializeField] private SkeletonGraphic _skeletonAnimation;
 
     private RectTransform _rect;
+    private Transform _initialParent;
+
+    private void Awake()
+    {
+        _initialParent = _canvas.transform.parent;
+    }
+
+    public TutorialCursor ResetParent()
+    {
+        _canvas.transform.SetParent(_initialParent);
+        _canvas.transform.localScale = Vector3.one;
+        return this;
+    }
+
+    public TutorialCursor SetParent(Transform transform)
+    {
+        _canvas.transform.SetParent(transform);
+        return this;
+    }
 
     public TutorialCursor Show()
     {

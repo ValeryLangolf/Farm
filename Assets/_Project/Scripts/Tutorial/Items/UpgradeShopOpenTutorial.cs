@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -31,20 +28,27 @@ public class UpgradeShopOpenTutorial : TutorialItem
     }
     public override void Deactivate()
     {
-        _cursor.Hide();
+        _cursor.Hide()
+            .ResetParent();
         _wallet.Changed -= OnWalletChanged;
-       // _nextItem.Activate();
+       _nextItem.Activate();
         Destroy(gameObject);
     }
 
     private void OnWalletChanged(float value)
     {
+        Debug.Log("Стоимость " + value + "Самая дешевая " + _uiDIrector.CheapestUpgradePrice);
+
        if(value >= _uiDIrector.CheapestUpgradePrice)
         {
+            
             _text.gameObject.SetActive(true);
             _uiDIrector.ShowUpgradeShopButton();
             _button.Clicked += OnButtonCliked;
-            _cursor.Show().SetTouchAnimation().SetScreenPosition(_button.Center.position + _cursorOffset);
+            _cursor.Show()
+                .SetTouchAnimation()
+                .SetScreenPosition(_button.Center.position + _cursorOffset)
+                .SetParent(_button.transform);
         }
     }
 

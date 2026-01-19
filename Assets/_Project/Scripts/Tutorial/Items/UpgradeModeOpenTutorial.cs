@@ -31,9 +31,8 @@ public class UpgradeModeOpenTutorial : TutorialItem
 
     public override void Deactivate()
     {
-
         _text.gameObject.SetActive(false);
-        _cursor.Hide();
+        _cursor.Hide().ResetParent() ;
         Destroy(gameObject);
         _nextItem.Activate();
     }
@@ -60,7 +59,8 @@ public class UpgradeModeOpenTutorial : TutorialItem
 
             Vector3 newPosition = _button.Center.position;
 
-            _cursor.SetScreenPosition(newPosition + _cusrsorOffset)
+            _cursor.SetParent(_button.transform)
+                .SetScreenPosition(newPosition + _cusrsorOffset)
                 .SetTouchAnimation()
                 .Show();
 

@@ -16,6 +16,8 @@ public class ItemsCollection
             : throw new ArgumentNullException(nameof(itemsContainer));
     }
 
+    public IPagedItem FirstPagedItem => _items[0];
+
     public IReadOnlyList<IPagedItem> ItemsWithData =>
         _items.Where(item => item.HasData).ToList();
 

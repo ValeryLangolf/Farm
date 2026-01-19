@@ -16,18 +16,13 @@ public class ShopPanel : MonoBehaviour
 
     public float CheapestUpgrade => _cheapestUpgrade;
 
-    private void Awake()
-    {
-        _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
-        _wallet = ServiceLocator.Get<IWallet>();
+    public PagedContainer PagedContainer => _pagedContainer;
 
-        InitializePagedContainer();
-    }
+    public IPagedItem FirstPagedItem => _pagedContainer.FirstPagedItem;
 
     private void OnEnable()
     {
         SubscribeToGardenEvents();
-        _wallet.Changed += OnWalletChanged;
 
         ResetPagination();
         UpdateShopItems();
@@ -36,7 +31,21 @@ public class ShopPanel : MonoBehaviour
     private void OnDisable()
     {
         UnsubscribeFromGardenEvents();
+    }
+
+    private void OnDestroy()
+    {
         _wallet.Changed -= OnWalletChanged;
+    }
+
+    public void Init()
+    {
+        _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
+        _wallet = ServiceLocator.Get<IWallet>();
+
+        _wallet.Changed += OnWalletChanged;
+
+        InitializePagedContainer();
     }
 
     private void InitializePagedContainer() =>
