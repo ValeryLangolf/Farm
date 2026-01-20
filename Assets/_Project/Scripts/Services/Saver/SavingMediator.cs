@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SavingMediator : IService
 {
@@ -9,12 +10,14 @@ public class SavingMediator : IService
     private readonly GardensDirector _gardensDirector;
     private readonly SettingsPanel _settingsPanel;
     private readonly Saver _saver;
+    private readonly Tutorial _tutorial;
 
-    public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel)
+    public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel, Tutorial tutorial)
     {
         _gardensDirector = gardensDirector != null ? gardensDirector : throw new ArgumentNullException(nameof(gardensDirector));
         _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _tutorial = tutorial != null ? tutorial : throw new ArgumentNullException(nameof(tutorial));
 
         IEncryptor dataEncryptor = new DataEncryptor();
         ISavingUtility savingUtility = new JsonSavingUtility(FileName, dataEncryptor);
@@ -34,7 +37,7 @@ public class SavingMediator : IService
 
     private SavesData BuildData()
     {
-        SavesData data = new()
+        SavesData data = new ()
         {
             WalletAmount = _wallet.Amount
         };
@@ -54,5 +57,8 @@ public class SavingMediator : IService
 
         if (_settingsPanel != null)
             _settingsPanel.SetData(_saver.Data);
+
+        if(_tutorial != null)
+            _tutorial.SetData(_saver.Data);
     }
 }

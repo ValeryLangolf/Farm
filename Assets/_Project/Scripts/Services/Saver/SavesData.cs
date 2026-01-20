@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class SavesData
 {
+    public int TutorialCounter = 0;
     public float WalletAmount = 0;
     public float MusicVolume = 0.5f;
     public float SfxVolume = 0.75f;

@@ -33,6 +33,9 @@ MonoBehaviour:
   - _icon: {fileID: 2800000, guid: 77734e1f7d32007469f85c85e8bc5464, type: 3}
     _typeName: UnityEngine.UI.Image, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  - _icon: {fileID: 2800000, guid: 6bf9da14dbf54674bbd0a54fd1530f8e, type: 3}
+    _typeName: TutorialCursor, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - _icon: {fileID: 2800000, guid: bf7e72da0b29a544e929254747798809, type: 3}
     _typeName: UnityEngine.Canvas, UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null

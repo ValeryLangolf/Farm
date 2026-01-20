@@ -2,45 +2,36 @@ using UnityEngine;
 
 public class PlantsCountUpgradePurchaseTutorial : TutorialItem
 {
-    [SerializeField] private TutorialCursor _cursor;
-    [SerializeField] private Vector3 _cursorOffset;
-    [SerializeField] private TutorialItem _nextItem;
+    [SerializeField] private TutorialFinger _finger;
+    [SerializeField] private Vector3 _fingerOffset;
 
     private UIDirector _uiDirector;
     private PlantPurchaseButton _purchaseButton;
 
-    private void Awake()
+    protected override void OnActivated()
     {
         _uiDirector = ServiceLocator.Get<UIDirector>();
         _purchaseButton = _uiDirector.FirstGardenPlantPurchaseButton;
-    }
 
-    public override void Activate()
-    {
-        _purchaseButton.Clicked += OnPurchaseButtonClicked;
+        _uiDirector.ProhibitShowingShopButton();
 
-        _uiDirector.HideUpgradeShopButton();
-        _uiDirector.HideUpgradesModeButton();
-        _cursor.SetParent(_purchaseButton.transform)
-            .SetWorldPosition(_purchaseButton.Center.position + _cursorOffset)
+        _finger.SetParent(_purchaseButton.transform)
+            .SetWorldPosition(_purchaseButton.Center.position + _fingerOffset)
             .Show()
             .SetTouchAnimation();
-            
+
+        _purchaseButton.Clicked += OnPurchaseButtonClicked;
     }
 
-    public override void Deactivate()
-    {
-        _uiDirector.ShowUpgradeShopButton();
-        _uiDirector.ShowUpgradesModeButton();
-        _nextItem.Activate();
-        Destroy(gameObject);
-    }
-
-    private void OnPurchaseButtonClicked(ButtonClickHandler handler)
+    protected override void OnDeactivated()
     {
         _purchaseButton.Clicked -= OnPurchaseButtonClicked;
-        _cursor.ResetParent().Hide();
-        Deactivate();
+
+        _uiDirector.AllowShowingShopButton();
+
+        _finger.ResetAll();
     }
 
+    private void OnPurchaseButtonClicked(ButtonClickHandler handler) =>
+        Deactivate();
 }

@@ -93,25 +93,31 @@ public class UIDirector : MonoBehaviour, IService
             button.Clicked -= OnClickUpgradeModeCountButton;
     }
 
-    public void HideUpgradesModeButton()
+    public void AllowShowingUpgradesModeButton()
+    {
+        if (_openerUpgradePanelButton != null)
+        {
+            _canShowUpgradeModeButton = true;
+            _openerUpgradePanelButton.Show();
+        }
+    }
+
+    public void AllowShowingShopButton()
+    {
+        if (_openerShopPanelButton != null)
+        {
+            _canShowUpgradeShopButton = true;
+            _openerShopPanelButton.Show();
+        }
+    }
+
+    public void ProhibitShowingUpgradesModeButton()
     {
         _canShowUpgradeModeButton = false;
         _openerUpgradePanelButton.Hide();
     }
 
-    public void ShowUpgradesModeButton()
-    {
-        _canShowUpgradeModeButton = true;
-        _openerUpgradePanelButton.Show();
-    }
-
-    public void ShowUpgradeShopButton()
-    {
-        _canShowUpgradeShopButton = true;
-        _openerShopPanelButton.Show();
-    }
-
-    public void HideUpgradeShopButton()
+    public void ProhibitShowingShopButton()
     {
         _canShowUpgradeShopButton = false;
         _openerShopPanelButton.Hide();
@@ -224,9 +230,7 @@ public class UIDirector : MonoBehaviour, IService
             _shopPanel.Show();
 
             if (_canShowUpgradeShopButton)
-            {
                 _openerShopPanelButton.Show();
-            }
         }
         else
         {

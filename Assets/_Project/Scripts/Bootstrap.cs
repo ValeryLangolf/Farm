@@ -10,6 +10,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private Audio _audio;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
+    [SerializeField] private Tutorial _tutorial;
 
     private bool _isApplicationQuitting = false;
 
@@ -53,7 +54,7 @@ public class Bootstrap : MonoBehaviour
         ServiceLocator.Register(_gardensDirector);
         ServiceLocator.Register(_audio as IAudioService);
         ServiceLocator.Register(_uiDirector);
-        ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel));
+        ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel, _tutorial));
 
         IInteractionDetector interactionDetector;
 
@@ -76,6 +77,8 @@ public class Bootstrap : MonoBehaviour
             runnable?.StartRun();
 
         ServiceLocator.Get<IAudioService>().Music.Play();
+
+        _tutorial.Run();
     }
 
     private void StopRunServices()

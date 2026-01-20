@@ -3,56 +3,44 @@ using UnityEngine;
 
 public class PurchaseGardenTutorial : TutorialItem
 {
-    [SerializeField] private TutorialItem _nextItem;
-    [SerializeField] private Tutorial _tutorial;
-    [SerializeField] private TutorialCursor _cursor;
-    [SerializeField] private Vector3 _cusrsorOffset;
     [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private TutorialFinger _finger;
+    [SerializeField] private Vector3 _fingerOffset;
 
     private Garden _garden;
     private UIDirector _uiDirector;
 
-    private void Awake()
+    protected override void OnActivated()
     {
-        _uiDirector = ServiceLocator.Get<UIDirector>();
         _garden = ServiceLocator.Get<GardensDirector>().Gardens[0];
-        _text.gameObject.SetActive(false);
-    }
+        _uiDirector = ServiceLocator.Get<UIDirector>();
 
-    private void OnEnable()
-    {
-        _garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
-    }
+        _text.Show();
+        _uiDirector.ProhibitShowingShopButton();
+        _uiDirector.ProhibitShowingUpgradesModeButton();
 
-    private void OnDisable()
-    {
-        _garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
-    }
-
-    public override void Activate()
-    {
-        _uiDirector.HideUpgradeShopButton();
-        _uiDirector.HideUpgradesModeButton();
-        _cursor.SetWorldPosition(_garden.transform.position + _cusrsorOffset)
+        _finger.SetWorldPosition(_garden.transform.position + _fingerOffset)
+            .SetParent(_garden.transform)
             .SetTouchAnimation()
             .Show();
-        _text.gameObject.SetActive(true);
+
+        _garden.ReadOnlyData.PurchaseStatusChanged += OnPurchaseStatusChanged;
+        OnPurchaseStatusChanged(_garden.ReadOnlyData.IsPurchased);
     }
 
-    public override void Deactivate()
+    protected override void OnDeactivated()
     {
-        _tutorial.SetCurrentItem(_nextItem);
-        _cursor.Hide();
-        _text.gameObject.SetActive(false);
-        Destroy(gameObject);
-        _nextItem.Activate();
+        _garden.ReadOnlyData.PurchaseStatusChanged -= OnPurchaseStatusChanged;
+
+        _text.Hide();
+        _uiDirector.AllowShowingUpgradesModeButton();
+        _uiDirector.AllowShowingShopButton();
+        _finger.ResetAll();
     }
 
-    private void OnPurchaseStatusChanged(bool isChanged)
+    private void OnPurchaseStatusChanged(bool isPurchased)
     {
-        if (isChanged)
-        {
+        if (isPurchased)
             Deactivate();
-        }
     }
 }

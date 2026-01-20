@@ -103,7 +103,11 @@ namespace Spine.Unity.Editor {
 		}
 #endif
 
-		override public void OnInspectorGUI () {
+        [Obsolete]
+#pragma warning disable CS0809 // Устаревший член переопределяет неустаревший член
+        override public void OnInspectorGUI()
+#pragma warning restore CS0809 // Устаревший член переопределяет неустаревший член
+        {
 			if (serializedObject.isEditingMultipleObjects) {
 				DrawDefaultInspector();
 				return;
@@ -320,7 +324,8 @@ namespace Spine.Unity.Editor {
 				atlasAsset.Clear();
 		}
 
-		static public void UpdateSpriteSlices (Texture texture, Atlas atlas) {
+        [Obsolete]
+        static public void UpdateSpriteSlices (Texture texture, Atlas atlas) {
 			string texturePath = AssetDatabase.GetAssetPath(texture.GetInstanceID());
 			TextureImporter t = (TextureImporter)TextureImporter.GetAtPath(texturePath);
 			t.spriteImportMode = SpriteImportMode.Multiple;

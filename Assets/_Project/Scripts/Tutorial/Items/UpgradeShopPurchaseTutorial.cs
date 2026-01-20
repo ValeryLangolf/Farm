@@ -1,51 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class UpgradeShopPurchaseTutorial : TutorialItem
 {
-    [SerializeField] private TutorialCursor _cursor;
-    [SerializeField] private Vector3 _cursorOffset;
-    [SerializeField] private TutorialItem _nextItem;
     [SerializeField] private TextMeshProUGUI _text;
-
-    private StoreLevelUpgradeButton _button;
+    [SerializeField] private TutorialFinger _finger;
+    [SerializeField] private Vector3 _fingerOffset;
 
     private UIDirector _uiDIrector;
+    private StoreLevelUpgradeButton _button;
 
-    private void Awake()
+    protected override void OnActivated()
     {
         _uiDIrector = ServiceLocator.Get<UIDirector>();
-        ShopItem shopItem = _uiDIrector.FirstPagedItem as ShopItem;
+        _button = (_uiDIrector.FirstPagedItem as ShopItem).PurchaseButton;
 
+        _text.SetActive(true);
 
-        _button = shopItem.PurchaseButton;
-        _text.gameObject.SetActive(false);
+        _finger.SetParent(_button.transform)
+            .SetScreenSpaceOverlayPosition(_button.transform.position)
+            .SetTouchAnimation()
+            .Show();
 
         _button.Clicked += OnButtonCliked;
     }
 
-    public override void Activate()
-    {
-        _cursor.SetParent(_button.transform)
-            .SetScreenPosition(_button.transform.position)
-            .SetTouchAnimation()
-            .Show();
-    }
-
-    public override void Deactivate()
-    {
-        _cursor.Hide()
-            .ResetParent();
-       
-        //_nextItem.Activate();
-        Destroy(gameObject);
-    }
-
-    private void OnButtonCliked(ButtonClickHandler handler)
+    protected override void OnDeactivated()
     {
         _button.Clicked -= OnButtonCliked;
-        Deactivate();
+
+        _text.SetActive(false);
+        _finger.ResetAll();
     }
+
+    private void OnButtonCliked(ButtonClickHandler handler) =>
+        Deactivate();
 }
