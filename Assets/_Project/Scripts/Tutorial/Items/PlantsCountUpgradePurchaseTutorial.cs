@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class PlantsCountUpgradePurchaseTutorial : TutorialItem
 {
+    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TutorialFinger _finger;
     [SerializeField] private Vector3 _fingerOffset;
 
@@ -20,6 +22,8 @@ public class PlantsCountUpgradePurchaseTutorial : TutorialItem
             .Show()
             .SetTouchAnimation();
 
+        _text.Show();
+
         _purchaseButton.Clicked += OnPurchaseButtonClicked;
     }
 
@@ -28,7 +32,7 @@ public class PlantsCountUpgradePurchaseTutorial : TutorialItem
         _purchaseButton.Clicked -= OnPurchaseButtonClicked;
 
         _uiDirector.AllowShowingShopButton();
-
+        _text.Hide();
         _finger.ResetAll();
     }
 
