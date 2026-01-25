@@ -1295,6 +1295,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1015772316308137540, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -1468,6 +1472,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -5153,6 +5161,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -6069,6 +6081,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -6557,6 +6573,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -6910,6 +6930,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -8380,6 +8404,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -8691,6 +8719,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1280489666839637493, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _purchasedSprite
       value: 
@@ -9075,6 +9107,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 358127924}
     m_Modifications:
+    - target: {fileID: 898827237175429264, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1015772316308137540, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9166,6 +9202,14 @@ PrefabInstance:
     - target: {fileID: 4973960945132027593, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_Name
       value: PlantPurchaseButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5038744492142730598, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6745558444612928907, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6895061924717621301, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _button

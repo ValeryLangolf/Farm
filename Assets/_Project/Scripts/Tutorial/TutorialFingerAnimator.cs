@@ -8,6 +8,11 @@ public class TutorialFingerAnimator : MonoBehaviour
 
     [SerializeField] private SkeletonGraphic _skeletonAnimation;
 
+    private void Awake()
+    {
+        _skeletonAnimation.AnimationState.Data.DefaultMix = 0f;
+    }
+
     public void SetTouchAnimation() =>
         SetAnimation(ClickAnimationName);
 

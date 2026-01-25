@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SkeletonAnimation))]
 public class PlantAimToMouse : MonoBehaviour
 {
-    [SerializeField] private string _targetBoneName = "Target";
+    [SerializeField] private string _targetBoneName = "FOLLOWER";
 
     [SerializeField] private float _maxDistance = 2.5f;
     [SerializeField] private float _followSpeed = 12f;
@@ -77,9 +77,5 @@ public class PlantAimToMouse : MonoBehaviour
 
         _targetBone.X = _currentLocalPos.x;
         _targetBone.Y = _currentLocalPos.y;
-    }
-    private void OnMouseDown()
-    {
-        //Добавить анимацию клика.
     }
 }

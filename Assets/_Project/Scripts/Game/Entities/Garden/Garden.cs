@@ -4,6 +4,7 @@ using UnityEngine;
 public class Garden : MonoBehaviour, ICollectable, IClickable
 {
     [SerializeField] private ExtendedGardenData _data;
+    [SerializeField] private Plant _plant;
 
     private IWallet _wallet;
     private Sfx _sfx;
@@ -41,6 +42,16 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _grover.ProcessRunnableStatus();
 
         _data.InvokeAllDataChanged();
+
+        if (_data.IsPurchased)
+        {
+            _plant.ShowIdle();
+        }
+        else
+        {
+            _plant.ShowAppear();
+            _plant.Hide();
+        }
     }
 
     public void ProcessClick()
@@ -49,6 +60,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         {
             _data.PlantsCount++;
             _grover.ProcessRunnableStatus();
+            _plant.ShowAppear();
         }
     }
 
@@ -62,6 +74,7 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
             _data.StorageFullness = 0;
             _grover.ProcessRunnableStatus();
             _sfx.PlayCollectedCoin();
+            _plant.HandleCollect();
         }
 
         return isSuccessful;
