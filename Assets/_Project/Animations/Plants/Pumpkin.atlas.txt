@@ -2,9 +2,6 @@ Pumpkin.png
 size:512,1024
 filter:Linear,Linear
 pma:true
-_0002_Layer-118
-bounds:2,408,568,339
-rotate:90
 big_pumpkin
 bounds:2,176,354,230
 bp_leaf_1
@@ -58,6 +55,9 @@ offsets:1,1,76,76
 eye_right
 bounds:96,39,74,74
 offsets:1,1,76,76
+ground
+bounds:2,408,568,339
+rotate:90
 mouth
 bounds:172,24,128,32
 offsets:1,1,130,34
