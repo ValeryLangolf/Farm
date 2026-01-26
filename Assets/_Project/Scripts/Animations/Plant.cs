@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
-    [SerializeField] private PlantsAnimator _animator;
+    [SerializeField] private PlantAnimator _animator;
     [SerializeField] private PointerBoneFollower _pointerBoneFollower;
 
     private IPointerPositionProvider _positionProvider;

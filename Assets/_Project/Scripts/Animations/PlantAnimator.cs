@@ -3,7 +3,7 @@ using Spine.Unity;
 using System;
 using UnityEngine;
 
-public class PlantsAnimator : MonoBehaviour
+public class PlantAnimator : MonoBehaviour
 {
     private const string AppearAnimationName = "Appear";
     private const string IdleAnimationName = "Idle";
