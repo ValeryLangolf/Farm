@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 6014423114366094697}
+  _pointerBoneFollower: {fileID: 6953032668423605717}
 --- !u!1 &5834121886338288560
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,6 +403,7 @@ GameObject:
   - component: {fileID: 1516012941292513564}
   - component: {fileID: 3326294469355134831}
   - component: {fileID: 6014423114366094697}
+  - component: {fileID: 6953032668423605717}
   m_Layer: 0
   m_Name: Spine GameObject (Pumpkin)
   m_TagString: Untagged
@@ -530,6 +532,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skeletonAnimation: {fileID: 3326294469355134831}
+--- !u!114 &6953032668423605717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454727442815256922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7748228405da042b7de03e3f7a701d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skeletonAnimation: {fileID: 3326294469355134831}
+  _maxDistance: 3
+  _followSpeed: 10
+  _returnSpeed: 10
+  _targetBoneName: FOLLOWER
 --- !u!1 &7949094259595775788
 GameObject:
   m_ObjectHideFlags: 0
