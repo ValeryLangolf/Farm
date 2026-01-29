@@ -532,6 +532,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skeletonAnimation: {fileID: 3326294469355134831}
+  _collectAnimationsCount: 2
+  _timeToResetAnimationIndex: 1
 --- !u!114 &6953032668423605717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,6 +976,10 @@ PrefabInstance:
     - target: {fileID: 2833022811831521359, guid: bd7f6b9f92486f34b818a2973974afc8, type: 3}
       propertyPath: m_Name
       value: StorageFillingIconIndicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440981264420658518, guid: bd7f6b9f92486f34b818a2973974afc8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

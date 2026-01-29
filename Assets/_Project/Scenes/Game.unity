@@ -9139,6 +9139,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3326294469355134831, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: timeScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3892197402224178490, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_AutoTiling
       value: 0
@@ -9206,6 +9210,18 @@ PrefabInstance:
     - target: {fileID: 5038744492142730598, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014423114366094697, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _collectAnimationNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014423114366094697, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _collectAnimationNames.Array.data[0]
+      value: Collect1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014423114366094697, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: _collectAnimationNames.Array.data[1]
+      value: Collect2
       objectReference: {fileID: 0}
     - target: {fileID: 6745558444612928907, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_IsActive
