@@ -2317,13 +2317,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540923147}
+  - component: {fileID: 540923148}
   m_Layer: 0
   m_Name: UpgradeShopPurchaseTutroial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &540923147
 Transform:
   m_ObjectHideFlags: 0
@@ -2340,6 +2341,21 @@ Transform:
   - {fileID: 1650422112}
   m_Father: {fileID: 275118680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &540923148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540923146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7461fafe49be04aaa767da1927cea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 1171116938}
+  _finger: {fileID: 2095870226}
+  _fingerOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &568095864
 GameObject:
   m_ObjectHideFlags: 0
@@ -9281,7 +9297,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 98725f2580174fd4dbd162f605427a4c, type: 3}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.<GardenName>k__BackingField
-      value: "\u041A\u0430\u0440\u0442\u043E\u0444\u0435\u043B\u044C"
+      value: "\u0422\u044B\u043A\u0432\u0430"
       objectReference: {fileID: 0}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data._initialGrowingCycleRevenue
