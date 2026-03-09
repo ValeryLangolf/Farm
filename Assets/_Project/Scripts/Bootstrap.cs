@@ -46,7 +46,12 @@ public class Bootstrap : MonoBehaviour
 
     private void RegisterServices()
     {
-        ServiceLocator.Register(_updateService as IUpdateService);
+        if(ServiceLocator.TryGet<IUpdateService>(out _) == false)
+        {
+            ServiceLocator.Register(_updateService as IUpdateService);
+            _updateService.Init();
+        }
+
 
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);

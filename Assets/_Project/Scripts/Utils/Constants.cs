@@ -10,4 +10,7 @@ public static class Constants
 
     public const string MusicGroup = nameof(MusicGroup);
     public const string SfxGroup = nameof(SfxGroup);
+
+    public const string Location0SceneName = "Location0";
+    public const string Location1SceneName = "Location1";
 }

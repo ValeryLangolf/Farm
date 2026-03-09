@@ -10,6 +10,12 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
     private Action<float> _updated;
     private bool _isRunning;
 
+    public void Init()
+    {
+        transform.SetParent(null);
+        DontDestroyOnLoad(this);
+    }
+
     private void Update()
     {
         if (_isRunning == false)
