@@ -18,6 +18,6 @@ public class TestButton : MonoBehaviour
 
     private void OnClick()
     {
-        SceneLoader.Instance.LoadScene(Constants.Location0SceneName);
+        SceneLoader.Instance.LoadScene(Constants.FirstLocationSceneName);
     }
 }

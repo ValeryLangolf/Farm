@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class InputTrailParticle : MonoBehaviour, IService
 {
+    private const string InputTrailParticleServicePath = "InputTrailParticleService";
+
+    private static InputTrailParticle s_instance;
+
     [SerializeField] private TrailParticle _trailPrefab;
     [SerializeField] private int _initialPoolSize = 10;
 
@@ -11,10 +15,39 @@ public class InputTrailParticle : MonoBehaviour, IService
     private readonly Dictionary<int, TrailParticle> _activeParticles = new();
     private bool _isSubscribed;
 
+    public static InputTrailParticle Instance
+    {
+        get
+        {
+            if (s_instance == null)
+            {
+                InputTrailParticle prefab = Resources.Load<InputTrailParticle>(InputTrailParticleServicePath);
+
+                if (prefab == null)
+                    throw new System.Exception($"InputTrailParticle prefab not found at path: {InputTrailParticleServicePath}");
+
+                s_instance = Instantiate(prefab);
+                DontDestroyOnLoad(s_instance.gameObject);
+                s_instance.gameObject.SetActive(true);
+            }
+
+            return s_instance;
+        }
+    }
+
     private void Awake()
     {
+        if (s_instance != null && s_instance != this)
+        {
+            Destroy(gameObject);
+
+            return;
+        }
+
+        s_instance = this;
         _interactionDetector = ServiceLocator.Get<IInteractionDetector>();
         InitializePool();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable() =>

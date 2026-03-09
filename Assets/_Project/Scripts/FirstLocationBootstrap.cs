@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bootstrap : MonoBehaviour
+public class FirstLocationBootstrap : MonoBehaviour
 {
-    [SerializeField] private UpdateService _updateService;
-    [SerializeField] private GardensDirector _gardensDirector;
-    [SerializeField] private InputTrailParticle _trailParticle;
-    [SerializeField] private Audio _audio;
+    [SerializeField] private GardensDirector _gardensDirector;    
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
     [SerializeField] private Tutorial _tutorial;
@@ -42,44 +39,26 @@ public class Bootstrap : MonoBehaviour
     {
         StopRunServices();
         DisposeServices();
+
+        if(ServiceLocator.TryRemoveService(out IWallet wallet))
+        {
+            if(wallet is IDisposable disposable)
+                disposable.Dispose();
+        }
     }
 
     private void RegisterServices()
     {
-        if(ServiceLocator.TryGet<IUpdateService>(out _) == false)
-        {
-            ServiceLocator.Register(_updateService as IUpdateService);
-            _updateService.Init();
-        }
-
-
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
 
         ServiceLocator.Register(_gardensDirector);
-        ServiceLocator.Register(_audio as IAudioService);
         ServiceLocator.Register(_uiDirector);
         ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel, _tutorial));
 
-        IInteractionDetector interactionDetector;
-        IPointerPositionProvider pointerPositionProvider;
+        IInteractionDetector interactionDetector = ServiceLocator.Get<IInteractionDetector>();
 
-        if (Application.isMobilePlatform)
-        {
-            interactionDetector = new TouchInteractionDetector();
-            pointerPositionProvider = new TouchPositionProvider(_updateService);
-        }
-        else
-        {
-            interactionDetector = new MouseInteractionDetector();
-            pointerPositionProvider = new MousePositionProvider(_updateService);
-        }
-
-        ServiceLocator.Register(interactionDetector);
-        ServiceLocator.Register(pointerPositionProvider);
-        ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));
-        ServiceLocator.Register(new EntityClickHandler(interactionDetector));
-        ServiceLocator.Register(_trailParticle);
+        ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));        
     }
 
     private void StartRunServices()

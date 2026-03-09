@@ -4,16 +4,47 @@ using UnityEngine;
 
 public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposable
 {
+    private const string UpdateServicePath = "UpdateService";
+
+    private static UpdateService s_instance;
+
     [SerializeField] private bool _isLogRepeatSubscriptions = false;
 
     private readonly HashSet<Action<float>> _actionSet = new();
     private Action<float> _updated;
     private bool _isRunning;
 
-    public void Init()
+    public static UpdateService Instance
     {
-        transform.SetParent(null);
-        DontDestroyOnLoad(this);
+        get
+        {
+            if (s_instance == null)
+            {
+                UpdateService prefab = Resources.Load<UpdateService>(UpdateServicePath);
+
+                if (prefab == null)
+                    throw new System.Exception($"SceneLoader prefab not found at path: {UpdateServicePath}");
+
+                s_instance = Instantiate(prefab);
+                DontDestroyOnLoad(s_instance.gameObject);
+                s_instance.gameObject.SetActive(true);
+            }
+
+            return s_instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (s_instance != null && s_instance != this)
+        {
+            Destroy(gameObject);
+
+            return;
+        }
+
+        s_instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()

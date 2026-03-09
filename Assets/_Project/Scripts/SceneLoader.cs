@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : MonoBehaviour, IService
 {
     private const string FaderPath = "Fader";
 

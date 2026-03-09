@@ -49,4 +49,21 @@ public static class ServiceLocator
 
         throw new Exception($"Не удалось получить тип {type}");
     }
+
+    public static bool TryRemoveService<T>(out T service) where T : class, IService
+    {
+        Type type = typeof(T);
+
+        if (s_services.TryGetValue(type, out IService existing))
+        {
+            service = (T)existing;
+            s_services.Remove(type);
+
+            return true;
+        }
+
+        service = null;
+
+        return false;
+    }
 }
