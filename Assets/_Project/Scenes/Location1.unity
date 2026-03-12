@@ -5099,6 +5099,14 @@ PrefabInstance:
       propertyPath: _wallet
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1516012941292513564, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 69a5ba5a46eb14841a371721eee44b93, type: 2}
+    - target: {fileID: 3326294469355134831, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: skeletonDataAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 5772eb8b77734184db21484e79b0482d, type: 2}
     - target: {fileID: 6895061924717621301, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _button
       value: 
