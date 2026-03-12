@@ -2992,6 +2992,8 @@ MonoBehaviour:
   _settingsPanel: {fileID: 207349519}
   _uiDirector: {fileID: 1889045313}
   _tutorial: {fileID: 829500610}
+  _savesDataConfig: {fileID: 11400000, guid: 6d49019bf987a864a9ee10810b685e7a, type: 2}
+  _locationIndex: 0
 --- !u!4 &794615358
 Transform:
   m_ObjectHideFlags: 0

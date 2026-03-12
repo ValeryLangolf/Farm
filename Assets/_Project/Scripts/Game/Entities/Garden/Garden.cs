@@ -25,9 +25,12 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
         _upgrader?.Dispose();
     }
 
+    public SavedGardenData GetData() =>
+        _data.SavedData;
+
     public void SetData(SavedGardenData data, int index)
     {
-        _data.GardenIndex = index >= 0 ? index : throw new ArgumentOutOfRangeException(nameof(index), index, "Значение должно быть положительным");
+        _data.GardenIndex = index >= 0 ? index : throw new ArgumentOutOfRangeException(nameof(index), index, "Р—РЅР°С‡РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
         _data.SavedData = data ?? throw new ArgumentNullException(nameof(data));
 
         _data.GardenPurchasePrice = FormulaCalculator.CalculatePurchasePrice(index, Constants.BaseGardenPrice, Constants.GardenPriceMultiplier);

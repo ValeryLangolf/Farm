@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstLocationBootstrap : MonoBehaviour
+public class AnyLocationBootstrap : MonoBehaviour
 {
     [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
     [SerializeField] private Tutorial _tutorial;
+    [SerializeField] private SavesDataConfig _savesDataConfig;
+    [SerializeField] private int _locationIndex;
 
     private bool _isApplicationQuitting = false;
 
@@ -59,8 +61,25 @@ public class FirstLocationBootstrap : MonoBehaviour
         ServiceLocator.Register(wallet);
         ServiceLocator.Register(_gardensDirector);
         ServiceLocator.Register(_uiDirector);
-        ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel, _tutorial));
+        RegisterSavingMediator();
         ServiceLocator.Register(new CoinCollector(ServiceLocator.Get<IInteractionDetector>(), wallet));
+    }
+
+    private void RegisterSavingMediator()
+    {
+        IEncryptor dataEncryptor = new DataEncryptor();
+        ISavingUtility savingUtility = new JsonSavingUtility("Saves", dataEncryptor);
+        ISaver<SavesData> saver = new Saver<SavesData>(savingUtility, _savesDataConfig.SavesData);
+
+        SavingMediator savingMediator = new(
+            ServiceLocator.Get<IWallet>(),
+            _gardensDirector,
+            _settingsPanel,
+            _tutorial,
+            _locationIndex,
+            saver);
+
+        ServiceLocator.Register(savingMediator);
     }
 
     private void StartRunServices()
@@ -72,7 +91,8 @@ public class FirstLocationBootstrap : MonoBehaviour
 
         ServiceLocator.Get<IAudioService>().Music.Play();
 
-        _tutorial.Run();
+        if (_tutorial != null)
+            _tutorial.Run();
     }
 
     private void StopRunServices()

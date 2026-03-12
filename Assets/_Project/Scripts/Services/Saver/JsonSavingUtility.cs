@@ -10,7 +10,7 @@ public class JsonSavingUtility : ISavingUtility
     public JsonSavingUtility(string fileName, IEncryptor encryptor)
     {
         if (string.IsNullOrEmpty(fileName))
-            throw new ArgumentException("Имя файла не может быть пустым", nameof(fileName));
+            throw new ArgumentException("РРјСЏ С„Р°Р№Р»Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј", nameof(fileName));
 
         _encryptor = encryptor ?? throw new ArgumentNullException(nameof(encryptor));
         _filePath = Path.Combine(Application.persistentDataPath, $"{fileName}.json");
@@ -20,7 +20,7 @@ public class JsonSavingUtility : ISavingUtility
     {
         if (data == null)
         {
-            Debug.LogError("Попытка сохранить null data");
+            Debug.LogError("РџРѕРїС‹С‚РєР° СЃРѕС…СЂР°РЅРёС‚СЊ null data");
 
             return;
         }
@@ -33,11 +33,12 @@ public class JsonSavingUtility : ISavingUtility
         }
         catch (Exception exception)
         {
-            Debug.LogError($"Ошибка сохранения: {exception.Message}");
+            Debug.LogError($"РћС€РёР±РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ: {exception.Message}");
         }
     }
 
-    public bool Load<T>(out T data) where T : class
+    public bool TryLoad<T>(out T data)
+        where T : class
     {
         data = null;
 
@@ -54,7 +55,7 @@ public class JsonSavingUtility : ISavingUtility
         }
         catch (Exception exception)
         {
-            Debug.LogError($"Ошибка загрузки сохранений: {exception.Message}");
+            Debug.LogError($"РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃРѕС…СЂР°РЅРµРЅРёР№: {exception.Message}");
             
             return false;
         }

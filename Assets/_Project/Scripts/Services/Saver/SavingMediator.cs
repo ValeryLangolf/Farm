@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SavingMediator : IService
 {
@@ -9,25 +8,47 @@ public class SavingMediator : IService
     private readonly IWallet _wallet;
     private readonly GardensDirector _gardensDirector;
     private readonly SettingsPanel _settingsPanel;
-    private readonly Saver _saver;
+    private readonly ISaver<SavesData> _saver;
     private readonly Tutorial _tutorial;
+    private readonly int _locationIndex;
 
-    public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel, Tutorial tutorial)
+    public SavingMediator(
+        IWallet wallet, 
+        GardensDirector gardensDirector, 
+        SettingsPanel settingsPanel, 
+        Tutorial tutorial, 
+        int locationIndex,
+        ISaver<SavesData> saver)
     {
         _gardensDirector = gardensDirector != null ? gardensDirector : throw new ArgumentNullException(nameof(gardensDirector));
         _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _tutorial = tutorial != null ? tutorial : throw new ArgumentNullException(nameof(tutorial));
-
-        IEncryptor dataEncryptor = new DataEncryptor();
-        ISavingUtility savingUtility = new JsonSavingUtility(FileName, dataEncryptor);
-        SavesData initialData = BuildData();
-        _saver = new(savingUtility, initialData);
+        _tutorial = tutorial;
+        _locationIndex = locationIndex;
+        _saver = saver ?? throw new ArgumentNullException(nameof(saver));
         RestoreGameState();
     }
 
-    public void Save() =>
-        _saver.Save();
+    public void Save()
+    {
+        SavesData data = _saver.Data;
+        data.MusicVolume = _settingsPanel.MusicVolume;
+        data.SfxVolume = _settingsPanel.SfxVolume;
+
+        LocationData currentLocationData = new()
+        {
+            TutorialCounter = _tutorial != null ? _tutorial.Counter : _saver.Data.Locations[_locationIndex].TutorialCounter,
+            WalletAmount = _wallet.Amount,
+            LastServerTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+            GardenDatas = _gardensDirector.GetGardensData(),
+        };
+
+        if (_locationIndex < 0 || _locationIndex > data.Locations.Count - 1)
+            throw new ArgumentOutOfRangeException(nameof(_locationIndex), _locationIndex, "Локация с таким индексом не зарегистрирована");
+
+        data.Locations[_locationIndex] = currentLocationData;
+        _saver.Save(data);
+    }
 
     public void ResetProgress()
     {
@@ -35,30 +56,28 @@ public class SavingMediator : IService
         RestoreGameState();
     }
 
-    private SavesData BuildData()
+    private void BuildData()
     {
-        SavesData data = new ()
-        {
-            WalletAmount = _wallet.Amount
-        };
 
-        foreach (Garden _ in _gardensDirector.Gardens)
-            data.GardenDatas.Add(new());
-
-        return data;
     }
 
     private void RestoreGameState()
     {
-        _wallet?.SetData(_saver.Data);
+        SavesData data = _saver.Data;
+        LocationData locationData = data.Locations[_locationIndex];
 
-        List<SavedGardenData> datas = _saver.Data.GardenDatas;
-        _gardensDirector.SetData(datas);
+        _wallet?.SetAmount(locationData.WalletAmount);
+
+        if (_gardensDirector != null)
+        {
+            List<SavedGardenData> gardenDatas = locationData.GardenDatas;
+            _gardensDirector.SetData(gardenDatas);
+        }
 
         if (_settingsPanel != null)
-            _settingsPanel.SetData(_saver.Data);
+            _settingsPanel.SetData(data.MusicVolume, data.SfxVolume);
 
-        if(_tutorial != null)
-            _tutorial.SetData(_saver.Data);
+        if (_tutorial != null)
+            _tutorial.SetCounter(locationData.TutorialCounter);
     }
 }
