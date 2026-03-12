@@ -4,7 +4,7 @@ public class GardenGrover : IDisposable
 {
     // private const float InitialCultivationMultiplier = 2.4f;
     private readonly ExtendedGardenData _data;
-    private readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
+    private readonly IUpdateService _updater;
 
     private float _currentCountTreshold;
     private float _profitMultiplier;
@@ -12,6 +12,7 @@ public class GardenGrover : IDisposable
     public GardenGrover(ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
+        _updater = ServiceLocator.Get<IUpdateService>();
 
         _data.PlantsCountChanged += OnPlantsCountChanged;
         _data.CostStoreLevelUpgradeChanged += OnCostStoreLevelUpgradeChanged;
@@ -46,7 +47,7 @@ public class GardenGrover : IDisposable
     public void Grow(float deltaTime)
     {
         if (deltaTime < 0)
-            throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "Значение должно быть положительным");
+            throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "Р—РЅР°С‡РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
 
         _data.GrowthElapsedTime += deltaTime;
         UpdateProgress();

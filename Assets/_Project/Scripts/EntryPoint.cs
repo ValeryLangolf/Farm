@@ -14,33 +14,20 @@ public class EntryPoint : MonoBehaviour
 
     private void RegisterServices()
     {
-        if (ServiceLocator.TryGet(out IUpdateService updateService) == false)
-        {
-            updateService = UpdateService.Instance;
-            ServiceLocator.Register(updateService);
-        }
-
-        if (ServiceLocator.TryGet(out IAudioService _) == false)
-        {
-            IAudioService audioService = AudioService.Instance;
-            ServiceLocator.Register(audioService);
-        }
-
+        IUpdateService updateService = UpdateService.Instance;
+        ServiceLocator.Register(updateService);
+        ServiceLocator.Register(AudioService.Instance as IAudioService);
         ServiceLocator.Register(SceneLoader.Instance);
 
-        IInteractionDetector interactionDetector;
-        IPointerPositionProvider pointerPositionProvider;
+        IInteractionDetector interactionDetector =
+            Application.isMobilePlatform ?
+            new TouchInteractionDetector() :
+            new MouseInteractionDetector();
 
-        if (Application.isMobilePlatform)
-        {
-            interactionDetector = new TouchInteractionDetector();
-            pointerPositionProvider = new TouchPositionProvider(updateService);
-        }
-        else
-        {
-            interactionDetector = new MouseInteractionDetector();
-            pointerPositionProvider = new MousePositionProvider(updateService);
-        }
+        IPointerPositionProvider pointerPositionProvider =
+            Application.isMobilePlatform ?
+            new TouchPositionProvider(updateService) :
+            new MousePositionProvider(updateService);
 
         ServiceLocator.Register(interactionDetector);
         ServiceLocator.Register(pointerPositionProvider);
@@ -59,7 +46,5 @@ public class EntryPoint : MonoBehaviour
 
         foreach (IRunnable runnable in runnables)
             runnable?.StartRun();
-
-        ServiceLocator.Get<IAudioService>().Music.Play();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FirstLocationBootstrap : MonoBehaviour
 {
-    [SerializeField] private GardensDirector _gardensDirector;    
+    [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
     [SerializeField] private Tutorial _tutorial;
@@ -40,25 +40,27 @@ public class FirstLocationBootstrap : MonoBehaviour
         StopRunServices();
         DisposeServices();
 
-        if(ServiceLocator.TryRemoveService(out IWallet wallet))
+        if (ServiceLocator.TryRemoveService(out IWallet wallet))
         {
-            if(wallet is IDisposable disposable)
+            if (wallet is IDisposable disposable)
                 disposable.Dispose();
         }
+
+        ServiceLocator.TryRemoveService<IWallet>(out _);
+        ServiceLocator.TryRemoveService<GardensDirector>(out _);
+        ServiceLocator.TryRemoveService<UIDirector>(out _);
+        ServiceLocator.TryRemoveService<SavingMediator>(out _);
+        ServiceLocator.TryRemoveService<CoinCollector>(out _);
     }
 
     private void RegisterServices()
     {
         IWallet wallet = new Wallet();
         ServiceLocator.Register(wallet);
-
         ServiceLocator.Register(_gardensDirector);
         ServiceLocator.Register(_uiDirector);
         ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel, _tutorial));
-
-        IInteractionDetector interactionDetector = ServiceLocator.Get<IInteractionDetector>();
-
-        ServiceLocator.Register(new CoinCollector(interactionDetector, wallet));        
+        ServiceLocator.Register(new CoinCollector(ServiceLocator.Get<IInteractionDetector>(), wallet));
     }
 
     private void StartRunServices()

@@ -32,6 +32,8 @@ public class SceneLoader : MonoBehaviour, IService
         }
     }
 
+    public string CurrentScene => SceneManager.GetActiveScene().name;
+
     private void Awake()
     {
         if (s_instance != null && s_instance != this)
