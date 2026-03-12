@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class GardenPurchaseStateIndicator : SwitchableSprite
+public class GardenPurchaseStateIndicator : MonoBehaviour
 {
     [SerializeField] private Garden _garden;
     [SerializeField] private Color _enoughMoneyColor;
+    [SerializeField] private GameObject _plant;
 
     private IWallet _wallet;
     private IReadOnlyGardenData _data;
@@ -31,13 +32,7 @@ public class GardenPurchaseStateIndicator : SwitchableSprite
 
     private void ProcessChanged()
     {
-        if (_data.IsPurchased)
-            SetColor(Color.white);
-
-        UpdateState(_data.IsPurchased);
-
-        Color color = _data.IsPurchased || _wallet.CanSpend(_data.GardenPurchasePrice) == false ? Color.white : _enoughMoneyColor;
-        SetColor(color);
+        _plant.SetActive(_data.IsPurchased);
     }
 
     private void OnPurchaseStatusChanged() =>

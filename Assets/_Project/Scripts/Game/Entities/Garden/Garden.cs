@@ -35,7 +35,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
         _data.GardenPurchasePrice = FormulaCalculator.CalculatePurchasePrice(index, Constants.BaseGardenPrice, Constants.GardenPriceMultiplier);
         _data.InitialPlantPrice = index > 0 ? _data.GardenPurchasePrice : 3;
-        _data.InitialPlantRevenue = FormulaCalculator.CalculateInitialPlantRevenue(index, _data.GardenPurchasePrice);
+        //_data.InitialPlantRevenue = FormulaCalculator.CalculateInitialPlantRevenue(index, _data.GardenPurchasePrice);
+        _data.InitialPlantRevenue = 1000000f;
 
         _grover?.Dispose();
         _upgrader?.Dispose();
