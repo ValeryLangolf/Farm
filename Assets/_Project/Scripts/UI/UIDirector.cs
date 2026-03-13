@@ -19,7 +19,6 @@ public class UIDirector : MonoBehaviour, IService
     [SerializeField] private PlantPurchaseButton _firstGardenPlantPurchaseButton;
     [SerializeField] private List<UpgradeModeCountButton> _upgradeModeCountButtons;
 
-    private SavingMediator _savingMediator;
     private IInteractionDetector _interactionDetector;
     private CoinCollector _coinCollector;
     private EntityClickHandler _entityClickHandler;
@@ -46,9 +45,8 @@ public class UIDirector : MonoBehaviour, IService
 
     public IPagedItem FirstPagedItem => _shopPanel.FirstPagedItem;
 
-    private void Awake()
+    private void Start()
     {
-        _savingMediator = ServiceLocator.Get<SavingMediator>();
         _interactionDetector = ServiceLocator.Get<IInteractionDetector>();
         _inputTrailParticle = ServiceLocator.Get<InputTrailParticle>();
         _coinCollector = ServiceLocator.Get<CoinCollector>();
@@ -58,10 +56,8 @@ public class UIDirector : MonoBehaviour, IService
         ShowGameModeUI();
 
         _shopPanel.Init();
-    }
-
-    private void Start() =>
         _settingsPanel.Initialize();
+    }
 
     private void OnEnable()
     {
@@ -170,8 +166,14 @@ public class UIDirector : MonoBehaviour, IService
         }
     }
 
-    private void OnClickResetProgressButton(ButtonClickHandler _) =>
-        _savingMediator.ResetProgress();
+    private void OnClickResetProgressButton(ButtonClickHandler _)
+    {
+        ServiceLocator.Get<SavingMediator>().ResetProgress();
+        SceneLoader sceneLoader = ServiceLocator.Get<SceneLoader>();
+
+        if (sceneLoader.CurrentSceneName != Constants.FirstLocationSceneName)
+            ServiceLocator.Get<SceneLoader>().LoadScene(Constants.FirstLocationSceneName);
+    }
 
     private void OnClickOpenSettingsPanelButton(ButtonClickHandler _)
     {

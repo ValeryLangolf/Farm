@@ -13,4 +13,5 @@ public static class Constants
 
     public const string FirstLocationSceneName = "Location0";
     public const string SecondLocationSceneName = "Location1";
+    public static string SavesFileName = "Saves.json";
 }

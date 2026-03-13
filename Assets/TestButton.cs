@@ -12,10 +12,17 @@ public class TestButton : MonoBehaviour
     private void OnClick()
     {
         SceneLoader sceneLoader = ServiceLocator.Get<SceneLoader>();
+        SavingMediator savingMediator = ServiceLocator.Get<SavingMediator>();
 
-        if (sceneLoader.CurrentScene == Constants.FirstLocationSceneName)
+        if (sceneLoader.CurrentSceneName == Constants.FirstLocationSceneName)
+        {
+            savingMediator.Save();
             sceneLoader.LoadScene(Constants.SecondLocationSceneName);
-        else if (sceneLoader.CurrentScene == Constants.SecondLocationSceneName)
+        }
+        else if (sceneLoader.CurrentSceneName == Constants.SecondLocationSceneName)
+        {
+            savingMediator.Save();
             sceneLoader.LoadScene(Constants.FirstLocationSceneName);
+        }
     }
 }

@@ -32,7 +32,7 @@ public class SceneLoader : MonoBehaviour, IService
         }
     }
 
-    public string CurrentScene => SceneManager.GetActiveScene().name;
+    public string CurrentSceneName => SceneManager.GetActiveScene().name;
 
     private void Awake()
     {

@@ -13,7 +13,7 @@ public class JsonSavingUtility : ISavingUtility
             throw new ArgumentException("Имя файла не может быть пустым", nameof(fileName));
 
         _encryptor = encryptor ?? throw new ArgumentNullException(nameof(encryptor));
-        _filePath = Path.Combine(Application.persistentDataPath, $"{fileName}.json");
+        _filePath = Path.Combine(Application.persistentDataPath, fileName);
     }
 
     public void Save<T>(T data) where T : class

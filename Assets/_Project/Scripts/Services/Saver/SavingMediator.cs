@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 public class SavingMediator : IService
 {
-    private const string FileName = "Saves";
-
     private readonly IWallet _wallet;
+    private readonly ISaver<SavesData> _saver;
     private readonly GardensDirector _gardensDirector;
     private readonly SettingsPanel _settingsPanel;
-    private readonly ISaver<SavesData> _saver;
     private readonly Tutorial _tutorial;
     private readonly int _locationIndex;
 
+    private long _lastSaverTime;
+
     public SavingMediator(
-        IWallet wallet, 
-        GardensDirector gardensDirector, 
-        SettingsPanel settingsPanel, 
-        Tutorial tutorial, 
+        IWallet wallet,
+        GardensDirector gardensDirector,
+        SettingsPanel settingsPanel,
+        Tutorial tutorial,
         int locationIndex,
         ISaver<SavesData> saver)
     {
@@ -26,10 +26,26 @@ public class SavingMediator : IService
         _tutorial = tutorial;
         _locationIndex = locationIndex;
         _saver = saver ?? throw new ArgumentNullException(nameof(saver));
+
         RestoreGameState();
     }
 
     public void Save()
+    {
+        if(IsRecentlySaved())
+            return;
+
+        SavesData data = CollectData();
+        _saver.Save(data);
+    }
+
+    public void ResetProgress()
+    {
+        _saver.ResetProgress();
+        RestoreGameState();
+    }
+
+    private SavesData CollectData()
     {
         SavesData data = _saver.Data;
         data.MusicVolume = _settingsPanel.MusicVolume;
@@ -40,25 +56,15 @@ public class SavingMediator : IService
             TutorialCounter = _tutorial != null ? _tutorial.Counter : _saver.Data.Locations[_locationIndex].TutorialCounter,
             WalletAmount = _wallet.Amount,
             LastServerTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-            GardenDatas = _gardensDirector.GetGardensData(),
+            GardenDatas = new(_gardensDirector.GetGardensData()),
         };
 
         if (_locationIndex < 0 || _locationIndex > data.Locations.Count - 1)
             throw new ArgumentOutOfRangeException(nameof(_locationIndex), _locationIndex, "Локация с таким индексом не зарегистрирована");
 
         data.Locations[_locationIndex] = currentLocationData;
-        _saver.Save(data);
-    }
 
-    public void ResetProgress()
-    {
-        _saver.ResetProgress();
-        RestoreGameState();
-    }
-
-    private void BuildData()
-    {
-
+        return data;
     }
 
     private void RestoreGameState()
@@ -79,5 +85,16 @@ public class SavingMediator : IService
 
         if (_tutorial != null)
             _tutorial.SetCounter(locationData.TutorialCounter);
+    }
+
+    private bool IsRecentlySaved()
+    {
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        bool isRecentlySaved = _lastSaverTime + 2000 > currentTime;
+
+        if(isRecentlySaved == false)
+            _lastSaverTime = currentTime;
+
+        return isRecentlySaved;
     }
 }

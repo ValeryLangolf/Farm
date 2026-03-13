@@ -6,11 +6,8 @@ public class EntryPoint : MonoBehaviour
     private void Awake() =>
         RegisterServices();
 
-    private void Start()
-    {
+    private void Start() =>
         StartRunServices();
-        ServiceLocator.Get<SceneLoader>().LoadScene(Constants.FirstLocationSceneName);
-    }
 
     private void RegisterServices()
     {
@@ -46,5 +43,7 @@ public class EntryPoint : MonoBehaviour
 
         foreach (IRunnable runnable in runnables)
             runnable?.StartRun();
+
+        ServiceLocator.Get<SceneLoader>().LoadScene(Constants.FirstLocationSceneName);
     }
 }

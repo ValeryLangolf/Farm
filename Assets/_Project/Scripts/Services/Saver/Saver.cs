@@ -1,17 +1,5 @@
 using System;
 using UnityEngine;
-
-public interface ISaver<T>
-{
-    T Data { get; }
-
-    void Save(T data);
-
-    T Load();
-
-    void ResetProgress();
-}
-
 public class Saver<T> : ISaver<T> where T : class
 {
     private readonly ISavingUtility _savingUtility;
@@ -23,7 +11,6 @@ public class Saver<T> : ISaver<T> where T : class
     {
         _savingUtility = savingUtility ?? throw new ArgumentNullException(nameof(savingUtility));
         _initialData = initialData ?? throw new ArgumentNullException(nameof(initialData));
-
         _currentData = Load();
     }
 
@@ -31,13 +18,13 @@ public class Saver<T> : ISaver<T> where T : class
 
     public T Load()
     {
-        if (_savingUtility.TryLoad(out _currentData) == false)
+        if (_savingUtility.TryLoad(out T currentData))
         {
-            T currentData = JsonUtility.FromJson<T>(JsonUtility.ToJson(_initialData));
-
+            Debug.Log("Удалось загрузить. Юзаем currentData");
             return currentData;
-        }
+        }    
 
+        Debug.Log("Не удалось загрузить. Юзаем _initialData");
         return _initialData;
     }
 
