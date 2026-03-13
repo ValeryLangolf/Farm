@@ -19,12 +19,8 @@ public class Saver<T> : ISaver<T> where T : class
     public T Load()
     {
         if (_savingUtility.TryLoad(out T currentData))
-        {
-            Debug.Log("Удалось загрузить. Юзаем currentData");
-            return currentData;
-        }    
+            return currentData;   
 
-        Debug.Log("Не удалось загрузить. Юзаем _initialData");
         return _initialData;
     }
 

@@ -3566,7 +3566,7 @@ MonoBehaviour:
   _gardensDirector: {fileID: 358127925}
   _settingsPanel: {fileID: 207349519}
   _uiDirector: {fileID: 1889045313}
-  _tutorial: {fileID: 829500610}
+  _tutorial: {fileID: 0}
   _savesDataConfig: {fileID: 11400000, guid: 6d49019bf987a864a9ee10810b685e7a, type: 2}
   _locationIndex: 1
 --- !u!4 &794615358
@@ -3611,7 +3611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &829500610
 MonoBehaviour:
   m_ObjectHideFlags: 0
