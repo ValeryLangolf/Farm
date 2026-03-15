@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "+pGlOKQTGxw",
+	"hash": "TjxdO5g9AP8",
 	"spine": "4.2.43",
 	"x": -225.5,
 	"y": -106.86,
@@ -114,10 +114,10 @@
 		"inherit": "noScale",
 		"color": "0022ffff"
 	},
-	{ "name": "eye_left_IK", "parent": "FOLLOWER", "x": -65.5, "y": -0.06, "color": "ff4000ff", "icon": "ik" },
+	{ "name": "eye_left_IK", "parent": "FOLLOWER", "x": -65.5, "y": -0.06, "color": "ff3f00ff", "icon": "ik" },
 	{ "name": "eye_right", "parent": "FACE", "x": 26.97, "y": -58.5, "color": "0022ffff", "icon": "eye" },
 	{ "name": "eye_right_controller", "parent": "eye_right", "length": 39.44, "color": "0022ffff" },
-	{ "name": "eye_right_IK", "parent": "FOLLOWER", "x": 63.5, "y": -0.06, "color": "ff4000ff", "icon": "ik" },
+	{ "name": "eye_right_IK", "parent": "FOLLOWER", "x": 63.5, "y": -0.06, "color": "ff3f00ff", "icon": "ik" },
 	{ "name": "pupil_right", "parent": "eye_right_controller", "rotation": 90, "x": 23.51, "inherit": "noScale", "color": "0022ffff" }
 ],
 "slots": [
@@ -188,7 +188,7 @@
 		"x": 211.29,
 		"y": 24.9,
 		"mixRotate": 0,
-		"mixX": -0.07,
+		"mixX": -0.02,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -201,8 +201,7 @@
 		"x": 169.52,
 		"y": 22.81,
 		"mixRotate": 0,
-		"mixX": 0.25,
-		"mixY": 0.15,
+		"mixX": 0.15,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -215,8 +214,7 @@
 		"x": 176.76,
 		"y": 111.5,
 		"mixRotate": 0,
-		"mixX": 0.25,
-		"mixY": 0.15,
+		"mixX": 0.15,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -229,7 +227,8 @@
 		"x": 176.78,
 		"y": 66.69,
 		"mixRotate": 0,
-		"mixX": 0.15,
+		"mixX": 0.13,
+		"mixY": 0.15,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -242,7 +241,7 @@
 		"x": 192.95,
 		"y": 88.01,
 		"mixRotate": 0,
-		"mixX": -0.07,
+		"mixX": -0.03,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -255,7 +254,7 @@
 		"x": 219.87,
 		"y": 94.71,
 		"mixRotate": 0,
-		"mixX": -0.05,
+		"mixX": -0.02,
 		"mixScaleX": 0,
 		"mixShearY": 0
 	},
@@ -640,6 +639,15 @@
 						"curve": [ 1.823, -95.63, 1.913, -76.9 ]
 					},
 					{ "time": 2, "value": -49.31 }
+				]
+			}
+		}
+	},
+	"ываывав": {
+		"bones": {
+			"FRONT": {
+				"translate": [
+					{ "y": 207.03 }
 				]
 			}
 		}
