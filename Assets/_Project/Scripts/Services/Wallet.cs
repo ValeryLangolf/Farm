@@ -2,38 +2,38 @@ using System;
 
 public class Wallet : IWallet
 {
-    private SavesData _data = new();
+    private float _amount;
 
     public event Action<float> Changed;
 
-    public float Amount => _data.WalletAmount;
+    public float Amount => _amount;
 
-    public void SetData(SavesData data)
+    public void SetAmount(float amount)
     {
-        _data = data;
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), amount, "Р—РЅР°С‡РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
 
-        if (_data.WalletAmount < 0)
-            throw new ArgumentOutOfRangeException(nameof(_data.WalletAmount), _data.WalletAmount, "Значение должно быть положительным");
+        _amount = amount;
 
-        Changed?.Invoke(_data.WalletAmount);
+        Changed?.Invoke(_amount);
     }
 
     public void Increase(float value)
     {
-        if(value < 0) 
-            throw new ArgumentOutOfRangeException(nameof(value), value, "Значение должно быть положительным");
+        if (value < 0)
+            throw new ArgumentOutOfRangeException(nameof(value), value, "Р—РЅР°С‡РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
 
-        _data.WalletAmount += value;
+        _amount += value;
 
-        Changed?.Invoke(_data.WalletAmount);
+        Changed?.Invoke(_amount);
     }
 
     public bool TrySpend(float price)
     {
-        if(CanSpend(price))
+        if (CanSpend(price))
         {
-            _data.WalletAmount -= price;
-            Changed?.Invoke(_data.WalletAmount);
+            _amount -= price;
+            Changed?.Invoke(_amount);
 
             return true;
         }
@@ -44,8 +44,8 @@ public class Wallet : IWallet
     public bool CanSpend(float price)
     {
         if (price < 0)
-            throw new ArgumentOutOfRangeException(nameof(price), price, "Значение должно быть положительным");
+            throw new ArgumentOutOfRangeException(nameof(price), price, "Р—РЅР°С‡РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
 
-        return price <= _data.WalletAmount;
+        return price <= _amount;
     }
 }

@@ -1,33 +1,43 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SavingMediator : IService
 {
-    private const string FileName = "Saves";
-
     private readonly IWallet _wallet;
+    private readonly ISaver<SavesData> _saver;
     private readonly GardensDirector _gardensDirector;
     private readonly SettingsPanel _settingsPanel;
-    private readonly Saver _saver;
     private readonly Tutorial _tutorial;
+    private readonly int _locationIndex;
 
-    public SavingMediator(IWallet wallet, GardensDirector gardensDirector, SettingsPanel settingsPanel, Tutorial tutorial)
+    private long _lastSaverTime;
+
+    public SavingMediator(
+        IWallet wallet,
+        GardensDirector gardensDirector,
+        SettingsPanel settingsPanel,
+        Tutorial tutorial,
+        int locationIndex,
+        ISaver<SavesData> saver)
     {
         _gardensDirector = gardensDirector != null ? gardensDirector : throw new ArgumentNullException(nameof(gardensDirector));
         _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _tutorial = tutorial != null ? tutorial : throw new ArgumentNullException(nameof(tutorial));
+        _tutorial = tutorial;
+        _locationIndex = locationIndex;
+        _saver = saver ?? throw new ArgumentNullException(nameof(saver));
 
-        IEncryptor dataEncryptor = new DataEncryptor();
-        ISavingUtility savingUtility = new JsonSavingUtility(FileName, dataEncryptor);
-        SavesData initialData = BuildData();
-        _saver = new(savingUtility, initialData);
         RestoreGameState();
     }
 
-    public void Save() =>
-        _saver.Save();
+    public void Save()
+    {
+        if(IsRecentlySaved())
+            return;
+
+        SavesData data = CollectData();
+        _saver.Save(data);
+    }
 
     public void ResetProgress()
     {
@@ -35,30 +45,56 @@ public class SavingMediator : IService
         RestoreGameState();
     }
 
-    private SavesData BuildData()
+    private SavesData CollectData()
     {
-        SavesData data = new ()
+        SavesData data = _saver.Data;
+        data.MusicVolume = _settingsPanel.MusicVolume;
+        data.SfxVolume = _settingsPanel.SfxVolume;
+
+        LocationData currentLocationData = new()
         {
-            WalletAmount = _wallet.Amount
+            TutorialCounter = _tutorial != null ? _tutorial.Counter : _saver.Data.Locations[_locationIndex].TutorialCounter,
+            WalletAmount = _wallet.Amount,
+            LastServerTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+            GardenDatas = new(_gardensDirector.GetGardensData()),
         };
 
-        foreach (Garden _ in _gardensDirector.Gardens)
-            data.GardenDatas.Add(new());
+        if (_locationIndex < 0 || _locationIndex > data.Locations.Count - 1)
+            throw new ArgumentOutOfRangeException(nameof(_locationIndex), _locationIndex, "Локация с таким индексом не зарегистрирована");
+
+        data.Locations[_locationIndex] = currentLocationData;
 
         return data;
     }
 
     private void RestoreGameState()
     {
-        _wallet?.SetData(_saver.Data);
+        SavesData data = _saver.Data;
+        LocationData locationData = data.Locations[_locationIndex];
 
-        List<SavedGardenData> datas = _saver.Data.GardenDatas;
-        _gardensDirector.SetData(datas);
+        _wallet?.SetAmount(locationData.WalletAmount);
+
+        if (_gardensDirector != null)
+        {
+            List<SavedGardenData> gardenDatas = locationData.GardenDatas;
+            _gardensDirector.SetData(gardenDatas);
+        }
 
         if (_settingsPanel != null)
-            _settingsPanel.SetData(_saver.Data);
+            _settingsPanel.SetData(data.MusicVolume, data.SfxVolume);
 
-        if(_tutorial != null)
-            _tutorial.SetData(_saver.Data);
+        if (_tutorial != null)
+            _tutorial.SetCounter(locationData.TutorialCounter);
+    }
+
+    private bool IsRecentlySaved()
+    {
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        bool isRecentlySaved = _lastSaverTime + 2000 > currentTime;
+
+        if(isRecentlySaved == false)
+            _lastSaverTime = currentTime;
+
+        return isRecentlySaved;
     }
 }

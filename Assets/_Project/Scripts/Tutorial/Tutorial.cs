@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,27 +7,33 @@ public class Tutorial : MonoBehaviour
 {
     [SerializeField] private TutorialFinger _finger;
 
-    private SavesData _data;
     private List<TutorialItem> _items;
     private List<TutorialItem> _remainingItems;
     private bool _isRunning;
     private bool _initilized;
+    private int _counter = 0;
 
-    public void SetData(SavesData data)
+    public int Counter => _counter;
+
+    public void SetCounter(int counter)
     {
+        if (counter < 0)
+            throw new ArgumentOutOfRangeException(nameof(counter), counter, "Значение должно быть положительным");
+
         if (_initilized == false)
             Init();
 
-        _data = data;
+        _counter = 0;
         _finger.ResetAll();
         ClearRemainingItems();
         _remainingItems = new(_items);
 
-        int currentItem = data.TutorialCounter;
+        int currentItem = counter;
 
         while (currentItem > 0)
         {
             currentItem--;
+            _counter++;
             _remainingItems.Remove(_remainingItems.First());
         }
 
@@ -37,9 +44,7 @@ public class Tutorial : MonoBehaviour
     public void Run()
     {
         _isRunning = true;
-
-        if (_data != null)
-            Next();
+        Next();
     }
 
     private void Init()
@@ -88,8 +93,8 @@ public class Tutorial : MonoBehaviour
     {
         item.Deactivated -= OnItemDeactivated;
         item.Hide();
+        _counter++;
         _remainingItems.Remove(item);
-        _data.TutorialCounter++;
         Next();
     }
 }

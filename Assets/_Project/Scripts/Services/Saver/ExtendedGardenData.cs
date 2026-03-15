@@ -14,7 +14,7 @@ public class ExtendedGardenData : IReadOnlyGardenData
 
     [field: SerializeField, Min(0.05f)] public float InitialCultivationDuration { get; private set; }
 
-    private SavedGardenData _savedData = new();
+    private SavedGardenData _savedData;
     private float _growthProgress = 0;
     private int _plantsCountToUpgrade = 1;
     private float _plantsPriceToUpgrade = float.MaxValue;

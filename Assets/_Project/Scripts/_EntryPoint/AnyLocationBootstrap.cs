@@ -1,13 +1,14 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstLocationBootstrap : MonoBehaviour
+public class AnyLocationBootstrap : MonoBehaviour
 {
     [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private SettingsPanel _settingsPanel;
     [SerializeField] private UIDirector _uiDirector;
     [SerializeField] private Tutorial _tutorial;
+    [SerializeField] private SavesDataConfig _savesDataConfig;
+    [SerializeField] private int _locationIndex;
 
     private bool _isApplicationQuitting = false;
 
@@ -37,15 +38,6 @@ public class FirstLocationBootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
-        StopRunServices();
-        DisposeServices();
-
-        if (ServiceLocator.TryRemoveService(out IWallet wallet))
-        {
-            if (wallet is IDisposable disposable)
-                disposable.Dispose();
-        }
-
         ServiceLocator.TryRemoveService<IWallet>(out _);
         ServiceLocator.TryRemoveService<GardensDirector>(out _);
         ServiceLocator.TryRemoveService<UIDirector>(out _);
@@ -59,41 +51,37 @@ public class FirstLocationBootstrap : MonoBehaviour
         ServiceLocator.Register(wallet);
         ServiceLocator.Register(_gardensDirector);
         ServiceLocator.Register(_uiDirector);
-        ServiceLocator.Register(new SavingMediator(wallet, _gardensDirector, _settingsPanel, _tutorial));
+        ServiceLocator.Register(CreateSavingMediator());
         ServiceLocator.Register(new CoinCollector(ServiceLocator.Get<IInteractionDetector>(), wallet));
+    }
+
+    private SavingMediator CreateSavingMediator()
+    {
+        IEncryptor dataEncryptor = new NoEncrypt();
+        ISavingUtility savingUtility = new JsonSavingUtility(Constants.SavesFileName, dataEncryptor);
+        ISaver<SavesData> saver = new Saver<SavesData>(savingUtility, _savesDataConfig.GetSavesData());
+        IWallet wallet = ServiceLocator.Get<IWallet>();
+
+        return new(
+            wallet,
+            _gardensDirector,
+            _settingsPanel,
+            _tutorial,
+            _locationIndex,
+            saver);
     }
 
     private void StartRunServices()
     {
-        IReadOnlyList<IRunnable> runnables = ServiceLocator.GetServices<IRunnable>();
-
-        foreach (IRunnable runnable in runnables)
-            runnable?.StartRun();
-
         ServiceLocator.Get<IAudioService>().Music.Play();
 
-        _tutorial.Run();
-    }
-
-    private void StopRunServices()
-    {
-        IReadOnlyList<IRunnable> runnables = ServiceLocator.GetServices<IRunnable>();
-
-        foreach (IRunnable runnable in runnables)
-            runnable?.StopRun();
+        if (_tutorial != null)
+            _tutorial.Run();
     }
 
     private void SaveProgress()
     {
         if (ServiceLocator.TryGet(out SavingMediator savingMediator))
             savingMediator.Save();
-    }
-
-    private void DisposeServices()
-    {
-        IReadOnlyList<IDisposable> disposables = ServiceLocator.GetServices<IDisposable>();
-
-        foreach (IDisposable disposable in disposables)
-            disposable?.Dispose();
     }
 }

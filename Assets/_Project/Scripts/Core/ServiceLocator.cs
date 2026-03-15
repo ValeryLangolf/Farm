@@ -21,7 +21,7 @@ public static class ServiceLocator
         Type type = typeof(T);
 
         if (s_services.ContainsKey(type))
-            throw new InvalidOperationException($"Попытка повторной регистрации сервиса {type.Name}");
+            throw new InvalidOperationException($"РџРѕРїС‹С‚РєР° РїРѕРІС‚РѕСЂРЅРѕР№ СЂРµРіРёСЃС‚СЂР°С†РёРё СЃРµСЂРІРёСЃР° {type.Name}");
 
         s_services[type] = service;
     }
@@ -47,7 +47,7 @@ public static class ServiceLocator
         if (s_services.TryGetValue(type, out IService existingService))
             return (T)existingService;
 
-        throw new Exception($"Не удалось получить тип {type}");
+        throw new Exception($"РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ С‚РёРї {type}");
     }
 
     public static bool TryRemoveService<T>(out T service) where T : class, IService
@@ -58,6 +58,9 @@ public static class ServiceLocator
         {
             service = (T)existing;
             s_services.Remove(type);
+
+            if(service is IDisposable disposable)
+                disposable.Dispose();
 
             return true;
         }

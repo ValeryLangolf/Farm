@@ -19,8 +19,6 @@ public abstract class PointerPositionProviderBase : IPointerPositionProvider, ID
 
     public event Action<PositionInfo> Changed;
 
-    public PositionInfo Position => _positionInfo;
-
     public void Dispose() =>
         _updateService?.Unsubscribe(OnUpdate);
 

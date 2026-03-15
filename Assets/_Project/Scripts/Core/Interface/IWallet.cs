@@ -6,7 +6,7 @@ public interface IWallet : IService
 
     float Amount { get; }
 
-    void SetData(SavesData data);
+    void SetAmount(float amount);
 
     void Increase(float value);
 
