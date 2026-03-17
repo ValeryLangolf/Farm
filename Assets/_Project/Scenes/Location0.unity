@@ -1531,6 +1531,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -107
       objectReference: {fileID: 0}
+    - target: {fileID: 1516012941292513564, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 79707575659b160499fceb82ecea572e, type: 2}
+    - target: {fileID: 3326294469355134831, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
+      propertyPath: skeletonDataAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c0961f390d116cd44962c43b7e5022c1, type: 2}
     - target: {fileID: 3375510661638419712, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: m_SortingOrder
       value: -93
