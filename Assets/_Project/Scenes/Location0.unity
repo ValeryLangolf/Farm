@@ -1397,7 +1397,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.<Icon>k__BackingField
       value: 
-      objectReference: {fileID: 21300000, guid: fc08b64d864ce4b4e833d096b8f2d3d4, type: 3}
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.<GardenName>k__BackingField
       value: "\u0420\u0435\u0434\u0438\u0441"
@@ -10293,7 +10293,7 @@ PrefabInstance:
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.<Icon>k__BackingField
       value: 
-      objectReference: {fileID: 21300000, guid: 98725f2580174fd4dbd162f605427a4c, type: 3}
+      objectReference: {fileID: 21300000, guid: f843e73292727fd4ca583c76abb835fd, type: 3}
     - target: {fileID: 8210534678087765899, guid: 0db77d53d8411474c98498ba643e2fc9, type: 3}
       propertyPath: _data.<GardenName>k__BackingField
       value: "\u0422\u044B\u043A\u0432\u0430"
