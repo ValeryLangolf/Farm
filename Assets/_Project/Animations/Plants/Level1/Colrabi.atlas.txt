@@ -1,0 +1,152 @@
+Colrabi.png
+size:2048,512
+filter:Linear,Linear
+pma:true
+Ellipse 2
+bounds:1003,137,72,68
+offsets:1,1,74,70
+Ellipse 2 copy 3
+bounds:1077,129,72,68
+offsets:1,1,74,70
+Ellipse 3
+bounds:1693,454,29,29
+offsets:1,1,31,31
+Ellipse 3 copy
+bounds:1649,226,29,29
+offsets:1,1,31,31
+Layer 181
+bounds:602,153,330,193
+offsets:1,1,333,195
+rotate:90
+Layer 182
+bounds:927,289,158,194
+offsets:1,1,160,196
+Layer 183
+bounds:1536,351,132,116
+offsets:1,1,134,118
+rotate:90
+Layer 184
+bounds:1087,199,101,284
+offsets:1,1,103,286
+Layer 185
+bounds:1190,310,109,173
+offsets:2,1,112,175
+Layer 186
+bounds:1640,255,108,228
+Layer 187
+bounds:1748,358,125,106
+offsets:1,1,127,108
+rotate:90
+Layer 188
+bounds:80,126,357,84
+offsets:1,1,359,86
+rotate:90
+Layer 190
+bounds:1948,392,91,81
+offsets:1,1,93,83
+rotate:90
+Layer 191
+bounds:927,207,128,80
+offsets:1,1,131,82
+Layer 192
+bounds:1933,131,108,64
+offsets:2,1,111,66
+rotate:90
+Layer 194
+bounds:1297,165,96,62
+offsets:1,1,98,64
+Layer 211
+bounds:797,2,481,128
+offsets:1,1,483,130
+rotate:90
+Layer 211 copy
+bounds:166,394,89,22
+offsets:1,1,91,24
+rotate:90
+Layer 212
+bounds:1737,259,163,75
+offsets:1,1,165,77
+Rectangle 3
+bounds:1741,340,33,16
+offsets:1,1,35,18
+Rectangle 3 copy
+bounds:1776,340,33,16
+offsets:1,1,35,18
+big_pumpkin
+bounds:189,132,351,228
+offsets:2,1,354,230
+rotate:90
+bp_leaf_1
+bounds:1190,225,83,105
+offsets:1,1,85,107
+rotate:90
+bp_leaf_10
+bounds:1795,186,136,53
+offsets:1,1,138,55
+bp_leaf_11
+bounds:1407,235,127,85
+offsets:1,1,129,87
+bp_leaf_12
+bounds:1690,181,76,103
+offsets:1,2,79,106
+rotate:90
+bp_leaf_2
+bounds:1430,322,161,104
+offsets:2,1,164,107
+rotate:90
+bp_leaf_3
+bounds:1948,349,85,41
+offsets:1,1,87,43
+bp_leaf_4
+bounds:1536,270,76,79
+offsets:1,1,78,81
+bp_leaf_5
+bounds:1902,241,117,93
+offsets:2,1,120,95
+bp_leaf_6
+bounds:1301,229,104,104
+offsets:1,2,107,107
+bp_leaf_7
+bounds:1536,177,111,88
+offsets:1,1,113,90
+bp_leaf_8
+bounds:1856,336,90,147
+offsets:1,1,92,149
+bp_leaf_9
+bounds:1407,143,74,90
+offsets:1,1,76,92
+brow_left
+bounds:1704,145,54,34
+offsets:1,1,56,36
+brow_right
+bounds:1649,143,53,36
+offsets:1,1,55,38
+eye_left
+bounds:927,131,74,74
+offsets:1,1,76,76
+eye_right
+bounds:1190,149,74,74
+offsets:1,1,76,76
+mouth
+bounds:1795,152,128,32
+offsets:1,1,130,34
+pupil_right
+bounds:1614,322,27,27
+offsets:1,1,29,29
+shadow
+bounds:419,48,435,181
+offsets:1,1,437,183
+rotate:90
+small_pmpkn
+bounds:1301,335,148,127
+offsets:1,1,151,129
+rotate:90
+small_pmpkns_leaf
+bounds:1654,428,37,55
+offsets:1,1,40,58
+stick
+bounds:2,99,76,384
+offsets:1,1,78,386
+tail_2
+bounds:166,342,21,50
+offsets:1,1,24,52
