@@ -1,20 +1,25 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class WalletTextIndicator : MonoBehaviour
+public class WalletTextIndicator : MonoBehaviour, IInjactable
 {
     [SerializeField] private TextMeshProUGUI _text;
 
     private IWallet _wallet;
     private float _lastValue;
 
-    private void Awake() =>
-        _wallet = ServiceLocator.Get<IWallet>();
+    [Inject]
+    public void Construct(IWallet wallet)
+    {
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+    }
 
     private void OnEnable()
     {
-        OnChanged(_wallet.Amount);
         _wallet.Changed += OnChanged;
+        OnChanged(_wallet.Amount);
     }
 
     private void OnDisable() =>

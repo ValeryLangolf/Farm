@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
+using VContainer;
 
-public class GardenUpgradeModeDisplay : MonoBehaviour 
+public class GardenUpgradeModeDisplay : MonoBehaviour, IInjactable
 { 
     [SerializeField] private Garden _garden;
     [SerializeField] private GameObject _childObject;
@@ -8,10 +10,15 @@ public class GardenUpgradeModeDisplay : MonoBehaviour
     private UIDirector _uiDirector;
     private IReadOnlyGardenData _data;
 
+    [Inject]
+    public void Construct(UIDirector uIDirector)
+    {
+        _uiDirector = uIDirector != null ? uIDirector : throw new ArgumentNullException(nameof(uIDirector));
+    }
+
     private void Awake()
     {
         _data = _garden.ReadOnlyData;
-        _uiDirector = ServiceLocator.Get<UIDirector>();
     }
 
     private void OnEnable()

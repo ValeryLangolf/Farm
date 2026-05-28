@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+
 public class Saver<T> : ISaver<T> where T : class
 {
     private readonly ISavingUtility _savingUtility;

@@ -1,10 +1,17 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class BaseInteractionDetector : IInteractionDetector, IRunnable, IDisposable
 {
     protected readonly InteractionStateHandler StateHandler = new();
-    protected readonly IUpdateService _updater = ServiceLocator.Get<IUpdateService>();
+    protected readonly IUpdateService _updater;
+
+    public BaseInteractionDetector(IUpdateService updater)
+    {
+        _updater = updater ?? throw new ArgumentNullException(nameof(updater));
+        StartRun();
+    }
 
     public event Action<IReadOnlyList<InteractionInfo>> Swiped;
     public event Action<IReadOnlyList<InteractionInfo>> Clicked;

@@ -132,6 +132,9 @@ public class ExtendedGardenData : IReadOnlyGardenData
     {
         get
         {
+            if (SavedData == null)
+                Debug.Log("SavedData is NULL");
+
             return SavedData.StorageFullness;
         }
         set

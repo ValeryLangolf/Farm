@@ -1,17 +1,26 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-public class AvailableUpgradeShopIndicator : MonoBehaviour
+public class AvailableUpgradeShopIndicator : MonoBehaviour, IInjactable
 {
     [SerializeField] private GameObject _arrow;
 
     private IWallet _wallet;
+    private IGardensDirector _gardensDirector;
     private IReadOnlyList<Garden> _gardens;
+
+    [Inject]
+    public void Construct(IWallet wallet, IGardensDirector gardensDirector)
+    {
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _gardensDirector = gardensDirector ?? throw new ArgumentNullException(nameof(gardensDirector));
+    }
 
     private void Awake()
     {
-        _wallet = ServiceLocator.Get<IWallet>();
-        _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
+        _gardens = _gardensDirector.Gardens;
     }
 
     private void OnEnable()

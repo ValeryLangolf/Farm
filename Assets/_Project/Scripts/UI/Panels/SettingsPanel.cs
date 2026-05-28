@@ -3,6 +3,7 @@ using UnityEngine.Audio;
 
 public class SettingsPanel : MonoBehaviour
 {
+    [SerializeField] private AudioMixer _mixer;
     [SerializeField] private SliderInformer _musicSlider;
     [SerializeField] private SliderInformer _sfxSlider;
 
@@ -30,8 +31,7 @@ public class SettingsPanel : MonoBehaviour
         _musicSlider.Initialize();
         _sfxSlider.Initialize();
 
-        AudioMixer mixer = ServiceLocator.Get<IAudioService>().Mixer;
-        _musicModifier = new(mixer, _musicSlider, Constants.MusicGroup);
-        _sfxModifier = new(mixer, _sfxSlider, Constants.SfxGroup);
+        _musicModifier = new(_mixer, _musicSlider, Constants.MusicGroup);
+        _sfxModifier = new(_mixer, _sfxSlider, Constants.SfxGroup);
     }
 }

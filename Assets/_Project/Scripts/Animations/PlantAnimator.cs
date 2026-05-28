@@ -1,4 +1,4 @@
-﻿using Spine;
+using Spine;
 using Spine.Unity;
 using System;
 using System.Collections;
@@ -13,7 +13,7 @@ public class PlantAnimator : MonoBehaviour
 
     [SerializeField] private SkeletonAnimation _skeletonAnimation;
     [SerializeField] private int _collectAnimationsCount;
-    [SerializeField] private float _timeToResetAnimationIndex = 1f;
+    //[SerializeField] private float _timeToResetAnimationIndex = 1f;
 
     private int _currentCollectAnimationsIndex = 0;
 

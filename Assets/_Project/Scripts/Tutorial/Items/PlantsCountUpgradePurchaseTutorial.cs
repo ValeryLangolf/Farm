@@ -1,7 +1,9 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class PlantsCountUpgradePurchaseTutorial : TutorialItem
+public class PlantsCountUpgradePurchaseTutorial : TutorialItem, IInjactable
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TutorialFinger _finger;
@@ -10,9 +12,14 @@ public class PlantsCountUpgradePurchaseTutorial : TutorialItem
     private UIDirector _uiDirector;
     private PlantPurchaseButton _purchaseButton;
 
+    [Inject]
+    public void Construct(UIDirector uiDirector)
+    {
+        _uiDirector = uiDirector != null ? uiDirector : throw new ArgumentNullException(nameof(uiDirector));
+    }
+
     protected override void OnActivated()
     {
-        _uiDirector = ServiceLocator.Get<UIDirector>();
         _purchaseButton = _uiDirector.FirstGardenPlantPurchaseButton;
 
         _uiDirector.ProhibitShowingShopButton();

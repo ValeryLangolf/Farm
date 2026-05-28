@@ -1,22 +1,33 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class UpgradeModeOpenTutorial : TutorialItem
+public class UpgradeModeOpenTutorial : TutorialItem, IInjactable
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TutorialFinger _finger;
     [SerializeField] private Vector3 _fingerOffset;
 
+    private UIDirector _uiDirector;
     private IReadOnlyGardenData _garden;
     private OpenerUpgradePanelButton _button;
-    private UIDirector _uiDirector;
     private IWallet _wallet;
+
+    [Inject]
+    public void Construct(IWallet wallet, IGardensDirector gardensDirector, UIDirector uiDirector)
+    {
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _uiDirector = uiDirector != null ? uiDirector : throw new ArgumentNullException(nameof(uiDirector));
+
+        if (gardensDirector == null)
+            throw new ArgumentNullException(nameof(gardensDirector));
+
+        _garden = gardensDirector.Gardens[0].ReadOnlyData;
+    }
 
     protected override void OnActivated()
     {
-        _garden = ServiceLocator.Get<GardensDirector>().Gardens[0].ReadOnlyData;
-        _uiDirector = ServiceLocator.Get<UIDirector>();
-        _wallet = ServiceLocator.Get<IWallet>();
         _button = _uiDirector.OpenerUpgradePanelButton;
 
         _text.Hide();

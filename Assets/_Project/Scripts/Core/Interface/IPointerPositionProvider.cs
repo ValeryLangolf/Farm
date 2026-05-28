@@ -1,6 +1,6 @@
 using System;
 
-public interface IPointerPositionProvider : IService
+public interface IPointerPositionProvider
 {
     public event Action<PositionInfo> Changed;
 }

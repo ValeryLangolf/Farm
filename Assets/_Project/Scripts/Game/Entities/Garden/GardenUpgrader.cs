@@ -9,11 +9,11 @@ public class GardenUpgrader : IDisposable
     private readonly UIDirector _uiDirector;
     private readonly ExtendedGardenData _data;
 
-    public GardenUpgrader(ExtendedGardenData data)
+    public GardenUpgrader(IWallet wallet, UIDirector uIDirector, ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _wallet = ServiceLocator.Get<IWallet>();
-        _uiDirector = ServiceLocator.Get<UIDirector>();
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _uiDirector = uIDirector != null ? uIDirector : throw new ArgumentNullException(nameof(uIDirector));
 
         UpdateCostStoreLevelInfo();
         ProcessChanges();

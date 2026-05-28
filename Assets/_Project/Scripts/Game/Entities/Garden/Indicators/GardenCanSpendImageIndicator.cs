@@ -1,16 +1,19 @@
+using System;
 using UnityEngine;
+using VContainer;
 
-public class GardenCanSpendImageIndicator : SwitchableImage
+public class GardenCanSpendImageIndicator : SwitchableImage, IInjactable
 {
     [SerializeField] private Garden _garden;
 
     private IWallet _wallet;
     private IReadOnlyGardenData _data;
 
-    private void Awake()
+    [Inject]
+    public void Construct(IWallet wallet)
     {
         _data = _garden.ReadOnlyData;
-        _wallet = ServiceLocator.Get<IWallet>();
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
     }
 
     private void OnEnable()

@@ -1,38 +1,55 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using VContainer;
 
-public class SavingMediator : IService
+public class SavingMediator : MonoBehaviour, IInjactable
 {
-    private readonly IWallet _wallet;
-    private readonly ISaver<SavesData> _saver;
-    private readonly GardensDirector _gardensDirector;
-    private readonly SettingsPanel _settingsPanel;
-    private readonly Tutorial _tutorial;
-    private readonly int _locationIndex;
+    [SerializeField] private Tutorial _tutorial;
+    [SerializeField] private SettingsPanel _settingsPanel;
+    [SerializeField] private int _locationIndex;
+
+    private IWallet _wallet;
+    private IGardensDirector _gardensDirector;
+    private ISaver<SavesData> _saver;
+    private bool _isApplicationQuitting = false;
 
     private long _lastSaverTime;
 
-    public SavingMediator(
+    [Inject]
+    public void Construct(
         IWallet wallet,
-        GardensDirector gardensDirector,
-        SettingsPanel settingsPanel,
-        Tutorial tutorial,
-        int locationIndex,
+        IGardensDirector gardensDirector,
         ISaver<SavesData> saver)
     {
-        _gardensDirector = gardensDirector != null ? gardensDirector : throw new ArgumentNullException(nameof(gardensDirector));
-        _settingsPanel = settingsPanel != null ? settingsPanel : throw new ArgumentException(nameof(settingsPanel));
+        _gardensDirector = gardensDirector ?? throw new ArgumentNullException(nameof(gardensDirector));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _tutorial = tutorial;
-        _locationIndex = locationIndex;
         _saver = saver ?? throw new ArgumentNullException(nameof(saver));
 
         RestoreGameState();
     }
 
+    private void OnDisable()
+    {
+        if (_isApplicationQuitting == false)
+            Save();
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            Save();
+    }
+
+    private void OnApplicationQuit()
+    {
+        _isApplicationQuitting = true;
+        Save();
+    }
+
     public void Save()
     {
-        if(IsRecentlySaved())
+        if (IsRecentlySaved())
             return;
 
         SavesData data = CollectData();
@@ -92,7 +109,7 @@ public class SavingMediator : IService
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         bool isRecentlySaved = _lastSaverTime + 2000 > currentTime;
 
-        if(isRecentlySaved == false)
+        if (isRecentlySaved == false)
             _lastSaverTime = currentTime;
 
         return isRecentlySaved;

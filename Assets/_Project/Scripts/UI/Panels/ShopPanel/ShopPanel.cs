@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
-public class ShopPanel : MonoBehaviour
+public class ShopPanel : MonoBehaviour, IInjactable
 {
     [SerializeField] private PagedContainer _pagedContainer;
     [SerializeField] private ShopItem _shopItemPrefab;
@@ -12,6 +14,7 @@ public class ShopPanel : MonoBehaviour
 
     private IReadOnlyList<Garden> _gardens;
     private IWallet _wallet;
+    private IGardensDirector _gardensDirector;
     private float _cheapestUpgrade = float.MaxValue;
 
     public float CheapestUpgrade => _cheapestUpgrade;
@@ -19,6 +22,16 @@ public class ShopPanel : MonoBehaviour
     public PagedContainer PagedContainer => _pagedContainer;
 
     public IPagedItem FirstPagedItem => _pagedContainer.FirstPagedItem;
+
+    [Inject]
+    public void Construct(IWallet wallet, IGardensDirector gardensDirector)
+    {
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _gardensDirector = gardensDirector ?? throw new ArgumentNullException(nameof(gardensDirector));
+        _gardens = _gardensDirector.Gardens;
+
+        InitializePagedContainer();
+    }
 
     private void OnEnable()
     {
@@ -40,9 +53,6 @@ public class ShopPanel : MonoBehaviour
 
     public void Init()
     {
-        _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
-        _wallet = ServiceLocator.Get<IWallet>();
-
         _wallet.Changed += OnWalletChanged;
 
         InitializePagedContainer();

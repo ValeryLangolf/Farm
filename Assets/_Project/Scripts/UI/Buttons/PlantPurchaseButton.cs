@@ -1,7 +1,9 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class PlantPurchaseButton : ButtonClickHandler
+public class PlantPurchaseButton : ButtonClickHandler, IInjactable
 {
     [SerializeField] private Garden _garden;
     [SerializeField] private TextMeshProUGUI _priceText;
@@ -13,11 +15,16 @@ public class PlantPurchaseButton : ButtonClickHandler
 
     public Transform Center => _center;
 
+    [Inject]
+    public void Construct(IWallet wallet)
+    {
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+    }
+
     protected override void Awake()
     {
         base.Awake();
 
-        _wallet = ServiceLocator.Get<IWallet>();
         _data = _garden.ReadOnlyData;
     }
 

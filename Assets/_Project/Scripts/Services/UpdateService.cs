@@ -4,47 +4,15 @@ using UnityEngine;
 
 public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposable
 {
-    private const string UpdateServicePath = "UpdateService";
-
-    private static UpdateService s_instance;
-
     [SerializeField] private bool _isLogRepeatSubscriptions = false;
 
     private readonly HashSet<Action<float>> _actionSet = new();
     private Action<float> _updated;
     private bool _isRunning;
 
-    public static UpdateService Instance
-    {
-        get
-        {
-            if (s_instance == null)
-            {
-                UpdateService prefab = Resources.Load<UpdateService>(UpdateServicePath);
-
-                if (prefab == null)
-                    throw new System.Exception($"SceneLoader prefab not found at path: {UpdateServicePath}");
-
-                s_instance = Instantiate(prefab);
-                DontDestroyOnLoad(s_instance.gameObject);
-                s_instance.gameObject.SetActive(true);
-            }
-
-            return s_instance;
-        }
-    }
-
     private void Awake()
     {
-        if (s_instance != null && s_instance != this)
-        {
-            Destroy(gameObject);
-
-            return;
-        }
-
-        s_instance = this;
-        DontDestroyOnLoad(gameObject);
+        StartRun();
     }
 
     private void Update()
@@ -69,7 +37,7 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
         if (_actionSet.Contains(action))
         {
             if (_isLogRepeatSubscriptions)
-                Debug.LogWarning($"{nameof(UpdateService)}: Повторная попытка подписать событие {action.Method.Name}.");
+                Debug.LogWarning($"{nameof(UpdateService)}: РџРѕРІС‚РѕСЂРЅР°СЏ РїРѕРїС‹С‚РєР° РїРѕРґРїРёСЃР°С‚СЊ СЃРѕР±С‹С‚РёРµ {action.Method.Name}.");
 
             return;
         }
@@ -83,7 +51,7 @@ public class UpdateService : MonoBehaviour, IUpdateService, IRunnable, IDisposab
         if (_actionSet.Contains(action) == false)
         {
             if (_isLogRepeatSubscriptions)
-                Debug.LogWarning($"{nameof(UpdateService)}: Попытка отписать неподписанное событие {action.Method.Name}.");
+                Debug.LogWarning($"{nameof(UpdateService)}: РџРѕРїС‹С‚РєР° РѕС‚РїРёСЃР°С‚СЊ РЅРµРїРѕРґРїРёСЃР°РЅРЅРѕРµ СЃРѕР±С‹С‚РёРµ {action.Method.Name}.");
 
             return;
         }

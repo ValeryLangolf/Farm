@@ -1,6 +1,6 @@
 using System;
 
-public interface IWallet : IService
+public interface IWallet
 {
     event Action<float> Changed;
 

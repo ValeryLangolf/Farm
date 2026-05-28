@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityClickHandler : IService, IDisposable
+public class EntityClickHandler : IDisposable, IEntityClickHandler
 {
     private readonly IInteractionDetector _interactionDetector;
 

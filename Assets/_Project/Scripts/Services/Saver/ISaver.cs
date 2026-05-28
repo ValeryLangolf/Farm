@@ -1,10 +1,10 @@
 public interface ISaver<T>
 {
-    T Data { get; }
+    public T Data { get; }
 
-    void Save(T data);
+    public void Save(T data);
 
-    T Load();
+    public T Load();
 
-    void ResetProgress();
+    public void ResetProgress();
 }

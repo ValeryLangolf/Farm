@@ -1,8 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class TestButton : MonoBehaviour
 {
+    [SerializeField] private SavingMediator _savingMediator;
+
+    private ISceneLoader _sceneLoader;
+
+    [Inject]
+    public void Construct(ISceneLoader sceneLoader)
+    {
+        _sceneLoader = sceneLoader ?? throw new ArgumentNullException(nameof(sceneLoader));
+    }
+
     private void OnEnable() =>
         GetComponent<Button>().onClick.AddListener(OnClick);
 
@@ -11,18 +23,15 @@ public class TestButton : MonoBehaviour
 
     private void OnClick()
     {
-        SceneLoader sceneLoader = ServiceLocator.Get<SceneLoader>();
-        SavingMediator savingMediator = ServiceLocator.Get<SavingMediator>();
-
-        if (sceneLoader.CurrentSceneName == Constants.FirstLocationSceneName)
+        if (_sceneLoader.CurrentSceneName == Constants.FirstLocationSceneName)
         {
-            savingMediator.Save();
-            sceneLoader.LoadScene(Constants.SecondLocationSceneName);
+            _savingMediator.Save();
+            _sceneLoader.LoadScene(Constants.SecondLocationSceneName);
         }
-        else if (sceneLoader.CurrentSceneName == Constants.SecondLocationSceneName)
+        else if (_sceneLoader.CurrentSceneName == Constants.SecondLocationSceneName)
         {
-            savingMediator.Save();
-            sceneLoader.LoadScene(Constants.FirstLocationSceneName);
+            _savingMediator.Save();
+            _sceneLoader.LoadScene(Constants.FirstLocationSceneName);
         }
     }
 }

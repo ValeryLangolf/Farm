@@ -1,12 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-public class InputTrailParticle : MonoBehaviour, IService
+public class InputTrailParticle : MonoBehaviour, IInputTrailParticle
 {
-    private const string InputTrailParticleServicePath = "InputTrailParticleService";
-
-    private static InputTrailParticle s_instance;
-
     [SerializeField] private TrailParticle _trailPrefab;
     [SerializeField] private int _initialPoolSize = 10;
 
@@ -15,39 +13,15 @@ public class InputTrailParticle : MonoBehaviour, IService
     private readonly Dictionary<int, TrailParticle> _activeParticles = new();
     private bool _isSubscribed;
 
-    public static InputTrailParticle Instance
+    [Inject]
+    public void Construct(IInteractionDetector interactionDetector)
     {
-        get
-        {
-            if (s_instance == null)
-            {
-                InputTrailParticle prefab = Resources.Load<InputTrailParticle>(InputTrailParticleServicePath);
-
-                if (prefab == null)
-                    throw new System.Exception($"InputTrailParticle prefab not found at path: {InputTrailParticleServicePath}");
-
-                s_instance = Instantiate(prefab);
-                DontDestroyOnLoad(s_instance.gameObject);
-                s_instance.gameObject.SetActive(true);
-            }
-
-            return s_instance;
-        }
+        _interactionDetector = interactionDetector ?? throw new ArgumentNullException(nameof(interactionDetector));
     }
 
     private void Awake()
     {
-        if (s_instance != null && s_instance != this)
-        {
-            Destroy(gameObject);
-
-            return;
-        }
-
-        s_instance = this;
-        _interactionDetector = ServiceLocator.Get<IInteractionDetector>();
         InitializePool();
-        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable() =>
@@ -58,7 +32,7 @@ public class InputTrailParticle : MonoBehaviour, IService
 
     public void SetEnabled(bool isOn)
     {
-        if(isOn)
+        if (isOn)
             Subscribe();
         else
             Unsubscribe();
@@ -72,7 +46,7 @@ public class InputTrailParticle : MonoBehaviour, IService
 
     private void Subscribe()
     {
-        if(_isSubscribed) 
+        if (_isSubscribed)
             return;
 
         _isSubscribed = true;

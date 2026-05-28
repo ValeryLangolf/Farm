@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-public class UIDirector : MonoBehaviour, IService
+public class UIDirector : MonoBehaviour, IInjactable
 {
     [SerializeField] private DarkPanel _darkPanel;
     [SerializeField] private SettingsPanel _settingsPanel;
@@ -18,11 +19,13 @@ public class UIDirector : MonoBehaviour, IService
     [SerializeField] private OpenerShopPanelButton _closerShopPanelButton;
     [SerializeField] private PlantPurchaseButton _firstGardenPlantPurchaseButton;
     [SerializeField] private List<UpgradeModeCountButton> _upgradeModeCountButtons;
+    [SerializeField] private SavingMediator _savingMediator;
 
     private IInteractionDetector _interactionDetector;
-    private CoinCollector _coinCollector;
-    private EntityClickHandler _entityClickHandler;
-    private InputTrailParticle _inputTrailParticle;
+    private ICoinCollector _coinCollector;
+    private IEntityClickHandler _entityClickHandler;
+    private IInputTrailParticle _inputTrailParticle;
+    private ISceneLoader _sceneLoader;
     private UpgradeModeCountButtonType _currentCountButtonType = UpgradeModeCountButtonType.x1;
     private bool _isUpgradeModeActive;
     private bool _canShowUpgradeModeButton = true;
@@ -45,13 +48,23 @@ public class UIDirector : MonoBehaviour, IService
 
     public IPagedItem FirstPagedItem => _shopPanel.FirstPagedItem;
 
+    [Inject]
+    public void Construct(
+        IInteractionDetector interactionDetector,
+        IInputTrailParticle inputTrailParticle,
+        IEntityClickHandler entityClickHandler,
+        ISceneLoader sceneLoader,
+        ICoinCollector coinCollector)
+    {
+        _interactionDetector = interactionDetector ?? throw new ArgumentNullException(nameof(interactionDetector));
+        _inputTrailParticle = inputTrailParticle ?? throw new ArgumentNullException(nameof(inputTrailParticle));
+        _entityClickHandler = entityClickHandler ?? throw new ArgumentNullException(nameof(entityClickHandler));
+        _sceneLoader = sceneLoader ?? throw new ArgumentNullException(nameof(sceneLoader));
+        _coinCollector = coinCollector;
+    }
+
     private void Start()
     {
-        _interactionDetector = ServiceLocator.Get<IInteractionDetector>();
-        _inputTrailParticle = ServiceLocator.Get<InputTrailParticle>();
-        _coinCollector = ServiceLocator.Get<CoinCollector>();
-        _entityClickHandler = ServiceLocator.Get<EntityClickHandler>();
-
         ToggleUpgradeModeCountButton(_upgradeModeCountButtons[0]);
         ShowGameModeUI();
 
@@ -168,11 +181,10 @@ public class UIDirector : MonoBehaviour, IService
 
     private void OnClickResetProgressButton(ButtonClickHandler _)
     {
-        ServiceLocator.Get<SavingMediator>().ResetProgress();
-        SceneLoader sceneLoader = ServiceLocator.Get<SceneLoader>();
+        _savingMediator.ResetProgress();
 
-        if (sceneLoader.CurrentSceneName != Constants.FirstLocationSceneName)
-            ServiceLocator.Get<SceneLoader>().LoadScene(Constants.FirstLocationSceneName);
+        if (_sceneLoader.CurrentSceneName != Constants.FirstLocationSceneName)
+            _sceneLoader.LoadScene(Constants.FirstLocationSceneName);
     }
 
     private void OnClickOpenSettingsPanelButton(ButtonClickHandler _)

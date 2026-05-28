@@ -1,6 +1,6 @@
 using System;
 
-public interface IUpdateService : IService
+public interface IUpdateService
 {
     void Subscribe(Action<float> action);
 

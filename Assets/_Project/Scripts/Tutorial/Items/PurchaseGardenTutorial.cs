@@ -1,20 +1,30 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class PurchaseGardenTutorial : TutorialItem
+public class PurchaseGardenTutorial : TutorialItem, IInjactable
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TutorialFinger _finger;
     [SerializeField] private Vector3 _fingerOffset;
 
-    private Garden _garden;
     private UIDirector _uiDirector;
+    private Garden _garden;
+
+    [Inject]
+    public void Construct(UIDirector uiDirector, IGardensDirector gardensDirector)
+    {
+        _uiDirector = uiDirector != null ? uiDirector : throw new ArgumentNullException(nameof(uiDirector));
+
+        if (gardensDirector == null)
+            throw new ArgumentNullException(nameof(gardensDirector));
+
+        _garden = gardensDirector.Gardens[0];
+    }
 
     protected override void OnActivated()
     {
-        _garden = ServiceLocator.Get<GardensDirector>().Gardens[0];
-        _uiDirector = ServiceLocator.Get<UIDirector>();
-
         _text.Show();
         _uiDirector.ProhibitShowingShopButton();
         _uiDirector.ProhibitShowingUpgradesModeButton();

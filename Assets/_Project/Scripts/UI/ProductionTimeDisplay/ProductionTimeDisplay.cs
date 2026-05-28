@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class ProductionTimeDisplay : MonoBehaviour
 {
+    [SerializeField] private GardensDirector _gardensDirector;
     [SerializeField] private ProductionTimeItem _itemPrefab;
 
     private IReadOnlyList<Garden> _gardens;
 
     private void Awake()
     {
-        _gardens = ServiceLocator.Get<GardensDirector>().Gardens;
+        _gardens = _gardensDirector.Gardens;
 
         foreach (Transform child in transform)
             Destroy(child.gameObject);

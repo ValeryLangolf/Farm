@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public interface IInteractionDetector : IService, IRunnable
+public interface IInteractionDetector
 {
     event Action<IReadOnlyList<InteractionInfo>> Swiped;
     event Action<IReadOnlyList<InteractionInfo>> Clicked;
@@ -11,4 +11,12 @@ public interface IInteractionDetector : IService, IRunnable
     event Action<IReadOnlyList<InteractionInfo>> InteractionsEnded;
 
     IReadOnlyList<InteractionInfo> CurrentInteractions { get; }
+
+    public void PauseRun();
+
+    public void ResumeRun();
+
+    public void StartRun();
+
+    public void StopRun();
 }

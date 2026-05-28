@@ -1,20 +1,33 @@
+using System;
 using UnityEngine;
+using VContainer;
 
-public class SwipeGardenTutorial : TutorialItem
+public class SwipeGardenTutorial : TutorialItem, IInjactable
 {
     [SerializeField] private TutorialFinger _finger;
     [SerializeField] private Vector3 _fingerOffset;
 
-    private Garden _garden;
     private UIDirector _uiDirector;
-    private CoinCollector _coinCollector;
+    private Garden _garden;
+    private ICoinCollector _coinCollector;
+
+    [Inject]
+    public void Construct(
+        UIDirector uiDirector,
+        IGardensDirector gardensDirector,
+        ICoinCollector coinCollector)
+    {
+        _uiDirector = uiDirector != null ? uiDirector : throw new ArgumentNullException(nameof(uiDirector));
+        _coinCollector = coinCollector ?? throw new ArgumentNullException(nameof(coinCollector));
+
+        if (gardensDirector == null)
+            throw new ArgumentNullException(nameof(gardensDirector));
+
+        _garden = gardensDirector.Gardens[0];
+    }
 
     protected override void OnActivated()
     {
-        _uiDirector = ServiceLocator.Get<UIDirector>();
-        _coinCollector = ServiceLocator.Get<CoinCollector>();
-        _garden = ServiceLocator.Get<GardensDirector>().Gardens[0];
-
         _uiDirector.ProhibitShowingShopButton();
         _uiDirector.ProhibitShowingUpgradesModeButton();
 

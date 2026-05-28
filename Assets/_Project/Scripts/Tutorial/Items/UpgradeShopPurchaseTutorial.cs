@@ -1,19 +1,26 @@
+using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
-public class UpgradeShopPurchaseTutorial : TutorialItem
+public class UpgradeShopPurchaseTutorial : TutorialItem, IInjactable
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TutorialFinger _finger;
     [SerializeField] private Vector3 _fingerOffset;
 
-    private UIDirector _uiDIrector;
+    private UIDirector _uiDirector;
     private StoreLevelUpgradeButton _button;
+
+    [Inject]
+    public void Construct(UIDirector uiDirector)
+    {
+        _uiDirector = uiDirector != null ? uiDirector : throw new ArgumentNullException(nameof(uiDirector));
+    }
 
     protected override void OnActivated()
     {
-        _uiDIrector = ServiceLocator.Get<UIDirector>();
-        _button = (_uiDIrector.FirstPagedItem as ShopItem).PurchaseButton;
+        _button = (_uiDirector.FirstPagedItem as ShopItem).PurchaseButton;
 
         _text.SetActive(true);
 

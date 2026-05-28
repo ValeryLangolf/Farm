@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class GardensDirector : MonoBehaviour, IService
+public class GardensDirector : MonoBehaviour, IGardensDirector
 {
     [SerializeField] private List<Garden> _gardens;
 

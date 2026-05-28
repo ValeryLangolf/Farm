@@ -1,22 +1,32 @@
 using System;
 using UnityEngine;
+using VContainer;
 
-public class Garden : MonoBehaviour, ICollectable, IClickable
+public class Garden : MonoBehaviour, ICollectable, IClickable, IInjactable
 {
     [SerializeField] private ExtendedGardenData _data;
     [SerializeField] private Plant _plant;
 
+    private IUpdateService _updateService;
     private IWallet _wallet;
     private Sfx _sfx;
+    private UIDirector _uiDirector;
     private GardenGrover _grover;
     private GardenUpgrader _upgrader;
 
     public IReadOnlyGardenData ReadOnlyData => _data;
 
-    private void Awake()
+    [Inject]
+    public void Construct(
+        IUpdateService updateService,
+        IWallet wallet,
+        IAudioService audioService,
+        UIDirector uiDirector)
     {
-        _wallet = ServiceLocator.Get<IWallet>();
-        _sfx = ServiceLocator.Get<IAudioService>().Sfx;
+        _updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
+        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        _sfx = audioService.Sfx;
+        _uiDirector = uiDirector;
     }
 
     private void OnDestroy()
@@ -39,8 +49,8 @@ public class Garden : MonoBehaviour, ICollectable, IClickable
 
         _grover?.Dispose();
         _upgrader?.Dispose();
-        _grover = new(_data);
-        _upgrader = new(_data);
+        _grover = new(_updateService, _data);
+        _upgrader = new(_wallet, _uiDirector, _data);
         _grover.Grow(_data.GrowthElapsedTime);
         _grover.ProcessRunnableStatus();
 

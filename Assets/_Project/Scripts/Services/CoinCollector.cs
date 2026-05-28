@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinCollector : IService, IDisposable
+public class CoinCollector : ICoinCollector, IDisposable
 {
     private readonly IInteractionDetector _interactionDetector;
     private readonly IWallet _wallet;

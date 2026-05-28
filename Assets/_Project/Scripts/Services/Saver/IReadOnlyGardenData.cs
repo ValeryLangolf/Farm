@@ -3,38 +3,38 @@ using UnityEngine;
 
 public interface IReadOnlyGardenData
 {
-    event Action<float> GrowthProgressChanged;
-    event Action<float> StorageFullnessChanged;
-    event Action<bool> PurchaseStatusChanged;
-    event Action<int> PlantsCountToUpgradeChanged;
-    event Action<float> PlantsPriceToUpgradeChanged;
-    event Action<int> PlantsCountChanged;
-    event Action<float> CostStoreLevelUpgradeChanged;
-    event Action<Sprite> PlantCountThresholdChanged;
+    public event Action<float> GrowthProgressChanged;
+    public event Action<float> StorageFullnessChanged;
+    public event Action<bool> PurchaseStatusChanged;
+    public event Action<int> PlantsCountToUpgradeChanged;
+    public event Action<float> PlantsPriceToUpgradeChanged;
+    public event Action<int> PlantsCountChanged;
+    public event Action<float> CostStoreLevelUpgradeChanged;
+    public event Action<Sprite> PlantCountThresholdChanged;
 
-    string GardenName { get; }
+    public string GardenName { get; }
 
-    Sprite Icon { get; }
+    public Sprite Icon { get; }
 
-    float GardenPurchasePrice { get; }
+    public float GardenPurchasePrice { get; }
 
-    bool IsStorageInfinity { get; }
+    public bool IsStorageInfinity { get; }
 
-    bool IsPurchased { get; }
+    public bool IsPurchased { get; }
 
-    int PlantsCount { get; }
+    public int PlantsCount { get; }
 
-    float StorageFullness { get; }
+    public float StorageFullness { get; }
 
-    float GrowthElapsedTime { get; }
+    public float GrowthElapsedTime { get; }
 
-    float GrowthProgress { get; }
+    public float GrowthProgress { get; }
 
-    int PlantsCountToUpgrade { get; }
+    public int PlantsCountToUpgrade { get; }
 
-    float PlantsPriceToUpgrade { get; }
+    public float PlantsPriceToUpgrade { get; }
 
-    int StoreLevelUpgrade { get; }
+    public int StoreLevelUpgrade { get; }
 
-    float CostStoreLevelUpgrade { get; }
+    public float CostStoreLevelUpgrade { get; }
 }

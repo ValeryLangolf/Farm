@@ -2,50 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour, IService
+public class SceneLoader : MonoBehaviour, ISceneLoader
 {
-    private const string FaderPath = "Fader";
-
-    private static SceneLoader s_instance;
-
     [SerializeField] private Fader _fader;
 
     private bool _isLoading;
 
-    public static SceneLoader Instance
-    {
-        get
-        {
-            if (s_instance == null)
-            {
-                SceneLoader prefab = Resources.Load<SceneLoader>(FaderPath);
-
-                if (prefab == null)
-                    throw new System.Exception($"SceneLoader prefab not found at path: {FaderPath}");
-
-                s_instance = Instantiate(prefab);
-                DontDestroyOnLoad(s_instance.gameObject);
-                s_instance.gameObject.SetActive(false);
-            }
-
-            return s_instance;
-        }
-    }
-
     public string CurrentSceneName => SceneManager.GetActiveScene().name;
-
-    private void Awake()
-    {
-        if (s_instance != null && s_instance != this)
-        {
-            Destroy(gameObject);
-
-            return;
-        }
-
-        s_instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     public void ReloadCurrentScene()
     {
@@ -62,7 +25,6 @@ public class SceneLoader : MonoBehaviour, IService
         if (_isLoading)
             return;
 
-        gameObject.SetActive(true);
         StartCoroutine(LoadSceneRoutine(name));
     }
 
@@ -85,7 +47,6 @@ public class SceneLoader : MonoBehaviour, IService
             yield return null;
 
         _isLoading = false;
-        gameObject.SetActive(false);
     }
 
     private string GetSceneNameByIndex(int buildIndex)

@@ -1,14 +1,17 @@
+using System;
 using UnityEngine;
+using VContainer;
 
-public class Plant : MonoBehaviour
+public class Plant : MonoBehaviour, IInjactable
 {
     [SerializeField] private PlantAnimator _animator;
     [SerializeField] private PointerBoneFollower _pointerBoneFollower;
 
     private IPointerPositionProvider _positionProvider;
 
-    private void Awake() =>
-        _positionProvider = ServiceLocator.Get<IPointerPositionProvider>();
+    [Inject]
+    public void Construct(IPointerPositionProvider positionProvider) =>
+        _positionProvider = positionProvider ?? throw new ArgumentNullException(nameof(positionProvider));
 
     private void OnEnable()
     {

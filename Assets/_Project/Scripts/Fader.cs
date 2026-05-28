@@ -18,6 +18,7 @@ public class Fader : MonoBehaviour
         if (_isFading)
             return;
 
+        gameObject.SetActive(true);
         _isFading = true;
         _fadedInCallBack = fadedInCallback;
         _animator.Play(s_faderInId, -1, 0f);
@@ -45,5 +46,6 @@ public class Fader : MonoBehaviour
         _isFading = false;
         _fadedOutCallBack?.Invoke();
         _fadedOutCallBack = null;
+        gameObject.SetActive(false);
     }
 }

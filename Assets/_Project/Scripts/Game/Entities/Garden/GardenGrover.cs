@@ -9,10 +9,10 @@ public class GardenGrover : IDisposable
     private float _currentCountTreshold;
     private float _profitMultiplier;
 
-    public GardenGrover(ExtendedGardenData data)
+    public GardenGrover(IUpdateService updater, ExtendedGardenData data)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _updater = ServiceLocator.Get<IUpdateService>();
+        _updater = updater ?? throw new ArgumentNullException(nameof(updater));
 
         _data.PlantsCountChanged += OnPlantsCountChanged;
         _data.CostStoreLevelUpgradeChanged += OnCostStoreLevelUpgradeChanged;

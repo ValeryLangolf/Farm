@@ -11,6 +11,8 @@ public class MouseInteractionDetector : BaseInteractionDetector
     private readonly List<InteractionInfo> _swipeInteractions = new();
     private readonly List<InteractionInfo> _clickInteractions = new();
 
+    public MouseInteractionDetector(IUpdateService updater) : base(updater) { }
+
     protected override void OnUpdate(float deltaTime)
     {
         _swipeInteractions.Clear();

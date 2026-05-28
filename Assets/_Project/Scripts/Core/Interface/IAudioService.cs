@@ -1,6 +1,6 @@
 using UnityEngine.Audio;
 
-public interface IAudioService : IService 
+public interface IAudioService 
 {
     Music Music { get; }
 
